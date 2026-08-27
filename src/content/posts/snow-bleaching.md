@@ -4,11 +4,12 @@ category: ["里山人文和風土"]
 location: "苗場"
 season: ["冬"]
 postType: "風土隨筆"
+code: "D0002"
 status: "已發布"
 lead: "2024年，我在苗場滑雪。"
 date: 2026-08-26
-prevSlug: ""
-nextSlug: "toppaku"
+prevSlug: "toppaku"
+nextSlug: ""
 ---
 2024年，我在苗場滑雪。
 

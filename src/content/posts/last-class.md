@@ -6,11 +6,12 @@ season: ["夏"]
 postType: "一日遊全記錄"
 artist: ["Christian Boltanski"]
 artworkNumber: "Y052"
+code: "A0004"
 status: "已發布"
 lead: "這一站，我幾乎沒拍照。"
 date: 2026-08-08
-prevSlug: "monet"
-nextSlug: "kiyotsu-gorge"
+prevSlug: "nohbutai"
+nextSlug: "ehon-museum"
 ---
 這一站，我幾乎沒拍照。
 

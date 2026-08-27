@@ -4,11 +4,12 @@ category: ["里山人文和風土"]
 location: "十日町"
 season: ["秋", "冬"]
 postType: "風土隨筆"
+code: "D0001"
 status: "已發布"
 lead: "十日町市博物館（暱稱 TOPPAKU），2020 年 6 月新館開幕，主題直接寫明：「國寶・火焰型土器的故鄉―雪與織物與信濃川」。常設展三大主題："
 date: 2026-08-25
-prevSlug: "snow-bleaching"
-nextSlug: "monet"
+prevSlug: ""
+nextSlug: "snow-bleaching"
 ---
 > 國寶「繩文雪炎（じょうもんゆきほむら）」就在這裡。雪與炎，同時存在於一件八千年前的锅具上。
 

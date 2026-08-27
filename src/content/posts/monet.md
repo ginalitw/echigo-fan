@@ -6,11 +6,12 @@ season: ["夏"]
 postType: "一日遊全記錄"
 artist: ["原廣司"]
 artworkNumber: "T025"
+code: "A0006"
 status: "已發布"
 lead: "一日遊的最後一站，是十日町的美術館。"
 date: 2026-08-08
-prevSlug: "toppaku"
-nextSlug: "last-class"
+prevSlug: "ehon-museum"
+nextSlug: ""
 ---
 一日遊的最後一站，是十日町的美術館。
 
