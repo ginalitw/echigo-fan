@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
 
@@ -20,16 +21,16 @@ const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug
   <div class="article">
     <div class="kicker">
       {post.data.category.map((c, i) => (
-        <>{i > 0 && ' · '}<a href={`/category/${encodeURIComponent(c)}`}>{c}</a></>
+        <>{i > 0 && ' · '}<a href={url(`/category/${encodeURIComponent(c)}`)}>{c}</a></>
       ))}
-      {post.data.location && (<> · <a href={`/location/${encodeURIComponent(post.data.location)}`}>{post.data.location}</a></>)}
+      {post.data.location && (<> · <a href={url(`/location/${encodeURIComponent(post.data.location)}`)}>{post.data.location}</a></>)}
       {post.data.artworkNumber && <> · <span class="code">{post.data.artworkNumber}</span></>}
       {post.data.season && post.data.season.map(s => (
-        <> · <a href={`/season/${encodeURIComponent(s)}`}>{s}</a></>
+        <> · <a href={url(`/season/${encodeURIComponent(s)}`)}>{s}</a></>
       ))}
       {post.data.artist && post.data.artist.length > 0 && (
         <> · {post.data.artist.map((a, i) => (
-          <>{i > 0 && '、'}<a href={`/artist/${encodeURIComponent(a)}`}>{a}</a></>
+          <>{i > 0 && '、'}<a href={url(`/artist/${encodeURIComponent(a)}`)}>{a}</a></>
         ))}</>
       )}
     </div>
@@ -38,8 +39,8 @@ const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug
     {post.data.lead && <div class="lead">{post.data.lead}</div>}
     <Content />
     <div class="article-nav">
-      <span>{prevPost ? <a href={`/posts/${prevPost.slug}`}>◀ 上一站：{prevPost.data.title}</a> : <a href="/">◀ 回首頁</a>}</span>
-      <span>{nextPost ? <a href={`/posts/${nextPost.slug}`}>下一站：{nextPost.data.title} ▶</a> : <a href="/">回首頁 ▶</a>}</span>
+      <span>{prevPost ? <a href={url(`/posts/${prevPost.slug}`)}>◀ 上一站：{prevPost.data.title}</a> : <a href={url('/')}>◀ 回首頁</a>}</span>
+      <span>{nextPost ? <a href={url(`/posts/${nextPost.slug}`)}>下一站：{nextPost.data.title} ▶</a> : <a href={url('/')}>回首頁 ▶</a>}</span>
     </div>
   </div>
 </Layout>

@@ -23,10 +23,10 @@ git add -A && git commit -m "sync" && git push   # 推上去，Cloudflare Pages 
 
 ```
 NOTION_TOKEN=ntn_xxxxxxxx
-NOTION_DATABASE_ID=1397847dcb7b4895bcca3684939f794d
+NOTION_DATABASE_ID=<Notion 資料庫 ID>
 ```
 
-Token 從 https://www.notion.so/profile/integrations 的 `echigo-fan-website` 整合取得。
+兩個值都在 https://www.notion.so/profile/integrations 的整合設定裡取得。
 **一定要用 Copy 按鈕複製，不要用眼睛抄** —— `0` 跟 `O` 分不出來，曾經因此卡了很久。
 
 ## 同步腳本參數

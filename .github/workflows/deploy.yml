@@ -1,0 +1,55 @@
+# 推上 main 之後自動建置 Astro 網站並發佈到 GitHub Pages。
+# 需要先到 Settings → Pages，把 Source 設成「GitHub Actions」。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一個部署，但不中斷進行中的那個
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取出程式碼
+        uses: actions/checkout@v4
+
+      - name: 安裝 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 用 npm install 而非 npm ci：package-lock.json 是在 Windows 產生的，
+      # 缺少 Linux 版的 rollup 原生套件，npm ci 會直接失敗。
+      - name: 安裝相依套件
+        run: npm install --no-audit --no-fund
+
+      - name: 建置
+        run: npm run build
+
+      - name: 上傳建置結果
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 發佈到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
