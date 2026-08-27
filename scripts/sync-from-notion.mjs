@@ -476,6 +476,21 @@ async function main() {
   }
   fs.writeFileSync(MANIFEST, JSON.stringify({ updatedAt: new Date().toISOString(), files: written }, null, 2));
 
+  // public/images/posts/ 底下每個資料夾都對應一篇文章。
+  // 文章在 Notion 被刪掉或改回草稿後，它的圖片資料夾也該跟著消失，
+  // 否則網站上會累積永遠沒人引用的孤兒圖片。
+  const liveSlugs = new Set(prepared.map((x) => x.slug));
+  if (fs.existsSync(IMAGES_DIR)) {
+    for (const dir of fs.readdirSync(IMAGES_DIR)) {
+      const full = path.join(IMAGES_DIR, dir);
+      if (!fs.statSync(full).isDirectory() || liveSlugs.has(dir)) continue;
+      try {
+        fs.rmSync(full, { recursive: true, force: true });
+        console.log(`🗑️  已移除孤兒圖片資料夾：${dir}/`);
+      } catch { /* 略過 */ }
+    }
+  }
+
   if (DEBUG) {
     fs.writeFileSync(path.join(ROOT, 'notion-debug.json'), JSON.stringify(debugDump, null, 2));
     console.log('\n🐞 已輸出 notion-debug.json');
