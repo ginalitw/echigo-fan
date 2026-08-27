@@ -14,6 +14,8 @@ date: 2026-08-27
 prevSlug: "kiyotsu-gorge"
 nextSlug: "last-class"
 ---
+![](/images/posts/lost-windows/image-01.jpg)
+
 山坡上立著一個空的窗框。
 
 沒有牆，沒有房子，只有一扇窗，框住整片梯田。風一吹，掛在窗前的白紗就飄起來。
@@ -32,8 +34,6 @@ nextSlug: "last-class"
 
 這片窗景，原來從來不只是窗景。
 
-![](/images/posts/lost-windows/image-01.jpg)
-
 ---
 
 ## 實際走的資訊
@@ -41,7 +41,7 @@ nextSlug: "last-class"
 - 位置：新潟縣十日町市中里，桔梗原うるおい公園（清津川倉俣大橋附近的小丘上）
 - 作品前方有一座附階梯的觀景台可以站上去看，但**作品本體嚴禁攀爬**，官方明確禁止
 - 作品編號：N028，藝術家內海昭子，2006年
-- 官方頁面：[https://www.echigo-tsumari.jp/art/artwork/for_lots_of_lost_windows/](https://www.echigo-tsumari.jp/art/artwork/for_lots_of_lost_windows/)
+- 官方頁面：[為了無數失去的窗｜大地の芸術祭](https://www.echigo-tsumari.jp/art/artwork/for_lots_of_lost_windows/)
 
 ## 需要規劃的部分
 

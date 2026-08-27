@@ -54,7 +54,7 @@ nextSlug: "monet"
 - 同一棟建築，其實是兩件作品：
   - **Y052《最後的教室》**，克里斯蒂安・波坦斯基＋尚・卡爾曼，2006/2009年，體育館與教室棟一樓
   - **Y101《影の劇場 愉快なゆうれい達》**，克里斯蒂安・波坦斯基，2018年，二樓
-- 官方頁面：[https://www.echigo-tsumari.jp/art/artwork/the_last_class/](https://www.echigo-tsumari.jp/art/artwork/the_last_class/)
+- 官方頁面：[最後の教室｜大地の芸術祭](https://www.echigo-tsumari.jp/art/artwork/the_last_class/)
 
 ## 需要規劃的部分
 

@@ -58,7 +58,7 @@ nextSlug: ""
 - 冬季這座水池會結凍變成雪原，三年展期間則會變成特別展的展場，同一方水面，一年四季不同臉孔
 - **作品名**：《Palimpsest：空の池》，藝術家雷安德羅・埃利希（Leandro Erlich），2018年
 - **作品編號**：T025
-- 官方頁面：[https://www.echigo-tsumari.jp/travelinformation/monet/](https://www.echigo-tsumari.jp/travelinformation/monet/)
+- 官方頁面：[MonET｜大地の芸術祭](https://www.echigo-tsumari.jp/travelinformation/monet/)
 
 ## 需要規劃的部分
 
