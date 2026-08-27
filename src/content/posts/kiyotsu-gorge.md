@@ -10,9 +10,9 @@ artworkName: "Tunnel of Light"
 code: "A0001"
 status: "已發布"
 lead: "那年我決定犧牲最後一天的音樂祭，走出苗場，轉身入里山。"
-date: 2026-08-08
+date: 2026-08-27
 prevSlug: ""
-nextSlug: "nohbutai"
+nextSlug: ""
 ---
 那年我決定犧牲最後一天的音樂祭，走出苗場，轉身入里山。
 
