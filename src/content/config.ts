@@ -4,14 +4,17 @@ const posts = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    category: z.array(z.enum(['越後大地藝術祭', '富士搖滾二三事', '我吃的不只是飯', '里山人文和風土'])),
+    // 刻意用 z.string() 而非 z.enum()：Notion 上新增一個分類／攻略類型／季節選項時，
+    // 不該讓整個網站建置失敗。Notion 的選單本身已經限制了可能的值。
+    category: z.array(z.string()),
     location: z.string().optional(),
-    season: z.array(z.enum(['春', '夏', '秋', '冬'])).optional(),
-    postType: z.enum(['作品單篇', '一日遊全記錄', '實務提醒', '飯食', '風土隨筆']).optional(),
+    season: z.array(z.string()).optional(),
+    postType: z.string().optional(),
     artist: z.array(z.string()).optional(),
     artworkNumber: z.string().optional(),
     artworkName: z.string().optional(),
-    status: z.enum(['待填', '草稿', '已發布']).default('已發布'),
+    code: z.string().optional(),
+    status: z.string().default('已發布'),
     lead: z.string().optional(),
     date: z.date().optional(),
     prevSlug: z.string().optional(),

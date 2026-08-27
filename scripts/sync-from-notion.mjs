@@ -393,8 +393,26 @@ async function main() {
       console.warn(`⚠️  《${title}》的 Slug「${rawSlug}」清洗後是空的，已略過。`);
       continue;
     }
-    prepared.push({ page, props, title, slug });
+    prepared.push({ page, props, title, slug, code: readText(props, '排序碼').trim().toUpperCase() });
   }
+
+  // 排序碼格式：字母 + 四位數字，例如 A0001。
+  //   A = 越後大地藝術祭　B = 富士搖滾二三事　C = 我吃的不只是飯　D = 里山人文和風土
+  // 字母代表「系列」，數字是系列內的閱讀順序。
+  // 「上一站／下一站」只在同一個字母內串接——A 系列的最後一篇不會接到 B 系列的第一篇。
+  const seriesOf = (x) => (x.code ? x.code[0] : '');
+
+  prepared.sort((a, b) => {
+    if (a.code && b.code) return a.code.localeCompare(b.code);
+    if (a.code) return -1;   // 沒填排序碼的排在最後
+    if (b.code) return 1;
+    return String(a.page.created_time || '').localeCompare(String(b.page.created_time || ''));
+  });
+
+  for (const x of prepared) {
+    if (!x.code) console.warn(`⚠️  《${x.title}》沒有填排序碼，會排在最後，也不會有上一篇／下一篇。`);
+  }
+  console.log('\n📑 順序：' + prepared.map((x) => `${x.code || '（未編號）'} ${x.title}`).join('　│　'));
 
   const seen = new Set();
   for (const item of prepared) {
@@ -403,6 +421,14 @@ async function main() {
     }
     seen.add(item.slug);
   }
+
+  // 只有同一個系列（排序碼首字母相同）才互相串接
+  const sameSeries = (i, step) => {
+    const cur = prepared[i];
+    const neighbour = prepared[i + step];
+    if (!cur.code || !neighbour) return '';
+    return seriesOf(neighbour) === seriesOf(cur) ? neighbour.slug : '';
+  };
 
   const written = [];
 
@@ -446,11 +472,12 @@ async function main() {
       artist.length ? `artist: ${yamlList(artist)}` : null,
       artworkNumber ? `artworkNumber: ${yaml(artworkNumber)}` : null,
       artworkName ? `artworkName: ${yaml(artworkName)}` : null,
+      prepared[i].code ? `code: ${yaml(prepared[i].code)}` : null,
       `status: ${yaml(status)}`,
       ctx.lead ? `lead: ${yaml(ctx.lead)}` : null,
       date ? `date: ${date}` : null,
-      `prevSlug: ${yaml(i > 0 ? prepared[i - 1].slug : '')}`,
-      `nextSlug: ${yaml(i < prepared.length - 1 ? prepared[i + 1].slug : '')}`,
+      `prevSlug: ${yaml(sameSeries(i, -1))}`,
+      `nextSlug: ${yaml(sameSeries(i, +1))}`,
       threads ? `threads: ${yaml(threads)}` : null,
       '---',
       '',
