@@ -14,8 +14,9 @@ name: 同步 Notion 並部署
 
 on:
   schedule:
-    # UTC 時間，每 6 小時。台灣時間約 02:00 / 08:00 / 14:00 / 20:00
-    - cron: '0 */6 * * *'
+    # 每小時整點檢查一次。頻率要夠密，「預約發布」才有意義——
+    # 預約 09:00 的文章，最晚 10:00 會上線。
+    - cron: '0 * * * *'
   workflow_dispatch:
   push:
     branches: [main]

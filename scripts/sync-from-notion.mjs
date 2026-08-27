@@ -68,6 +68,14 @@ function readSelect(props, name) {
   const p = prop(props, name);
   return p?.select?.name || p?.status?.name || '';
 }
+// 讀 Notion 日期欄位。只填日期沒填時間時，視為台灣時間當天 00:00。
+function readDate(props, name) {
+  const start = prop(props, name)?.date?.start;
+  if (!start) return null;
+  const iso = start.includes('T') ? start : `${start}T00:00:00+08:00`;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
 function readMulti(props, name) {
   const p = prop(props, name);
   return (p?.multi_select || []).map((o) => o.name);
@@ -378,6 +386,9 @@ async function main() {
     console.log('🧹 已清空 src/content/posts（--prune-all）');
   }
 
+  const NOW = new Date();
+  const scheduled = [];   // 已排定但時間還沒到的
+
   // 先算好每篇的 slug，才能做上一篇/下一篇
   const prepared = [];
   for (const page of pages) {
@@ -393,7 +404,19 @@ async function main() {
       console.warn(`⚠️  《${title}》的 Slug「${rawSlug}」清洗後是空的，已略過。`);
       continue;
     }
-    prepared.push({ page, props, title, slug, code: readText(props, '排序碼').trim().toUpperCase() });
+    // 預約發布：填了未來的「發布時間」就先不產出，等時間到的那次同步才會上線。
+    // 沒填發布時間 = 立即發布。
+    const publishAt = readDate(props, '發布時間');
+    if (publishAt && publishAt.getTime() > NOW.getTime()) {
+      scheduled.push({ title, publishAt });
+      continue;
+    }
+
+    prepared.push({
+      page, props, title, slug,
+      code: readText(props, '排序碼').trim().toUpperCase(),
+      publishAt,
+    });
   }
 
   // 排序碼格式：字母 + 四位數字，例如 A0001。
@@ -408,6 +431,12 @@ async function main() {
     if (b.code) return 1;
     return String(a.page.created_time || '').localeCompare(String(b.page.created_time || ''));
   });
+
+  if (scheduled.length) {
+    const fmt = (d) => d.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei', hour12: false });
+    console.log(`\n⏳ 預約中（時間到才會上線，共 ${scheduled.length} 篇）：`);
+    for (const x of scheduled) console.log(`   ${fmt(x.publishAt)}　${x.title}`);
+  }
 
   for (const x of prepared) {
     if (!x.code) console.warn(`⚠️  《${x.title}》沒有填排序碼，會排在最後，也不會有上一篇／下一篇。`);
@@ -460,7 +489,12 @@ async function main() {
     const status = readSelect(props, '狀態') || '已發布';
     const threads = readText(props, '對應Threads');
 
-    const date = (page.created_time || '').slice(0, 10);
+    // 顯示日期優先用「發布時間」，沒填才退回 Notion 頁面建立時間。
+    // 一定要用台北時區格式化：台灣時間 8/20 00:00 換算成 UTC 是 8/19 16:00，
+    // 直接用 toISOString() 會整整少一天。（sv-SE 的日期格式剛好就是 YYYY-MM-DD）
+    const date = prepared[i].publishAt
+      ? prepared[i].publishAt.toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' })
+      : (page.created_time || '').slice(0, 10);
 
     const fm = [
       '---',
@@ -487,6 +521,9 @@ async function main() {
     fs.writeFileSync(filePath, fm + '\n' + body + '\n', 'utf-8');
     written.push(`${slug}.md`);
     console.log(`   ✅ 已寫入 src/content/posts/${slug}.md（${body.length} 字、${ctx.imageIndex} 張圖）`);
+    if (body.length < 120) {
+      console.warn(`   ⚠️  《${title}》內文只有 ${body.length} 字——這篇在 Notion 上可能還沒寫完，但狀態是「已發布」，網站上會出現一頁空的。`);
+    }
   }
 
   // 依照上次的清單，刪掉這次 Notion 已經沒有的文章（只碰同步產生過的檔案）
