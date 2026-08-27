@@ -1,0 +1,16 @@
+{
+  "name": "echigo-fan",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync": "node scripts/sync-from-notion.mjs"
+  },
+  "dependencies": {
+    "@notionhq/client": "^5.26.0",
+    "astro": "^4.15.0",
+    "dotenv": "^17.4.2"
+  }
+}

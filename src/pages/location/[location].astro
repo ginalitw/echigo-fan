@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const locations = [...new Set(allPosts.map(p => p.data.location).filter(Boolean))];
+  return locations.map(location => ({ params: { location } }));
+}
+
+const { location } = Astro.params;
+const allPosts = await getCollection('posts');
+const posts = allPosts.filter(p => p.data.status !== '待填' && p.data.location === location);
+---
+<Layout title={`${location} - 越後飯`}>
+  <div class="section-label">📍 {location}</div>
+  <div class="posts">
+    {posts.map(post => (
+      <a class="post-row" href={`/posts/${post.slug}`}>
+        <div class="meta">
+          {post.data.season && post.data.season.length > 0 && <span class="season">{post.data.season[0]}</span>}<br />
+          {post.data.artworkNumber}
+        </div>
+        <div class="body">
+          <h4>{post.data.title}</h4>
+          <p>{post.data.lead}</p>
+        </div>
+      </a>
+    ))}
+    {posts.length === 0 && <p style="text-align:center;color:var(--ink-soft);padding:40px 0">這個地點還沒有文章</p>}
+  </div>
+  <p style="text-align:center;margin-top:20px"><a href="/" style="color:var(--gold);font-size:13px">◀ 回首頁</a></p>
+</Layout>

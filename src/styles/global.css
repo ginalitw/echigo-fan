@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap');
+
+:root {
+  --snow: #F5F3EF;
+  --rice: #E8E1D4;
+  --ink: #3A3733;
+  --ink-soft: #6B665E;
+  --gold: #D9A03C;
+  --spring: #7A8B5A;
+  --summer: #4A6B8A;
+  --autumn: #C0703C;
+  --winter: #8A9BA8;
+  --line: #D8D0C2;
+  --max-w: 760px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--snow);
+  color: var(--ink);
+  font-family: "Noto Sans TC", sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+}
+
+.serif { font-family: "Noto Serif TC", serif; }
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 頂部品牌 */
+header.site-header {
+  padding: 64px 0 40px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-family: "Noto Serif TC", serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.brand .en {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+.tagline {
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--ink-soft);
+  font-family: "Noto Serif TC", serif;
+}
+.slogan {
+  margin-top: 6px;
+  font-size: 17px;
+  color: var(--gold);
+  font-family: "Noto Serif TC", serif;
+  font-weight: 500;
+}
+.site-nav {
+  margin-top: 20px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.site-nav a {
+  color: var(--ink);
+  text-decoration: none;
+  margin: 0 10px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+.site-nav a:hover { border-color: var(--gold); color: var(--gold); }
+
+/* 水波分隔線 */
+.wave {
+  height: 22px;
+  margin: 8px 0;
+  background: radial-gradient(circle at 10px -6px, transparent 10px, var(--line) 10px, var(--line) 11px, transparent 11px);
+  background-size: 20px 24px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+.section-label {
+  font-family: "Noto Serif TC", serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 48px 0 24px;
+}
+
+/* 分類卡片・滿版圖片・四欄並排・撐滿瀏覽器寬度 */
+.cats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+.cat {
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 3px;
+  aspect-ratio: 3 / 4;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--rice);
+}
+.cat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(58,55,51,0.88) 0%, rgba(58,55,51,0.4) 45%, rgba(58,55,51,0.05) 68%);
+}
+.cat .cat-inner {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 10px 10px 12px;
+  z-index: 1;
+}
+.cat::before {
+  content: "";
+  position: absolute;
+  left: 10px; top: 10px;
+  width: 16px; height: 2.5px;
+  z-index: 1;
+}
+.cat.art::before { background: var(--autumn); }
+.cat.frf::before { background: var(--summer); }
+.cat.rice::before { background: var(--gold); }
+.cat.season::before { background: var(--winter); }
+.cat h3 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #F5F3EF;
+  line-height: 1.3;
+}
+.cat p {
+  font-size: 12px;
+  color: #D8D0C2;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cat .count {
+  font-size: 10px;
+  color: var(--gold);
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+}
+.cat.no-image {
+  background-color: var(--rice);
+}
+.cat.no-image::after { background: none; }
+.cat.no-image .cat-inner { position: static; padding: 14px 10px; }
+.cat.no-image h3 { color: var(--ink); }
+.cat.no-image p { color: var(--ink-soft); }
+
+@media (max-width: 640px) {
+  .cats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 16px;
+  }
+  .cat h3 { font-size: 16px; }
+  .cat p { font-size: 12px; -webkit-line-clamp: 3; }
+}
+
+/* 文章列表 */
+.posts { margin: 8px 0 56px; }
+.post-row {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+  text-decoration: none;
+  color: inherit;
+}
+.post-row .meta {
+  flex: 0 0 88px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+.post-row .meta .season { color: var(--autumn); font-weight: 500; }
+.post-row .body h4 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: var(--ink);
+}
+.post-row:hover .body h4 { color: var(--gold); }
+.post-row .body p { font-size: 13px; color: var(--ink-soft); }
+.tag {
+  font-size: 10px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 2px 7px;
+  margin-left: 6px;
+}
+
+/* 文章內頁 */
+.article {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 40px 36px;
+  margin: 16px 0 56px;
+}
+.article .kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.article .kicker { color: var(--ink-soft); }
+.article .kicker a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line);
+}
+.article .kicker a:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.article .kicker .code { color: var(--gold); }
+.article h1 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 27px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.02em;
+}
+.article h1 + .artwork-name {
+  margin-top: -10px;
+}
+.article .artwork-name {
+  font-family: "Noto Serif TC", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+.article .artwork-name::before {
+  content: "「";
+  color: var(--gold);
+  font-style: normal;
+}
+.article .artwork-name::after {
+  content: "」";
+  color: var(--gold);
+  font-style: normal;
+}
+.article .lead {
+  font-family: "Noto Serif TC", serif;
+  font-size: 16px;
+  border-left: 3px solid var(--gold);
+  padding-left: 16px;
+  margin-bottom: 24px;
+  line-height: 2;
+  color: var(--ink);
+}
+.article h2 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 16px;
+  color: var(--gold);
+  margin: 24px 0 10px;
+  font-weight: 500;
+}
+.article p { font-size: 14px; margin-bottom: 13px; }
+.article figure {
+  margin: 26px -8px;
+}
+.article figure img {
+  width: 100%;
+  border-radius: 3px;
+  display: block;
+}
+.article figure figcaption {
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-top: 8px;
+  letter-spacing: 0.03em;
+}
+.article img {
+  width: 100%;
+  border-radius: 3px;
+  margin: 22px 0 6px;
+  display: block;
+}
+.article-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 34px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.article-nav a { color: var(--ink); text-decoration: none; }
+.article-nav a:hover { color: var(--gold); }
+
+footer.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 36px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 640px) {
+  .cats { grid-template-columns: 1fr; }
+  .post-row { flex-direction: column; gap: 4px; }
+  .post-row .meta { flex: none; }
+  .article { padding: 28px 20px; }
+}

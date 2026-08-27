@@ -1,0 +1,13 @@
+# 環境變數檔案，含API金鑰，絕對不能上傳
+.env
+
+# 相依套件與建置產出
+node_modules/
+dist/
+.astro/
+
+# 同步產生的暫存與除錯檔
+.sync-manifest.json
+notion-debug.json
+.backup/
+scripts/*.bak
