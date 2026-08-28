@@ -1,7 +1,7 @@
 ---
 import { url } from '../lib/url';
 import '../styles/global.css';
-const { title = '越後飯 ECHIGO FAN' } = Astro.props;
+const { title = '越後飯 ECHIGO FAN', canonical } = Astro.props;
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -9,6 +9,17 @@ const { title = '越後飯 ECHIGO FAN' } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  {canonical && <link rel="canonical" href={canonical} />}
+
+  <!-- Google Analytics (GA4)。評估 ID 不是機密，本來就會出現在網頁原始碼裡。
+       記得在 GA 後台設定「內部流量排除」濾掉自己的 IP，否則數據會被自己的瀏覽灌水。 -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WV5P4V2MWM"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-WV5P4V2MWM');
+  </script>
 </head>
 <body>
   <header class="site-header">

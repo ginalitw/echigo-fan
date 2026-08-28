@@ -6,12 +6,32 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('posts');
 const published = allPosts.filter(p => p.data.status !== '待填');
 
+// 首頁列表照「排序碼」排，也就是你在 Notion 安排的閱讀動線
+// （A0001 → A0002 → ⋯），而不是檔名字母序。
+const ordered = [...published].sort((a, b) =>
+  String(a.data.code || 'zzzz').localeCompare(String(b.data.code || 'zzzz')),
+);
+
+// 分類卡的背景圖：自動取用該分類「最新一篇」的首圖，沒有就退回預設圖。
+// 這樣你在 Notion 發新文章，首頁的四張卡會自己換上新照片，完全不用維護。
+function newestCover(key) {
+  const hit = published
+    .filter((p) => p.data.category?.includes(key) && p.data.cover)
+    .sort((a, b) => {
+      const ad = a.data.date ? +new Date(a.data.date) : 0;
+      const bd = b.data.date ? +new Date(b.data.date) : 0;
+      if (ad !== bd) return bd - ad;                                   // 新的排前面
+      return String(b.data.code || '').localeCompare(String(a.data.code || ''));
+    })[0];
+  return hit?.data.cover || null;
+}
+
 const categories = [
-  { key: '越後大地藝術祭', icon: '📕', cls: 'art', desc: '越後妻有的作品、路線、官方一日遊——我實際走過的部分。', image: '/images/cat-art.jpg' },
-  { key: '富士搖滾二三事', icon: '🎸', cls: 'frf', desc: '舞台之外，還有更多故事。', image: '/images/cat-frf.jpg' },
-  { key: '我吃的不只是飯', icon: '🍚', cls: 'rice', desc: '米、酒、山菜、車站便當。吃過才寫。', image: '/images/cat-rice.jpg' },
-  { key: '里山人文和風土', icon: '❄️', cls: 'season', desc: '雪、織物、土地的故事。查得到的知識，我用自己的方式消化。', image: '/images/cat-season.jpg' },
-];
+  { key: '越後大地藝術祭', icon: '📕', cls: 'art', desc: '越後妻有的作品、路線、官方一日遊——我實際走過的部分。', fallback: '/images/cat-art.jpg' },
+  { key: '富士搖滾二三事', icon: '🎸', cls: 'frf', desc: '舞台之外，還有更多故事。', fallback: '/images/cat-frf.jpg' },
+  { key: '我吃的不只是飯', icon: '🍚', cls: 'rice', desc: '米、酒、山菜、車站便當。吃過才寫。', fallback: '/images/cat-rice.jpg' },
+  { key: '里山人文和風土', icon: '❄️', cls: 'season', desc: '雪、織物、土地的故事。查得到的知識，我用自己的方式消化。', fallback: '/images/cat-season.jpg' },
+].map((c) => ({ ...c, image: newestCover(c.key) || c.fallback }));
 
 function countFor(key) {
   return published.filter(p => p.data.category.includes(key)).length;
@@ -19,7 +39,7 @@ function countFor(key) {
 ---
 <Layout title="越後飯 ECHIGO FAN">
   <div class="wave"></div>
-  <div class="section-label">走過的路，四個方向</div>
+  <div class="section-label">四個方向</div>
   <div class="cats">
     {categories.map(c => (
       <a
@@ -37,9 +57,9 @@ function countFor(key) {
   </div>
 
   <div class="wave"></div>
-  <div class="section-label">最新行腳</div>
+  <div class="section-label">走過的路</div>
   <div class="posts">
-    {published.map(post => (
+    {ordered.map(post => (
       <a class="post-row" href={url(`/posts/${post.slug}`)}>
         <div class="meta">
           {post.data.season && post.data.season.length > 0 && (

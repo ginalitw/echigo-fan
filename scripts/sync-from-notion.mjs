@@ -17,6 +17,15 @@ import fs from 'fs';
 import path from 'path';
 import 'dotenv/config';
 
+// sharp 是選用的：有裝就壓縮圖片，沒裝就原樣存檔並提醒一次。
+// 這樣就算哪天 sharp 在某個平台裝不起來，同步也不會整個掛掉。
+let sharp = null;
+try {
+  sharp = (await import('sharp')).default;
+} catch {
+  console.warn('⚠️  找不到 sharp，圖片將不壓縮。執行 npm install 可啟用壓縮。');
+}
+
 const ARGS = process.argv.slice(2);
 const DEBUG = ARGS.includes('--debug');
 const SYNC_ALL = ARGS.includes('--all');
@@ -37,6 +46,7 @@ const notion = new Client({ auth: NOTION_TOKEN });
 const ROOT = process.cwd();
 const POSTS_DIR = path.join(ROOT, 'src/content/posts');
 const IMAGES_DIR = path.join(ROOT, 'public/images/posts');
+const STAMPS_DIR = path.join(ROOT, 'public/images/stamps');
 const MANIFEST = path.join(ROOT, '.sync-manifest.json');
 
 const debugDump = { pages: [], blocks: {} };
@@ -68,6 +78,15 @@ function readSelect(props, name) {
   const p = prop(props, name);
   return p?.select?.name || p?.status?.name || '';
 }
+// 讀 Notion「檔案與媒體」欄位，回傳可下載的網址清單。
+// Notion 內部上傳的檔案給的是有時效的簽章網址，所以一定要當下就抓下來。
+function readFiles(props, name) {
+  const arr = prop(props, name)?.files || [];
+  return arr
+    .map((f) => (f.type === 'external' ? f.external?.url : f.file?.url))
+    .filter(Boolean);
+}
+
 // 讀 Notion 日期欄位。只填日期沒填時間時，視為台灣時間當天 00:00。
 function readDate(props, name) {
   const start = prop(props, name)?.date?.start;
@@ -109,14 +128,33 @@ function extFromUrl(url, contentType) {
 }
 
 // 用 fetch 下載（Node 18+ 內建，會自動跟隨轉址，比 https.get 可靠）
-async function downloadImage(url, dir, baseName) {
+async function downloadImage(url, dir, baseName, maxWidth = 1600) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const ext = extFromUrl(url, res.headers.get('content-type'));
-  const filename = baseName + ext;
-  const buf = Buffer.from(await res.arrayBuffer());
+  const raw = Buffer.from(await res.arrayBuffer());
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, filename), buf);
+
+  // 有 sharp 就縮到合理寬度並轉 WebP，通常能把幾 MB 的手機照片壓到幾百 KB。
+  // Notion 上保留的永遠是原圖，這裡只影響網站上的副本。
+  if (sharp) {
+    try {
+      const out = await sharp(raw)
+        .rotate()                                   // 依 EXIF 轉正，否則直式照片會躺著
+        .resize({ width: maxWidth, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+      const filename = `${baseName}.webp`;
+      fs.writeFileSync(path.join(dir, filename), out);
+      const saved = Math.round((1 - out.length / raw.length) * 100);
+      console.log(`      壓縮：${(raw.length / 1024 / 1024).toFixed(1)}MB → ${(out.length / 1024).toFixed(0)}KB（省 ${saved}%）`);
+      return filename;
+    } catch (err) {
+      console.warn(`      ⚠️  壓縮失敗，改存原圖：${err.message}`);
+    }
+  }
+
+  const filename = baseName + extFromUrl(url, res.headers.get('content-type'));
+  fs.writeFileSync(path.join(dir, filename), raw);
   return filename;
 }
 
@@ -253,7 +291,9 @@ async function blocksToMarkdown(blocks, slug, ctx, depth = 0) {
         try {
           const filename = await downloadImage(url, dir, base);
           console.log(`   ⬇️  已下載圖片：${filename}`);
-          md += `![${caption}](/images/posts/${slug}/${filename})\n\n`;
+          const publicPath = `/images/posts/${slug}/${filename}`;
+          if (!ctx.cover) ctx.cover = publicPath;   // 第一張圖當這篇的封面
+          md += `![${caption}](${publicPath})\n\n`;
         } catch (err) {
           console.error(`   ❌ 圖片下載失敗（${base}）：${err.message}`);
           md += `<!-- 圖片下載失敗：${base} -->\n\n`;
@@ -476,8 +516,28 @@ async function main() {
     const blocks = REPLAY ? (replayBlocks[slug] || []) : await fetchBlocks(page.id);
     if (DEBUG) debugDump.blocks[slug] = blocks;
 
-    const ctx = { imageIndex: 0, lead: '' };
+    const ctx = { imageIndex: 0, lead: '', cover: '' };
     const body = (await blocksToMarkdown(blocks, slug, ctx)).trim();
+
+    // 紀念章：日本各地景點的蓋章，是「我真的到過那裡」的證據。
+    const stampDir = path.join(STAMPS_DIR, slug);
+    if (fs.existsSync(stampDir)) {
+      for (const f of fs.readdirSync(stampDir)) {
+        try { fs.rmSync(path.join(stampDir, f), { force: true }); } catch { /* 略過 */ }
+      }
+    }
+    const stamps = [];
+    const stampUrls = readFiles(props, '紀念章');
+    for (let n = 0; n < stampUrls.length; n++) {
+      const base = `stamp-${String(n + 1).padStart(2, '0')}`;
+      try {
+        const filename = await downloadImage(stampUrls[n], stampDir, base, 800);
+        stamps.push(`/images/stamps/${slug}/${filename}`);
+        console.log(`   🖃  已下載紀念章：${filename}`);
+      } catch (err) {
+        console.error(`   ❌ 紀念章下載失敗（${base}）：${err.message}`);
+      }
+    }
 
     const category = readMulti(props, '分類');
     const location = readSelect(props, '地點');
@@ -507,6 +567,8 @@ async function main() {
       artworkNumber ? `artworkNumber: ${yaml(artworkNumber)}` : null,
       artworkName ? `artworkName: ${yaml(artworkName)}` : null,
       prepared[i].code ? `code: ${yaml(prepared[i].code)}` : null,
+      stamps.length ? `stamps: ${yamlList(stamps)}` : null,
+      ctx.cover ? `cover: ${yaml(ctx.cover)}` : null,
       `status: ${yaml(status)}`,
       ctx.lead ? `lead: ${yaml(ctx.lead)}` : null,
       date ? `date: ${date}` : null,
@@ -544,13 +606,14 @@ async function main() {
   // 文章在 Notion 被刪掉或改回草稿後，它的圖片資料夾也該跟著消失，
   // 否則網站上會累積永遠沒人引用的孤兒圖片。
   const liveSlugs = new Set(prepared.map((x) => x.slug));
-  if (fs.existsSync(IMAGES_DIR)) {
-    for (const dir of fs.readdirSync(IMAGES_DIR)) {
-      const full = path.join(IMAGES_DIR, dir);
+  for (const root of [IMAGES_DIR, STAMPS_DIR]) {
+    if (!fs.existsSync(root)) continue;
+    for (const dir of fs.readdirSync(root)) {
+      const full = path.join(root, dir);
       if (!fs.statSync(full).isDirectory() || liveSlugs.has(dir)) continue;
       try {
         fs.rmSync(full, { recursive: true, force: true });
-        console.log(`🗑️  已移除孤兒圖片資料夾：${dir}/`);
+        console.log(`🗑️  已移除孤兒資料夾：${path.relative(ROOT, full)}`);
       } catch { /* 略過 */ }
     }
   }

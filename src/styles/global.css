@@ -346,3 +346,76 @@ footer.site-footer {
   .post-row .meta { flex: none; }
   .article { padding: 28px 20px; }
 }
+
+/* 文末署名。被搬運時，懶得刪的人會連這段一起複製走。 */
+.article .repost-notice {
+  margin-top: 44px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  background: rgba(217, 160, 60, 0.04);
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+.article .repost-notice p { margin: 0; }
+.article .repost-notice strong {
+  font-family: "Noto Serif TC", serif;
+  color: var(--ink);
+}
+.article .repost-notice .src { word-break: break-all; }
+.article .repost-notice .src a { color: var(--gold); }
+.article .repost-notice .terms {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* 紀念章。
+   關鍵是 mix-blend-mode: multiply —— 蓋章照片的白紙底會跟頁面底色融在一起，
+   只留下紅色的印泥，看起來像直接蓋在網頁上，而不是「一張紙的照片」。
+   每一枚給一點不同的傾斜角，像真的隨手蓋上去的。 */
+.article .stamps {
+  margin-top: 40px;
+  text-align: center;
+}
+.article .stamps-label {
+  font-family: "Noto Serif TC", serif;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.article .stamps-label::before,
+.article .stamps-label::after {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--line);
+  vertical-align: middle;
+  margin: 0 12px;
+}
+.article .stamps-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+.article .stamps-row img {
+  width: 160px;
+  max-width: 42vw;
+  height: auto;
+  mix-blend-mode: multiply;
+  transition: transform 0.3s ease;
+}
+.article .stamps-row img:nth-child(odd)  { transform: rotate(-3.5deg); }
+.article .stamps-row img:nth-child(even) { transform: rotate(2.5deg); }
+.article .stamps-row img:hover { transform: rotate(0deg) scale(1.06); }
+
+/* 只有一枚的時候放大一點，讓它成為段落的收尾 */
+.article .stamps-row img:only-child {
+  width: 200px;
+  max-width: 55vw;
+}

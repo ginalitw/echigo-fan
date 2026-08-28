@@ -14,6 +14,8 @@ const posts = defineCollection({
     artworkNumber: z.string().optional(),
     artworkName: z.string().optional(),
     code: z.string().optional(),
+    stamps: z.array(z.string()).optional(),
+    cover: z.string().optional(),
     status: z.string().default('已發布'),
     lead: z.string().optional(),
     date: z.date().optional(),

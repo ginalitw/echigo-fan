@@ -14,10 +14,14 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await post.render();
 
+// 原文網址：拿來當 canonical，也印在文末的署名區塊裡。
+// 被整篇搬走時，這行是最直接的出處證明。
+const canonical = new URL(url(`/posts/${post.slug}`), Astro.site).href;
+
 const prevPost = post.data.prevSlug ? await getEntry('posts', post.data.prevSlug) : null;
 const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug) : null;
 ---
-<Layout title={`${post.data.title} - 越後飯`}>
+<Layout title={`${post.data.title} - 越後飯`} canonical={canonical}>
   <div class="article">
     <div class="kicker">
       {post.data.category.map((c, i) => (
@@ -38,6 +42,24 @@ const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug
     {post.data.artworkName && <div class="artwork-name">{post.data.artworkName}</div>}
     {post.data.lead && <div class="lead">{post.data.lead}</div>}
     <Content />
+
+    {post.data.stamps && post.data.stamps.length > 0 && (
+      <div class="stamps">
+        <div class="stamps-label">蓋到的章</div>
+        <div class="stamps-row">
+          {post.data.stamps.map((src, i) => (
+            <img src={url(src)} alt={`${post.data.title} 紀念章 ${i + 1}`} loading="lazy" />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="repost-notice">
+      <p>本文原載於 <strong>越後飯 ECHIGO FAN</strong> ——「追過了，才帶你去」</p>
+      <p class="src">原文網址：<a href={canonical}>{canonical}</a></p>
+      <p class="terms">歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。</p>
+    </div>
+
     <div class="article-nav">
       <span>{prevPost ? <a href={url(`/posts/${prevPost.slug}`)}>◀ 上一站：{prevPost.data.title}</a> : <a href={url('/')}>◀ 回首頁</a>}</span>
       <span>{nextPost ? <a href={url(`/posts/${nextPost.slug}`)}>下一站：{nextPost.data.title} ▶</a> : <a href={url('/')}>回首頁 ▶</a>}</span>
