@@ -13,10 +13,10 @@ const posts = allPosts.filter((p) => p.data.status !== '待填').sort(byNewest);
     {posts.map((post) => (
       <a class="post-row" href={url(`/posts/${post.slug}`)}>
         <div class="meta">
-          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}<br />
-          {post.data.season && post.data.season.length > 0 && <span class="season">{post.data.season[0]}</span>}<br />
-          {post.data.location}<br />
-          {post.data.artworkNumber}
+          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}
+          {post.data.season && post.data.season.length > 0 && <span class="season">{post.data.season[0]}</span>}
+          {post.data.location && <span class="loc">{post.data.location}</span>}
+          {post.data.artworkNumber && <span class="code">{post.data.artworkNumber}</span>}
         </div>
         <div class="body">
           <h4>{post.data.title}{post.data.postType && <span class="tag">{post.data.postType}</span>}</h4>

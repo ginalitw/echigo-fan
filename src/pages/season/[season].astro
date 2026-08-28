@@ -21,8 +21,9 @@ const seasonIcon = { '春': '🌸', '夏': '🌿', '秋': '🍁', '冬': '❄️
     {posts.map(post => (
       <a class="post-row" href={url(`/posts/${post.slug}`)}>
         <div class="meta">
-          {post.data.location}<br />
-          {post.data.artworkNumber}
+          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}
+          {post.data.location && <span class="loc">{post.data.location}</span>}
+          {post.data.artworkNumber && <span class="code">{post.data.artworkNumber}</span>}
         </div>
         <div class="body">
           <h4>{post.data.title}</h4>

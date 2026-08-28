@@ -245,7 +245,9 @@ header.site-header {
   letter-spacing: 0.06em;
   line-height: 1.7;
 }
+.post-row .meta span { display: block; }
 .post-row .meta .season { color: var(--autumn); font-weight: 500; }
+.post-row .meta .code { opacity: 0.85; }
 .post-row .body h4 {
   font-family: "Noto Serif TC", serif;
   font-size: 18px;
@@ -261,7 +263,15 @@ header.site-header {
   border: 1px solid var(--line);
   border-radius: 2px;
   padding: 2px 7px;
-  margin-left: 6px;
+  white-space: nowrap;   /* 中文標籤不可以斷字，否則會出現「一日遊全記／錄」 */
+  flex: none;
+}
+/* 標題與標籤用 flex 排，標籤放不下時整塊換行，不會被切開 */
+.post-row .body h4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
 }
 
 /* 文章內頁 */
@@ -377,8 +387,23 @@ footer.site-footer {
 
 @media (max-width: 640px) {
   .cats { grid-template-columns: 1fr; }
-  .post-row { flex-direction: column; gap: 4px; }
-  .post-row .meta { flex: none; }
+  .post-row { flex-direction: column; gap: 6px; }
+
+  /* meta 在手機上改成橫向一列：日期 · 季節 · 地點 · 編號。
+     原本每項各佔一行，光索引資訊就吃掉四行，整份清單長得誇張。 */
+  .post-row .meta {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .post-row .meta span { display: inline; }
+  .post-row .meta span + span::before {
+    content: "·";
+    margin: 0 7px;
+    color: var(--line);
+  }
+
   .article { padding: 28px 20px; }
 }
 
