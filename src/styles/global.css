@@ -513,7 +513,11 @@ footer.site-footer {
   width: 160px;
   max-width: 42vw;
   height: auto;
+  /* multiply 讓紙面的白融進頁面；但它只能讓顏色變暗，
+     所以同步時已經先用 sharp 把紙面的灰拉成接近純白，這裡才有效。
+     contrast 再補一點，讓印泥的紅站出來。 */
   mix-blend-mode: multiply;
+  filter: contrast(1.08) saturate(1.06);
   transition: transform 0.3s ease;
 }
 .article .stamps-row img:nth-child(odd)  { transform: rotate(-3.5deg); }

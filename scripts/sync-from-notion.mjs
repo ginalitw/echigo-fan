@@ -143,7 +143,7 @@ function extFromUrl(url, contentType) {
 }
 
 // 用 fetch 下載（Node 18+ 內建，會自動跟隨轉址，比 https.get 可靠）
-async function downloadImage(url, dir, baseName, maxWidth = 1600) {
+async function downloadImage(url, dir, baseName, maxWidth = 1600, opts = {}) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const raw = Buffer.from(await res.arrayBuffer());
@@ -163,11 +163,25 @@ async function downloadImage(url, dir, baseName, maxWidth = 1600) {
       input = Buffer.from(await heicConvert({ buffer: raw, format: 'JPEG', quality: 0.92 }));
     }
 
-    const out = await sharp(input)
+    let pipeline = sharp(input)
       .rotate()                                   // 依 EXIF 轉正，否則直式照片會躺著
-      .resize({ width: maxWidth, withoutEnlargement: true })
-      .webp({ quality: 82 })
-      .toBuffer();
+      .resize({ width: maxWidth, withoutEnlargement: true });
+
+    // 紀念章專用：自動拉色階，把紙面的灰壓成接近純白。
+    // 這是 mix-blend-mode 做不到的事——相乘只能讓顏色變暗，
+    // 在白底頁面上，照片裡的灰紙會原封不動留著。要讓紙消失得先把它變白。
+    // 數值是實測出來的，不是猜的：拿 Gina 的清津峽章跑過六組設定，
+    // 量測「空白紙面亮度」與「印泥像素數」兩個指標。
+    //   原圖              紙面 190/255   印泥 47770 px
+    //   normalise()       紙面 157/255 ← 反而更暗，因為它是拉對比不是拉白點
+    //   linear(1.45,-45)  紙面 230/255
+    //   linear(1.7,-70)   紙面 248/255   印泥 40363 px  ← 紙夠白了
+    //   +saturation 1.3   紙面 247/255   印泥 46124 px  ← 印泥也救回來
+    if (opts.autoLevels) {
+      pipeline = pipeline.linear(1.7, -70).modulate({ saturation: 1.3 });
+    }
+
+    const out = await pipeline.webp({ quality: 82 }).toBuffer();
     const filename = `${baseName}.webp`;
     fs.writeFileSync(path.join(dir, filename), out);
     const saved = Math.round((1 - out.length / raw.length) * 100);
@@ -574,7 +588,7 @@ async function main() {
     for (let n = 0; n < stampUrls.length; n++) {
       const base = `stamp-${String(n + 1).padStart(2, '0')}`;
       try {
-        const filename = await downloadImage(stampUrls[n], stampDir, base, 800);
+        const filename = await downloadImage(stampUrls[n], stampDir, base, 800, { autoLevels: true });
         stamps.push(`/images/stamps/${slug}/${filename}`);
         console.log(`   🖃  已下載紀念章：${filename}`);
       } catch (err) {
