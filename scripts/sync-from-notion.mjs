@@ -26,6 +26,21 @@ try {
   console.warn('⚠️  找不到 sharp，圖片將不壓縮。執行 npm install 可啟用壓縮。');
 }
 
+// iPhone 拍的照片預設是 HEIC，而 HEIC 用 HEVC 編碼，
+// sharp 的預建版通常不含 HEVC 解碼器（授權問題），會解不開。
+// heic-convert 是純 JavaScript 的解碼器，拿來當備援。
+let heicConvert = null;
+try {
+  heicConvert = (await import('heic-convert')).default;
+} catch { /* 沒裝就算了，下面會有明確警告 */ }
+
+// 用檔頭判斷是不是 HEIC/HEIF（副檔名不可靠）
+function isHeic(buf) {
+  return buf.length > 12 && buf.toString('ascii', 4, 8) === 'ftyp' &&
+    ['heic', 'heix', 'hevc', 'heim', 'heis', 'hevm', 'mif1', 'msf1']
+      .includes(buf.toString('ascii', 8, 12));
+}
+
 const ARGS = process.argv.slice(2);
 const DEBUG = ARGS.includes('--debug');
 const SYNC_ALL = ARGS.includes('--all');
@@ -134,26 +149,38 @@ async function downloadImage(url, dir, baseName, maxWidth = 1600) {
   const raw = Buffer.from(await res.arrayBuffer());
   fs.mkdirSync(dir, { recursive: true });
 
-  // 有 sharp 就縮到合理寬度並轉 WebP，通常能把幾 MB 的手機照片壓到幾百 KB。
-  // Notion 上保留的永遠是原圖，這裡只影響網站上的副本。
+  // 目標：一律輸出 WebP。網站上絕不能出現瀏覽器打不開的格式（HEIC 就是），
+  // 那會變成破圖——寧可整張跳過並警告，也不要留一個壞掉的連結。
   if (sharp) {
-    try {
-      const out = await sharp(raw)
-        .rotate()                                   // 依 EXIF 轉正，否則直式照片會躺著
-        .resize({ width: maxWidth, withoutEnlargement: true })
-        .webp({ quality: 82 })
-        .toBuffer();
-      const filename = `${baseName}.webp`;
-      fs.writeFileSync(path.join(dir, filename), out);
-      const saved = Math.round((1 - out.length / raw.length) * 100);
-      console.log(`      壓縮：${(raw.length / 1024 / 1024).toFixed(1)}MB → ${(out.length / 1024).toFixed(0)}KB（省 ${saved}%）`);
-      return filename;
-    } catch (err) {
-      console.warn(`      ⚠️  壓縮失敗，改存原圖：${err.message}`);
+    let input = raw;
+
+    // HEIC 先用純 JS 解碼器轉成 JPEG，再交給 sharp
+    if (isHeic(raw)) {
+      if (!heicConvert) {
+        throw new Error('這是 HEIC 檔（iPhone 預設格式），但沒有安裝 heic-convert 無法轉換');
+      }
+      console.log('      偵測到 HEIC，先轉檔⋯⋯');
+      input = Buffer.from(await heicConvert({ buffer: raw, format: 'JPEG', quality: 0.92 }));
     }
+
+    const out = await sharp(input)
+      .rotate()                                   // 依 EXIF 轉正，否則直式照片會躺著
+      .resize({ width: maxWidth, withoutEnlargement: true })
+      .webp({ quality: 82 })
+      .toBuffer();
+    const filename = `${baseName}.webp`;
+    fs.writeFileSync(path.join(dir, filename), out);
+    const saved = Math.round((1 - out.length / raw.length) * 100);
+    console.log(`      壓縮：${(raw.length / 1024 / 1024).toFixed(1)}MB → ${(out.length / 1024).toFixed(0)}KB（省 ${saved}%）`);
+    return filename;
   }
 
-  const filename = baseName + extFromUrl(url, res.headers.get('content-type'));
+  // 完全沒有 sharp 的情況：只接受瀏覽器原生支援的格式，其餘拒收
+  const ext = extFromUrl(url, res.headers.get('content-type'));
+  if (!['.jpg', '.png', '.gif', '.webp', '.svg'].includes(ext)) {
+    throw new Error(`沒有 sharp，無法處理 ${ext} 格式（瀏覽器不支援，會變破圖）`);
+  }
+  const filename = baseName + ext;
   fs.writeFileSync(path.join(dir, filename), raw);
   return filename;
 }
