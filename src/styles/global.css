@@ -343,7 +343,30 @@ header.site-header {
   margin: 24px 0 10px;
   font-weight: 500;
 }
-.article p { font-size: 14px; margin-bottom: 13px; }
+/* 內文是「讀的」——放大、行距鬆，適合一句一句跟著走。 */
+.article p {
+  font-size: 15.5px;
+  line-height: 1.95;
+  margin-bottom: 16px;
+}
+
+/* 條列是「查的」——比內文小一級、行距收緊，掃描用。
+   原本 li 完全沒有樣式，吃瀏覽器預設的 16px，
+   結果查詢資料比心得還大一號，主從關係整個顛倒。 */
+.article ul,
+.article ol {
+  font-size: 13.5px;
+  line-height: 1.75;
+  padding-left: 20px;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.article li { margin-bottom: 7px; }
+.article li > ul,
+.article li > ol { margin: 7px 0 0; }
+.article li::marker { color: var(--gold); }
+.article ul strong,
+.article ol strong { font-weight: 500; }
 .article figure {
   margin: 26px -8px;
 }
@@ -365,6 +388,20 @@ header.site-header {
   margin: 22px 0 6px;
   display: block;
 }
+/* 「實際走的資訊」以下自成一區：淺米底、左側金線。
+   讀者一眼分得出「上面是讀的，下面是查的」，兩種文體不再互相搶。
+   這個 <div> 是同步腳本在轉檔時包上去的，不需要你在 Notion 做任何事。 */
+.article .practical {
+  margin: 34px 0 8px;
+  padding: 20px 22px 8px;
+  background: rgba(217, 160, 60, 0.05);
+  border-left: 3px solid var(--gold);
+  border-radius: 2px;
+}
+.article .practical > h2:first-child { margin-top: 0; }
+.article .practical h2 { font-size: 14px; letter-spacing: 0.06em; }
+.article .practical p { font-size: 13.5px; line-height: 1.8; margin-bottom: 12px; }
+
 .article-nav {
   display: flex;
   justify-content: space-between;
@@ -404,7 +441,12 @@ footer.site-footer {
     color: var(--line);
   }
 
-  .article { padding: 28px 20px; }
+  /* 手機上把左右留白收窄，把寬度還給文字。
+     原本 wrap 24px + article 20px，390px 的手機只剩 300px 可讀。 */
+  .wrap { padding: 0 14px; }
+  .article { padding: 24px 16px; }
+  .article p { line-height: 1.85; margin-bottom: 15px; }
+  .article .practical { margin: 28px -4px 8px; padding: 18px 16px 6px; }
 }
 
 /* 文末署名。被搬運時，懶得刪的人會連這段一起複製走。 */

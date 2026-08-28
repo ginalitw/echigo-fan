@@ -185,6 +185,16 @@ async function downloadImage(url, dir, baseName, maxWidth = 1600) {
   return filename;
 }
 
+// 文章通常前半是心得（讀的）、後半是實務資訊（查的）。
+// 碰到下列任一標題，就把它以下的內容包進 <div class="practical">，
+// 讓兩種文體在版面上分開。Gina 在 Notion 不需要做任何額外標記。
+const PRACTICAL_HEADINGS = [
+  '實際走的資訊',
+  '需要規劃的部分',
+  '實務提醒',
+  '實用資訊',
+];
+
 // ---------- rich text → Markdown ----------
 
 function richText(arr) {
@@ -258,7 +268,12 @@ async function blocksToMarkdown(blocks, slug, ctx, depth = 0) {
       case 'heading_2':
       case 'heading_3': {
         const level = '#'.repeat(Number(type.slice(-1)));
-        md += `${level} ${richText(data.rich_text)}\n\n`;
+        const text = richText(data.rich_text);
+        if (depth === 0 && !ctx.practicalOpen && PRACTICAL_HEADINGS.includes(text.trim())) {
+          md += '<div class="practical">\n\n';
+          ctx.practicalOpen = true;
+        }
+        md += `${level} ${text}\n\n`;
         md += await childMd();
         break;
       }
@@ -543,8 +558,9 @@ async function main() {
     const blocks = REPLAY ? (replayBlocks[slug] || []) : await fetchBlocks(page.id);
     if (DEBUG) debugDump.blocks[slug] = blocks;
 
-    const ctx = { imageIndex: 0, lead: '', cover: '' };
-    const body = (await blocksToMarkdown(blocks, slug, ctx)).trim();
+    const ctx = { imageIndex: 0, lead: '', cover: '', practicalOpen: false };
+    let body = (await blocksToMarkdown(blocks, slug, ctx)).trim();
+    if (ctx.practicalOpen) body += '\n\n</div>';
 
     // 紀念章：日本各地景點的蓋章，是「我真的到過那裡」的證據。
     const stampDir = path.join(STAMPS_DIR, slug);
