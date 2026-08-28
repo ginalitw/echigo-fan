@@ -450,27 +450,31 @@ footer.site-footer {
 }
 
 /* 文末署名。被搬運時，懶得刪的人會連這段一起複製走。 */
+/* 署名檔刻意「不」做成面板——上面的資訊區已經是淺米底＋金色左框，
+   兩塊長一樣會被誤讀成同一層內容。這裡降級成一條細線加小字的頁尾註記。
+   每個字級都要寫死：.article p 的 15.5px 權重比容器的繼承高，不覆蓋就會被撐大。 */
 .article .repost-notice {
-  margin-top: 44px;
-  padding: 18px 20px;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--gold);
-  background: rgba(217, 160, 60, 0.04);
-  font-size: 13px;
-  line-height: 1.9;
+  margin-top: 36px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
   color: var(--ink-soft);
 }
-.article .repost-notice p { margin: 0; }
+.article .repost-notice p {
+  margin: 0 0 2px;
+  font-size: 11.5px;
+  line-height: 1.8;
+}
 .article .repost-notice strong {
   font-family: "Noto Serif TC", serif;
-  color: var(--ink);
+  font-weight: 500;
+  color: var(--ink-soft);
 }
 .article .repost-notice .src { word-break: break-all; }
 .article .repost-notice .src a { color: var(--gold); }
 .article .repost-notice .terms {
-  margin-top: 6px;
-  font-size: 12px;
-  opacity: 0.8;
+  margin-top: 5px;
+  font-size: 10.5px;
+  opacity: 0.7;
 }
 
 /* 紀念章。
