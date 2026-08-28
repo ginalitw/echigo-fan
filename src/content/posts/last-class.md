@@ -11,9 +11,9 @@ code: "A0004"
 cover: "/images/posts/last-class/image-01.webp"
 status: "已發布"
 lead: "這一站，我幾乎沒拍照。"
-date: 2026-08-27
+date: 2026-08-28
 prevSlug: "lost-windows"
-nextSlug: "monet"
+nextSlug: ""
 ---
 ![](/images/posts/last-class/image-01.webp)
 
