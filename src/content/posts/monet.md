@@ -8,13 +8,14 @@ artist: ["原廣司", "Leandro Erlich"]
 artworkNumber: "T025"
 artworkName: "Palimpsest：空の池"
 code: "A0006"
+cover: "/images/posts/monet/image-01.webp"
 status: "已發布"
 lead: "一日遊的最後一站，是十日町的美術館。"
 date: 2026-08-27
 prevSlug: "last-class"
 nextSlug: ""
 ---
-![](/images/posts/monet/image-01.jpg)
+![](/images/posts/monet/image-01.webp)
 
 一日遊的最後一站，是十日町的美術館。
 
@@ -36,7 +37,7 @@ nextSlug: ""
 
 但我還是留了一點時間給自己。坐下來喝一杯咖啡，配一球米粕冰淇淋。然後坐在二樓的觀景台上，看著池水，心裡就知道：這地方我不會只來一次。
 
-![](/images/posts/monet/image-02.jpg)
+![](/images/posts/monet/image-02.webp)
 
 不只是因為旁邊就有溫泉。是因為還有太多東西，我還沒看。
 

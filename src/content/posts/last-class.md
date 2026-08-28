@@ -8,13 +8,14 @@ artist: ["Christian Boltanski", "Jean Kalman"]
 artworkNumber: "Y052, Y101"
 artworkName: "最後の教室 The Last Class"
 code: "A0004"
+cover: "/images/posts/last-class/image-01.webp"
 status: "已發布"
 lead: "這一站，我幾乎沒拍照。"
 date: 2026-08-27
 prevSlug: "lost-windows"
 nextSlug: "monet"
 ---
-![](/images/posts/last-class/image-01.jpg)
+![](/images/posts/last-class/image-01.webp)
 
 這一站，我幾乎沒拍照。
 

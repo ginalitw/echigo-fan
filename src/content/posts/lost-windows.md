@@ -8,13 +8,14 @@ artist: ["內海昭子"]
 artworkNumber: "N028"
 artworkName: "為了無數失去的窗 For Lots of Lost Windows"
 code: "A0002"
+cover: "/images/posts/lost-windows/image-01.webp"
 status: "已發布"
 lead: "山坡上立著一個空的窗框。"
 date: 2026-08-27
 prevSlug: "kiyotsu-gorge"
 nextSlug: "last-class"
 ---
-![](/images/posts/lost-windows/image-01.jpg)
+![](/images/posts/lost-windows/image-01.webp)
 
 山坡上立著一個空的窗框。
 

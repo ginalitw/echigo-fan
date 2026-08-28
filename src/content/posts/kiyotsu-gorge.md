@@ -8,6 +8,8 @@ artist: ["馬岩松"]
 artworkNumber: "N079"
 artworkName: "Tunnel of Light"
 code: "A0001"
+stamps: ["/images/stamps/kiyotsu-gorge/stamp-01.heic"]
+cover: "/images/posts/kiyotsu-gorge/image-01.webp"
 status: "已發布"
 lead: "那年我決定犧牲最後一天的音樂祭，走出苗場，轉身入里山。"
 date: 2026-08-27
@@ -20,7 +22,7 @@ nextSlug: "lost-windows"
 
 才從喧鬧走出來，週日下起了大雨。我下意識想翻雨衣出來套，結果發現沒帶，還好包裡有一把傘。
 
-![](/images/posts/kiyotsu-gorge/image-01.jpg)
+![](/images/posts/kiyotsu-gorge/image-01.webp)
 
 上了車，導覽開始講起這片土地的故事。聽著聽著，濕冷的天氣好像也沒那麼糟了。車窗外的景色，從音樂祭的喧鬧，慢慢換成了另一種安靜。越後湯澤車站出發，大約三十分鐘，車子轉進一條小巷，下車，眼前零零星星幾間溫泉旅館，還有一間紀念品小店。旅館不多，但看得出來，這裡曾經風光過——講究的木造裝潢，暖簾上的字還很端正，只是街上安靜得很，沒什麼人。
 
@@ -30,7 +32,7 @@ nextSlug: "lost-windows"
 
 後來才知道，這條隧道，原本不是隧道。
 
-![](/images/posts/kiyotsu-gorge/image-02.jpg)
+![](/images/posts/kiyotsu-gorge/image-02.webp)
 
 清津峽本來是走出來看的。沿著清津川的登山道，能直接踩進峽谷裡，看那些像被削過的巨大石柱。直到1988年，一場落石意外，這條路被永遠封死了。
 
@@ -40,17 +42,17 @@ nextSlug: "lost-windows"
 
 一條回不去的路，被藝術重新打開了。
 
-![](/images/posts/kiyotsu-gorge/image-03.jpg)
+![](/images/posts/kiyotsu-gorge/image-03.webp)
 
 第一個停下來的地方是廁所。黑白線條突兀地捲進來，站在那裡有種錯視感，但它真的可以用。這段大概是整條隧道裡最讓人愣住的——沒想到廁所也能是作品的一部分。
 
 再往前走，指示燈換成紅、藍、綠，交織著打在牆上，腳下的路也開始變濕。
 
-![](/images/posts/kiyotsu-gorge/image-04.jpg)
+![](/images/posts/kiyotsu-gorge/image-04.webp)
 
 第二站是一整片背光的圓點鏡面。走進去的瞬間我想到多啦A夢的時光隧道，就是那種「等一下會被吸到別的地方」的感覺。
 
-![](/images/posts/kiyotsu-gorge/image-05.jpg)
+![](/images/posts/kiyotsu-gorge/image-05.webp)
 
 最後是水鏡。半圓形的洞口，被腳下的水倒影兜成一個完整的圓，清津峽的山谷就框在裡面。這是整條隧道最著名的畫面，也是官方導覽的終點。
 
