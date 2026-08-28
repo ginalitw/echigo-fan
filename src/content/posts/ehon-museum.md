@@ -11,7 +11,7 @@ code: "A0005"
 cover: "/images/posts/ehon-museum/image-01.webp"
 status: "已發布"
 lead: "前面幾站有點重。這一站，把顏色還給了我。"
-date: 2026-08-28
+date: 2026-07-27
 prevSlug: "last-class"
 nextSlug: "monet"
 ---

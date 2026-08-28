@@ -11,7 +11,7 @@ code: "A0002"
 cover: "/images/posts/lost-windows/image-01.webp"
 status: "已發布"
 lead: "山坡上立著一個空的窗框。"
-date: 2026-08-28
+date: 2026-07-27
 prevSlug: "kiyotsu-gorge"
 nextSlug: "nohbutai"
 ---
