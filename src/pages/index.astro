@@ -1,16 +1,21 @@
 ---
 import { url } from '../lib/url';
+import { byNewest, formatDate } from '../lib/posts';
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('posts');
 const published = allPosts.filter(p => p.data.status !== '待填');
 
-// 首頁列表照「排序碼」排，也就是你在 Notion 安排的閱讀動線
-// （A0001 → A0002 → ⋯），而不是檔名字母序。
-const ordered = [...published].sort((a, b) =>
-  String(a.data.code || 'zzzz').localeCompare(String(b.data.code || 'zzzz')),
-);
+// 列表一律「新的在上面」，跟四個分類頁一致。
+// 註：閱讀動線（上一站／下一站）仍然由排序碼決定，跟這裡的顯示順序無關。
+const ordered = [...published].sort(byNewest);
+
+// 首頁只放最新幾篇，其餘走「全部文章」或四個方向。
+// 首頁不做分頁——第 2 頁會把上面的品牌區、四張卡整組再重複一次，很奇怪。
+const HOME_LIMIT = 5;
+const homePosts = ordered.slice(0, HOME_LIMIT);
+const hasMore = ordered.length > HOME_LIMIT;
 
 // 分類卡的背景圖：自動取用該分類「最新一篇」的首圖，沒有就退回預設圖。
 // 這樣你在 Notion 發新文章，首頁的四張卡會自己換上新照片，完全不用維護。
@@ -59,9 +64,10 @@ function countFor(key) {
   <div class="wave"></div>
   <div class="section-label">走過的路</div>
   <div class="posts">
-    {ordered.map(post => (
+    {homePosts.map(post => (
       <a class="post-row" href={url(`/posts/${post.slug}`)}>
         <div class="meta">
+          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}<br />
           {post.data.season && post.data.season.length > 0 && (
             <span class="season">{post.data.season[0]}</span>
           )}<br />
@@ -75,4 +81,9 @@ function countFor(key) {
       </a>
     ))}
   </div>
+  {hasMore && (
+    <p class="more-link">
+      <a href={url('/archive')}>看全部 {ordered.length} 篇 ▶</a>
+    </p>
+  )}
 </Layout>

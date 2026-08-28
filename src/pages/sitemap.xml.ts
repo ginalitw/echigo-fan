@@ -18,6 +18,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const entries: { loc: string; lastmod?: string; priority: string }[] = [
     { loc: abs('/'), priority: '1.0' },
+    { loc: abs('/archive'), priority: '0.7' },
 
     ...posts.map((p) => ({
       loc: abs(`/posts/${p.slug}`),

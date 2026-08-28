@@ -1,5 +1,6 @@
 ---
 import { url } from '../../lib/url';
+import { byNewest, formatDate } from '../../lib/posts';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
@@ -10,7 +11,7 @@ export async function getStaticPaths() {
 
 const { season } = Astro.params;
 const allPosts = await getCollection('posts');
-const posts = allPosts.filter(p => p.data.status !== '待填' && p.data.season && p.data.season.includes(season));
+const posts = allPosts.filter(p => p.data.status !== '待填' && p.data.season && p.data.season.includes(season)).sort(byNewest);
 
 const seasonIcon = { '春': '🌸', '夏': '🌿', '秋': '🍁', '冬': '❄️' };
 ---

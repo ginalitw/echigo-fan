@@ -182,14 +182,49 @@ header.site-header {
 .cat.no-image h3 { color: var(--ink); }
 .cat.no-image p { color: var(--ink-soft); }
 
+/* 手機版：四張卡改成矮的橫幅條，而不是直式大圖。
+   直式 3:4 在手機上每張會佔掉半個螢幕，四張要滑很久才看得完；
+   橫幅條讓四個方向一眼看盡，照片仍在，只是退成背景。
+   漸層也從「由下往上」改成「由左往右」——文字壓左邊，照片從右邊透出來。 */
 @media (max-width: 640px) {
   .cats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 8px;
     padding: 0 16px;
   }
-  .cat h3 { font-size: 16px; }
-  .cat p { font-size: 12px; -webkit-line-clamp: 3; }
+  .cat {
+    aspect-ratio: auto;
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    background-position: center 35%;
+  }
+  .cat::after {
+    background: linear-gradient(
+      to right,
+      rgba(58, 55, 51, 0.93) 0%,
+      rgba(58, 55, 51, 0.78) 52%,
+      rgba(58, 55, 51, 0.3) 100%
+    );
+  }
+  .cat::before { left: 14px; top: 14px; }
+  .cat .cat-inner {
+    position: static;
+    width: 100%;
+    padding: 14px 16px 14px 14px;
+  }
+  .cat h3 { font-size: 15px; margin-bottom: 3px; }
+  .cat p {
+    font-size: 11.5px;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    max-width: 78%;
+  }
+  .cat .count { margin-top: 5px; }
+
+  /* 沒有背景圖時，橫幅條要維持淺色卡片的樣子 */
+  .cat.no-image { min-height: 0; }
+  .cat.no-image .cat-inner { padding: 14px; }
 }
 
 /* 文章列表 */
@@ -419,3 +454,27 @@ footer.site-footer {
   width: 200px;
   max-width: 55vw;
 }
+
+/* 列表左欄的發布日期。刻意做小、做淡——它是索引資訊，不該搶標題的注意力。 */
+.post-row .meta .date {
+  font-family: "Noto Serif TC", serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  opacity: 0.75;
+}
+
+/* 首頁底部的「看全部」入口 */
+.more-link {
+  text-align: center;
+  margin-top: 28px;
+}
+.more-link a {
+  font-family: "Noto Serif TC", serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+.more-link a:hover { border-color: var(--gold); }

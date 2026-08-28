@@ -1,0 +1,29 @@
+---
+import { url } from '../lib/url';
+import { byNewest, formatDate } from '../lib/posts';
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts');
+const posts = allPosts.filter((p) => p.data.status !== '待填').sort(byNewest);
+---
+<Layout title="全部文章 - 越後飯">
+  <div class="section-label">全部文章</div>
+  <div class="posts">
+    {posts.map((post) => (
+      <a class="post-row" href={url(`/posts/${post.slug}`)}>
+        <div class="meta">
+          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}<br />
+          {post.data.season && post.data.season.length > 0 && <span class="season">{post.data.season[0]}</span>}<br />
+          {post.data.location}<br />
+          {post.data.artworkNumber}
+        </div>
+        <div class="body">
+          <h4>{post.data.title}{post.data.postType && <span class="tag">{post.data.postType}</span>}</h4>
+          <p>{post.data.lead}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+  <p style="text-align:center;margin-top:20px"><a href={url('/')} style="color:var(--gold);font-size:13px">◀ 回首頁</a></p>
+</Layout>
