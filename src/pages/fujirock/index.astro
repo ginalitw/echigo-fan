@@ -2,9 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
 
-// 社團／LINE 網址先留空。你把真網址貼進來，按鈕才會變可點。
-const FB_GROUP = '';
-const LINE_URL = '';
+const FB_GROUP = 'https://www.facebook.com/groups/119131948168427';
+const LINE_URL = 'https://line.me/ti/g2/ZkbbX0AKZnX8QU0_fg3LBxGMNorVV_gw942nSg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default';
 
 const firstFour = [
   {
@@ -16,7 +15,7 @@ const firstFour = [
   {
     n: '02',
     title: '行前準備',
-    desc: '機票、住宿、岩盤買票皆序。',
+    desc: '機票、住宿、岩盤買票順序。',
     slug: 'before-you-go',
   },
   {
@@ -55,17 +54,9 @@ const firstFour = [
   </div>
 
   <div class="frf-community" id="community">
-    {FB_GROUP ? (
-      <a href={FB_GROUP} target="_blank" rel="noopener">加入台灣民間總部臉書社團</a>
-    ) : (
-      <span>台灣民間總部臉書社團（網址待補）</span>
-    )}
+    <a href={FB_GROUP} target="_blank" rel="noopener">加入台灣民間總部臉書社團</a>
     <span class="sep">｜</span>
-    {LINE_URL ? (
-      <a href={LINE_URL} target="_blank" rel="noopener">LINE 社群</a>
-    ) : (
-      <span>LINE 社群（網址待補）</span>
-    )}
+    <a href={LINE_URL} target="_blank" rel="noopener">LINE 社群</a>
   </div>
 
   <div class="section-label">先看這四篇</div>
