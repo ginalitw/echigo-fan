@@ -27,6 +27,7 @@ function newestCover(key) {
 
 const categories = [
   { key: '越後大地藝術祭', icon: '📕', cls: 'art', desc: '越後妻有的作品、路線、官方一日遊——我實際走過的部分。', fallback: '/images/cat-art.jpg' },
+  { key: '富士搖滾二三事', icon: '🎸', cls: 'frf', desc: '舞台之外的筆記與見聞。跟生存攻略不是同一種文。', fallback: '/images/cat-frf.jpg' },
   { key: '我吃的不只是飯', icon: '🍚', cls: 'rice', desc: '米、酒、山菜、車站便畳。吃過才寫。', fallback: '/images/cat-rice.jpg' },
   { key: '里山人文和風土', icon: '❄️', cls: 'season', desc: '雪、織物、土地的故事。查得到的知識，我用自己的方式消化。', fallback: '/images/cat-season.jpg' },
 ].map((c) => ({ ...c, image: newestCover(c.key) || c.fallback }));
@@ -37,8 +38,8 @@ function countFor(key) {
 ---
 <Layout title="越後飯 ECHIGO FAN">
   <div class="wave"></div>
-  <div class="section-label">三個方向</div>
-  <div class="cats cats-three">
+  <div class="section-label">四個方向</div>
+  <div class="cats">
     {categories.map(c => (
       <a
         class={`cat ${c.cls} ${c.image ? '' : 'no-image'}`}
@@ -55,7 +56,7 @@ function countFor(key) {
   </div>
 
   <p class="door-link">
-    <a href={url('/fujirock/')}>去富士搖滾 →</a>
+    <a href={url('/fujirock/')}>富士搖滾生存攻略 →</a>
   </p>
 
   <div class="wave"></div>

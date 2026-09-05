@@ -1,10 +1,5 @@
-/* 富士搖滾入口專用。越後飯頁不加 theme-frf，不會被這份改到。
- *
- * 與越後飯頁的差別不只換字體：
- * 越後飯是「讀」的（散文、置中、細字、寬行距），
- * 富搖是「查」的（掃描、靠左、粗字、緊行距）。
- * 共用的只剩 wordmark 的明體——那是品牌，不是內容。
- */
+/* 富士搖滾攻略門：黑體、掃描用。越後飯不加 theme-frf，不受影響。
+   只留 wordmark「越後飯」用明體。 */
 
 body.theme-frf {
   --snow: #e8eee6;
@@ -16,15 +11,52 @@ body.theme-frf {
   --line: #c5d1c4;
   --summer: #2f5e4a;
 
-  /* 300 太細，中文在螢幕上會糊。攻略頁一律 400 起跳。 */
+  font-family: "Noto Sans TC", sans-serif;
   font-weight: 400;
   line-height: 1.7;
   letter-spacing: 0;
 }
 
-/* 攻略頁上方不需要 64px 的留白，手機上會擠掉第一屏的內容 */
+body.theme-frf .serif,
+body.theme-frf .tagline,
+body.theme-frf .slogan,
+body.theme-frf .section-label,
+body.theme-frf h1,
+body.theme-frf h2,
+body.theme-frf h3,
+body.theme-frf h4 {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+body.theme-frf .brand {
+  font-family: "Noto Serif TC", serif;
+}
+
 body.theme-frf header.site-header {
   padding: 36px 0 24px;
+  text-align: left;
+}
+
+body.theme-frf .brand {
+  font-size: 22px;
+}
+body.theme-frf .brand .en {
+  display: inline;
+  margin-left: 8px;
+  letter-spacing: 0.16em;
+}
+
+body.theme-frf .tagline {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+body.theme-frf .slogan {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--punch);
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .site-nav a.is-active {
@@ -32,11 +64,8 @@ body.theme-frf header.site-header {
   color: var(--gold);
 }
 
-.cats-three {
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .door-link {
+  text-align: center;
   margin: 8px 0 12px;
 }
 .door-link a {
@@ -51,19 +80,16 @@ body.theme-frf header.site-header {
   border-color: var(--gold);
 }
 
-/* ---------------------------------------------------------- 頁首區塊 */
-
 .frf-kicker {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.12em; /* 原本 0.28em，太開，讀起來像展覽標籤 */
+  letter-spacing: 0.12em;
   color: var(--gold);
   margin: 28px 0 10px;
 }
 
 .frf-title {
-  /* 字級縮小、字重加倍。攻略的標題不需要宣言的尺寸，
-     靠字重建立層級比靠字級有效，也讓內容更快進入視線。 */
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 32px;
   font-weight: 900;
   line-height: 1.25;
@@ -79,8 +105,6 @@ body.theme-frf header.site-header {
   margin-bottom: 28px;
 }
 
-/* ------------------------------------------------------------ 兩個入口 */
-
 .frf-doors {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -94,13 +118,10 @@ body.theme-frf header.site-header {
   padding: 16px;
   border-top-width: 6px;
 }
-.frf-door.beginner {
-  border-top-color: var(--gold);
-}
-.frf-door.returner {
-  border-top-color: var(--punch);
-}
+.frf-door.beginner { border-top-color: var(--gold); }
+.frf-door.returner { border-top-color: var(--punch); }
 .frf-door h2 {
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 17px;
   font-weight: 700;
   line-height: 1.4;
@@ -111,8 +132,6 @@ body.theme-frf header.site-header {
   line-height: 1.6;
   color: var(--ink-soft);
 }
-
-/* -------------------------------------------------------------- 社團 */
 
 .frf-community {
   display: flex;
@@ -132,11 +151,7 @@ body.theme-frf header.site-header {
   text-decoration: none;
   border-bottom: 1px solid var(--gold);
 }
-.frf-community .sep {
-  color: var(--line);
-}
-
-/* ------------------------------------------------------------ 文章列表 */
+.frf-community .sep { color: var(--line); }
 
 .frf-first {
   list-style: none;
@@ -152,14 +167,14 @@ body.theme-frf header.site-header {
 .frf-first .n {
   font-size: 18px;
   font-weight: 900;
-  font-variant-numeric: tabular-nums; /* 編號、價格、時刻都要對齊 */
+  font-variant-numeric: tabular-nums;
   color: var(--gold);
   width: 32px;
   flex: none;
   line-height: 1.5;
 }
 .frf-first strong {
-  /* 原本 500，跟內文差太少，層級看不出來 */
+  font-family: "Noto Sans TC", sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 1.5;
@@ -186,11 +201,8 @@ body.theme-frf header.site-header {
   text-decoration: none;
   font-size: 13px;
 }
-.frf-back a:hover {
-  color: var(--gold);
-}
+.frf-back a:hover { color: var(--gold); }
 
-/* 價格、時刻表、班次一律等寬數字 */
 body.theme-frf table td,
 body.theme-frf .price,
 body.theme-frf .time {
@@ -198,13 +210,6 @@ body.theme-frf .time {
 }
 
 @media (max-width: 640px) {
-  .cats-three {
-    grid-template-columns: 1fr;
-  }
-  .frf-doors {
-    grid-template-columns: 1fr;
-  }
-  .frf-title {
-    font-size: 27px;
-  }
+  .frf-doors { grid-template-columns: 1fr; }
+  .frf-title { font-size: 27px; }
 }
