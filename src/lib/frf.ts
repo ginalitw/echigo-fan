@@ -93,12 +93,27 @@ export function displayTitle(title: string) {
   return title.replace(/^#\s*\d+\s*/, "").trim();
 }
 
+export function sortByNumber(list: Article[]) {
+  return [...list].sort((a, b) => {
+    const na = parseInt(String(a.n), 10);
+    const nb = parseInt(String(b.n), 10);
+    const aOk = Number.isFinite(na);
+    const bOk = Number.isFinite(nb);
+    if (aOk && bOk && na !== nb) return na - nb;
+    if (aOk && !bOk) return -1;
+    if (!aOk && bOk) return 1;
+    return a.slug.localeCompare(b.slug);
+  });
+}
+
 export function articlesByStage(id: StageId) {
-  return ARTICLES.filter((a) => a.published && a.stage === id);
+  return sortByNumber(ARTICLES.filter((a) => a.published && a.stage === id));
 }
 
 export function articlesByAudience(id: AudienceId) {
-  return ARTICLES.filter((a) => a.published && (a.audience.includes(id) || a.audience.includes("common") || a.audience.includes("start")));
+  return sortByNumber(
+    ARTICLES.filter((a) => a.published && (a.audience.includes(id) || a.audience.includes("common") || a.audience.includes("start"))),
+  );
 }
 
 export function getArticle(slug: string | undefined) {
@@ -139,7 +154,9 @@ export function articleFromEntry(entry: {
 }
 
 export function articlesByAudienceFrom(list: Article[], id: AudienceId) {
-  return list.filter(
-    (a) => a.published && (a.audience.includes(id) || a.audience.includes("common") || a.audience.includes("start")),
+  return sortByNumber(
+    list.filter(
+      (a) => a.published && (a.audience.includes(id) || a.audience.includes("common") || a.audience.includes("start")),
+    ),
   );
 }
