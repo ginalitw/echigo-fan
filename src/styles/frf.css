@@ -411,6 +411,59 @@ body.theme-frf .site-nav {
   font-variant-numeric: tabular-nums;
 }
 
+.frf-takeaway {
+  margin: 36px 0 20px;
+  padding: 16px 18px 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 2px;
+}
+.frf-takeaway h2 {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  font-size: 16px;
+}
+.frf-takeaway blockquote {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.frf-takeaway ol,
+.frf-takeaway ul {
+  margin: 0 0 8px;
+}
+
+.frf-related {
+  margin: 24px 0 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.frf-related h2 {
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.frf-related ul,
+.frf-related ol {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.frf-related li { margin-bottom: 4px; }
+.frf-related a {
+  font-size: 13px;
+}
+
 .frf-callout {
   margin: 20px 0;
   padding: 12px 16px;
