@@ -344,24 +344,36 @@ body.theme-frf .site-nav {
   color: var(--ink-soft);
 }
 
-.frf-prose { margin-top: 28px; font-size: 16px; line-height: 1.75; }
+.frf-prose { margin-top: 28px; font-size: 16px; line-height: 1.8; }
 .frf-prose p { margin: 0 0 16px; }
 .frf-prose h2 {
-  margin: 32px 0 12px;
-  font-size: 18px;
+  margin: 36px 0 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 20px;
   font-weight: 800;
+  line-height: 1.35;
 }
 .frf-prose h3 {
-  margin: 20px 0 8px;
+  margin: 24px 0 8px;
   font-size: 16px;
   font-weight: 700;
+}
+.frf-prose a {
+  color: var(--gold);
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.frf-prose a:hover {
+  text-decoration-thickness: 2px;
 }
 .frf-prose ul, .frf-prose ol {
   margin: 0 0 16px;
   padding-left: 20px;
-  font-size: 14px;
+  font-size: 15px;
 }
-.frf-prose li { margin-bottom: 6px; }
+.frf-prose li { margin-bottom: 8px; }
 .frf-prose blockquote {
   margin: 20px 0;
   padding: 12px 16px;
