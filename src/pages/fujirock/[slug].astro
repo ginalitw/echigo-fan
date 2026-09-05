@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
-import { ARTICLES, displayTitle, getStage, articleFromEntry } from '../../lib/frf';
+import { ARTICLES, STAGE_LABEL, displayTitle, articleFromEntry } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
 import { getCollection, getEntry } from 'astro:content';
 
@@ -22,7 +22,7 @@ if (!article) throw new Error('not found');
 const rendered = entry ? await entry.render() : null;
 const Content = rendered?.Content;
 const body = Content ? null : FRF_BODIES[article.slug];
-const stage = article.stage ? getStage(article.stage) : undefined;
+const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
 const canonical = new URL(`/fujirock/${article.slug}/`, Astro.site).href;
 const audienceLabel = article.audience.includes('beginner')
   ? '新手首衝'
@@ -32,6 +32,7 @@ const audienceLabel = article.audience.includes('beginner')
       ? '開始之前'
       : '通用必修';
 const h1 = displayTitle(article.title);
+const kicker = [article.n ? `#${article.n}` : '', audienceLabel, stageLabel].filter(Boolean).join(' · ');
 ---
 <Layout
   theme="frf"
@@ -42,9 +43,9 @@ const h1 = displayTitle(article.title);
 >
   <p class="frf-crumb">
     <a href={url('/fujirock/')}>← 攻略入口</a>
-    {stage && <span> / {stage.title}</span>}
+    {stageLabel && <span> / {stageLabel}</span>}
   </p>
-  <p class="frf-kicker">#{article.n} · {audienceLabel}{stage ? ` · ${stage.title}` : ''}</p>
+  <p class="frf-kicker">{kicker}</p>
   <h1 class="frf-title">{h1}</h1>
   {article.meta && <p class="frf-lead">{article.meta}</p>}
 
