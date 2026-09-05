@@ -193,7 +193,7 @@ body.theme-frf .site-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin: 12px 0 0;
+  margin: 32px 0 0;
 }
 .frf-community a {
   display: flex;
@@ -228,7 +228,7 @@ body.theme-frf .site-nav {
 .frf-first {
   list-style: none;
   padding: 0;
-  margin: 32px 0 0;
+  margin: 16px 0 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px 16px;
@@ -239,17 +239,16 @@ body.theme-frf .site-nav {
   color: inherit;
   min-height: 44px;
 }
-.frf-first .n {
+.frf-first a::before {
+  content: "";
   display: block;
-  font-size: 24px;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-  color: var(--gold);
-  line-height: 1;
+  width: 28px;
+  height: 3px;
+  background: var(--gold);
+  margin-bottom: 10px;
 }
 .frf-first strong {
   display: block;
-  margin-top: 4px;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.35;
@@ -479,8 +478,7 @@ body.theme-frf .site-nav {
   }
   .frf-community .mob { display: none; }
   .frf-community .desk { display: inline; }
-  .frf-first { grid-template-columns: repeat(4, 1fr); gap: 24px; }
-  .frf-first .n { font-size: 30px; }
+  .frf-first { grid-template-columns: 1fr 1fr; gap: 28px 32px; }
   .frf-first strong { font-size: 16px; }
   .frf-first p { display: block; }
   .frf-title { font-size: 36px; }
