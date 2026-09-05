@@ -1,13 +1,30 @@
-/* 富士搖滾入口專用色票。越後飯頁不加 theme-frf，不會被這份改到。 */
+/* 富士搖滾入口專用。越後飯頁不加 theme-frf，不會被這份改到。
+ *
+ * 與越後飯頁的差別不只換字體：
+ * 越後飯是「讀」的（散文、置中、細字、寬行距），
+ * 富搖是「查」的（掃描、靠左、粗字、緊行距）。
+ * 共用的只剩 wordmark 的明體——那是品牌，不是內容。
+ */
+
 body.theme-frf {
-  --snow: #E8EEE6;
-  --rice: #F4F7F2;
-  --ink: #1F2A24;
-  --ink-soft: #5C6B60;
-  --gold: #3F7A4A;
-  --punch: #E35B2D;
-  --line: #C5D1C4;
-  --summer: #2F5E4A;
+  --snow: #e8eee6;
+  --rice: #f4f7f2;
+  --ink: #1f2a24;
+  --ink-soft: #5c6b60;
+  --gold: #3f7a4a;
+  --punch: #e35b2d;
+  --line: #c5d1c4;
+  --summer: #2f5e4a;
+
+  /* 300 太細，中文在螢幕上會糊。攻略頁一律 400 起跳。 */
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+/* 攻略頁上方不需要 64px 的留白，手機上會擠掉第一屏的內容 */
+body.theme-frf header.site-header {
+  padding: 36px 0 24px;
 }
 
 .site-nav a.is-active {
@@ -20,13 +37,10 @@ body.theme-frf {
 }
 
 .door-link {
-  text-align: center;
   margin: 8px 0 12px;
 }
 .door-link a {
-  font-family: "Noto Serif TC", serif;
   font-size: 14px;
-  letter-spacing: 0.08em;
   color: var(--ink-soft);
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -37,27 +51,35 @@ body.theme-frf {
   border-color: var(--gold);
 }
 
+/* ---------------------------------------------------------- 頁首區塊 */
+
 .frf-kicker {
-  text-align: center;
   font-size: 12px;
-  letter-spacing: 0.28em;
-  color: var(--ink-soft);
-  margin: 36px 0 8px;
-}
-.frf-title {
-  text-align: center;
-  font-size: 36px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  margin-bottom: 10px;
+  letter-spacing: 0.12em; /* 原本 0.28em，太開，讀起來像展覽標籤 */
+  color: var(--gold);
+  margin: 28px 0 10px;
 }
+
+.frf-title {
+  /* 字級縮小、字重加倍。攻略的標題不需要宣言的尺寸，
+     靠字重建立層級比靠字級有效，也讓內容更快進入視線。 */
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin-bottom: 12px;
+}
+
 .frf-lead {
-  text-align: center;
-  font-family: "Noto Serif TC", serif;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--ink-soft);
-  margin-bottom: 32px;
+  line-height: 1.7;
+  max-width: 34em;
+  margin-bottom: 28px;
 }
+
+/* ------------------------------------------------------------ 兩個入口 */
 
 .frf-doors {
   display: grid;
@@ -69,25 +91,32 @@ body.theme-frf {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 18px 16px 16px;
+  padding: 16px;
   border-top-width: 6px;
 }
-.frf-door.beginner { border-top-color: var(--gold); }
-.frf-door.returner { border-top-color: var(--punch); }
+.frf-door.beginner {
+  border-top-color: var(--gold);
+}
+.frf-door.returner {
+  border-top-color: var(--punch);
+}
 .frf-door h2 {
-  font-family: "Noto Serif TC", serif;
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
   margin-bottom: 6px;
 }
 .frf-door p {
   font-size: 13px;
+  line-height: 1.6;
   color: var(--ink-soft);
 }
+
+/* -------------------------------------------------------------- 社團 */
 
 .frf-community {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 10px;
   align-items: center;
   background: #fff;
@@ -95,42 +124,51 @@ body.theme-frf {
   border-radius: 4px;
   padding: 14px 16px;
   font-size: 14px;
-  margin: 8px 0 8px;
+  margin: 8px 0;
 }
 .frf-community a {
   color: var(--gold);
+  font-weight: 500;
   text-decoration: none;
   border-bottom: 1px solid var(--gold);
 }
-.frf-community .sep { color: var(--line); }
+.frf-community .sep {
+  color: var(--line);
+}
+
+/* ------------------------------------------------------------ 文章列表 */
 
 .frf-first {
   list-style: none;
   padding: 0;
-  margin: 0 0 48px;
+  margin: 0 0 40px;
 }
 .frf-first li {
   display: flex;
   gap: 14px;
-  padding: 16px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--line);
 }
 .frf-first .n {
-  font-family: "Noto Serif TC", serif;
-  font-size: 22px;
+  font-size: 18px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums; /* 編號、價格、時刻都要對齊 */
   color: var(--gold);
-  width: 36px;
+  width: 32px;
   flex: none;
+  line-height: 1.5;
 }
 .frf-first strong {
-  font-family: "Noto Serif TC", serif;
-  font-size: 17px;
-  font-weight: 500;
+  /* 原本 500，跟內文差太少，層級看不出來 */
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 .frf-first p {
   font-size: 13px;
+  line-height: 1.6;
   color: var(--ink-soft);
-  margin: 4px 0 0;
+  margin: 3px 0 0;
 }
 .frf-first .soon {
   display: block;
@@ -141,7 +179,6 @@ body.theme-frf {
 }
 
 .frf-back {
-  text-align: center;
   margin: 8px 0 48px;
 }
 .frf-back a {
@@ -149,10 +186,25 @@ body.theme-frf {
   text-decoration: none;
   font-size: 13px;
 }
-.frf-back a:hover { color: var(--gold); }
+.frf-back a:hover {
+  color: var(--gold);
+}
+
+/* 價格、時刻表、班次一律等寬數字 */
+body.theme-frf table td,
+body.theme-frf .price,
+body.theme-frf .time {
+  font-variant-numeric: tabular-nums;
+}
 
 @media (max-width: 640px) {
-  .cats-three { grid-template-columns: 1fr; }
-  .frf-doors { grid-template-columns: 1fr; }
-  .frf-title { font-size: 30px; }
+  .cats-three {
+    grid-template-columns: 1fr;
+  }
+  .frf-doors {
+    grid-template-columns: 1fr;
+  }
+  .frf-title {
+    font-size: 27px;
+  }
 }
