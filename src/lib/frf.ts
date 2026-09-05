@@ -25,6 +25,13 @@ export const STAGES: {
   { id: "go", n: "03", title: "出發前", kicker: "上山前最後看", desc: "打包、營地、洗澡、現場。" },
 ];
 
+/** Notion 階段不變，只改前台給讀者看的字。 */
+export const STAGE_LABEL: Record<StageId, string> = {
+  hesitate: "決定要不要去",
+  prep: "行前準備",
+  go: "現場實用",
+};
+
 export const DOORS = [
   {
     id: "beginner" as const,
