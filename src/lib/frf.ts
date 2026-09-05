@@ -105,3 +105,34 @@ export function getStage(id: string | undefined) {
 export function getDoor(id: string | undefined) {
   return DOORS.find((d) => d.id === id);
 }
+
+export function articleFromEntry(entry: {
+  slug: string;
+  data: {
+    title: string;
+    n?: string;
+    meta?: string;
+    audience?: string[];
+    stage?: string;
+    topics?: string[];
+    cover?: string;
+  };
+}): Article {
+  return {
+    slug: entry.slug,
+    n: entry.data.n || "",
+    title: entry.data.title,
+    meta: entry.data.meta || "",
+    audience: (entry.data.audience || []) as AudienceId[],
+    stage: (entry.data.stage as StageId) || null,
+    topics: entry.data.topics || [],
+    published: true,
+    image: entry.data.cover,
+  };
+}
+
+export function articlesByAudienceFrom(list: Article[], id: AudienceId) {
+  return list.filter(
+    (a) => a.published && (a.audience.includes(id) || a.audience.includes("common") || a.audience.includes("start")),
+  );
+}

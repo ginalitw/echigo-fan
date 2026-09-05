@@ -25,4 +25,18 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { posts };
+const frf = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    n: z.string().optional(),
+    meta: z.string().optional(),
+    audience: z.array(z.string()).default([]),
+    stage: z.string().optional(),
+    topics: z.array(z.string()).optional(),
+    cover: z.string().optional(),
+    status: z.string().default('公開'),
+  }),
+});
+
+export const collections = { posts, frf };

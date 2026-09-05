@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "sync": "node scripts/sync-from-notion.mjs"
+    "sync": "node scripts/sync-from-notion.mjs",
+    "sync:frf": "node scripts/sync-frf-from-notion.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^5.26.0",

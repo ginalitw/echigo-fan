@@ -1,7 +1,15 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { url } from '../../../lib/url';
-import { articlesByAudience, displayTitle, getDoor, type AudienceId } from '../../../lib/frf';
+import {
+  ARTICLES,
+  articlesByAudienceFrom,
+  displayTitle,
+  getDoor,
+  articleFromEntry,
+  type AudienceId,
+} from '../../../lib/frf';
+import { getCollection } from 'astro:content';
 
 export function getStaticPaths() {
   return [
@@ -13,7 +21,11 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 const door = getDoor(id);
 if (!door) throw new Error('not found');
-const items = articlesByAudience(id as AudienceId);
+const synced = await getCollection('frf');
+const list = synced.length
+  ? synced.map(articleFromEntry)
+  : ARTICLES.filter((a) => a.published);
+const items = articlesByAudienceFrom(list, id as AudienceId);
 const canonical = new URL(`/fujirock/audience/${id}/`, Astro.site).href;
 ---
 <Layout

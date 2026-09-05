@@ -1,18 +1,28 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
-import { ARTICLES, displayTitle, getArticle, getStage } from '../../lib/frf';
+import { ARTICLES, displayTitle, getStage, articleFromEntry } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
+import { getCollection, getEntry } from 'astro:content';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const synced = await getCollection('frf');
+  if (synced.length) {
+    return synced.map((entry) => ({ params: { slug: entry.slug } }));
+  }
   return ARTICLES.filter((a) => a.published).map((a) => ({ params: { slug: a.slug } }));
 }
 
 const { slug } = Astro.params;
-const article = getArticle(slug);
+const entry = await getEntry('frf', slug);
+const fallback = ARTICLES.find((a) => a.slug === slug);
+const article = entry ? articleFromEntry(entry) : fallback;
 if (!article) throw new Error('not found');
+
+const rendered = entry ? await entry.render() : null;
+const Content = rendered?.Content;
+const body = Content ? null : FRF_BODIES[article.slug];
 const stage = article.stage ? getStage(article.stage) : undefined;
-const body = FRF_BODIES[article.slug];
 const canonical = new URL(`/fujirock/${article.slug}/`, Astro.site).href;
 const audienceLabel = article.audience.includes('beginner')
   ? '新手首衝'
@@ -36,15 +46,16 @@ const h1 = displayTitle(article.title);
   </p>
   <p class="frf-kicker">#{article.n} · {audienceLabel}{stage ? ` · ${stage.title}` : ''}</p>
   <h1 class="frf-title">{h1}</h1>
-  <p class="frf-lead">{article.meta}</p>
-  {article.image && !body && <img class="frf-cover" src={url(article.image)} alt="" />}
+  {article.meta && <p class="frf-lead">{article.meta}</p>}
 
-  {body ? (
+  {Content ? (
+    <article class="frf-prose">
+      <Content />
+    </article>
+  ) : body ? (
     <article class="frf-prose" set:html={body} />
   ) : (
-    <p class="frf-callout tip">
-      這篇摘要已上線。全文下一波從 Notion 灌進來。
-    </p>
+    <p class="frf-callout tip">這篇摘要已上線。全文會在下次 Notion 同步時進來。</p>
   )}
 
   <aside class="frf-repost">

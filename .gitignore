@@ -8,6 +8,7 @@ dist/
 
 # 同步產生的暫存與除錯檔
 .sync-manifest.json
+.sync-frf-manifest.json
 notion-debug.json
 .backup/
 scripts/*.bak

@@ -1,12 +1,23 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
-import { DOORS, FEATURED, SIGNUP } from '../../lib/frf';
+import { DOORS, FEATURED, SIGNUP, displayTitle, articleFromEntry } from '../../lib/frf';
+import { getCollection } from 'astro:content';
 
 const FB = 'https://www.facebook.com/groups/119131948168427';
 const LINE =
   'https://line.me/ti/g2/ZkbbX0AKZnX8QU0_fg3LBxGMNorVV_gw942nSg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default';
 const canonical = new URL('/fujirock/', Astro.site).href;
+const synced = await getCollection('frf');
+const bySlug = Object.fromEntries(synced.map((e) => [e.slug, articleFromEntry(e)]));
+const featured = FEATURED.map((item) => {
+  const live = bySlug[item.slug];
+  return {
+    ...item,
+    title: live ? displayTitle(live.title) : item.title,
+    desc: live?.meta || item.desc,
+  };
+});
 ---
 <Layout
   theme="frf"
@@ -47,7 +58,7 @@ const canonical = new URL('/fujirock/', Astro.site).href;
 
   <h2 class="frf-section">先看這四篇</h2>
   <ol class="frf-first">
-    {FEATURED.map((item) => (
+    {featured.map((item) => (
       <li>
         <a href={url(`/fujirock/${item.slug}/`)}>
           <span class="n">{item.n}</span>
@@ -62,7 +73,6 @@ const canonical = new URL('/fujirock/', Astro.site).href;
 
   <p class="frf-back"><a href={url('/')}>← 回越後飯</a></p>
 </Layout>
-
 
 <script is:inline>
   const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');

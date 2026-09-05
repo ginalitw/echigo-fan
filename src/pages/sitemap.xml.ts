@@ -4,6 +4,8 @@ import { ARTICLES } from '../lib/frf';
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
+  const frf = await getCollection('frf');
+  const frfUrls = (frf.length ? frf.map((p) => p.slug) : ARTICLES.filter((a) => a.published).map((a) => a.slug));
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   const abs = (path: string) => new URL(base + path, site).href;
   const uniq = (arr: (string | undefined)[]) =>
@@ -14,8 +16,8 @@ export const GET: APIRoute = async ({ site }) => {
     { loc: abs('/fujirock/'), priority: '0.9' },
     { loc: abs('/fujirock/audience/beginner/'), priority: '0.6' },
     { loc: abs('/fujirock/audience/returner/'), priority: '0.6' },
-    ...ARTICLES.filter((a) => a.published).map((a) => ({
-      loc: abs(`/fujirock/${a.slug}/`),
+    ...frfUrls.map((slug) => ({
+      loc: abs(`/fujirock/${slug}/`),
       priority: '0.8',
     })),
     { loc: abs('/archive'), priority: '0.7' },

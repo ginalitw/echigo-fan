@@ -53,17 +53,24 @@ jobs:
 
       # --prune-all：CI 是全新的 checkout，直接清空後重建，
       # 產出就是 Notion 當下狀態的精確鏡像。
-      - name: 從 Notion 同步內容
+      - name: 從 Notion 同步越後飯
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: npm run sync -- --prune-all
 
+      - name: 從 Notion 同步富士搖滾
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_FRF_DATABASE_ID: 2f414f28e4568001b22ad297299115e8
+          NOTION_FRF_DATA_SOURCE_ID: 2f414f28-e456-80cb-b742-000b2aeb130f
+        run: npm run sync:frf -- --prune-all
+
       - name: 內容有變化就存回 repo
         run: |
           git config user.name "notion-sync[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A src/content/posts public/images/posts public/images/stamps
+          git add -A src/content/posts src/content/frf public/images/posts public/images/stamps public/images/frf-posts
           if git diff --staged --quiet; then
             echo "內容沒有變化，不需要 commit"
           else
