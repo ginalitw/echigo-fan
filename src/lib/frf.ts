@@ -43,10 +43,10 @@ export const DOORS = [
 ];
 
 export const FEATURED = [
-  { n: "01", slug: "tokyo-to-naeba", title: "東京到苗場怎麼去", desc: "新幹線、接駁、行李" },
-  { n: "02", slug: "camping-reality", title: "富士搖滾露營真相", desc: "斜坡、下雨、洗澡排隊" },
-  { n: "03", slug: "budget-beginner", title: "第一次去要多少錢", desc: "門票、食宿、交通實估" },
-  { n: "04", slug: "gear-beginner", title: "天氣、穿搭與裝備", desc: "雨衣、雨鞋、山上天氣" },
+  { slug: "tokyo-to-naeba", title: "東京到苗場怎麼去", desc: "新幹線、接駁、行李" },
+  { slug: "camping-reality", title: "富士搖滾露營真相", desc: "斜坡、下雨、洗澡排隊" },
+  { slug: "budget-beginner", title: "第一次去要多少錢", desc: "門票、食宿、交通實估" },
+  { slug: "gear-beginner", title: "天氣、穿搭與裝備", desc: "雨衣、雨鞋、山上天氣" },
 ];
 
 /** 預覽用報名卡。正式站改這幾個欄位即可，不必新開 Notion 庫。 */
@@ -76,7 +76,7 @@ export const ARTICLES: Article[] = [
   { slug: "eve-festival", n: "12", title: "前夜祭", meta: "週四入場時間、要不要提早一天。", audience: ["common"], stage: "go", topics: [], published: true, image: "/images/frf/neon.jpg" },
   { slug: "naeba-food", n: "13", title: "苗場美食", meta: "歷年問卷，哪幾攤值得排。", audience: ["common"], stage: "go", topics: [], published: true },
   { slug: "naeba-stages", n: "14", title: "苗場舞台", meta: "綠白紅田園日出，步行時間。", audience: ["common"], stage: "go", topics: [], published: true, image: "/images/frf/red-marquee.jpg" },
-  { slug: "decathlon-gear", n: "16", title: "迪卡儂全套", meta: "帳篷防水係數、總價。", audience: ["common"], stage: "prep", topics: ["裝備", "露營"], published: true },
+  { slug: "decathlon-gear", n: "16", title: "迪卡儲全套", meta: "帳篶防水係數、總價。", audience: ["common"], stage: "prep", topics: ["裝備", "露營"], published: true },
   { slug: "weather-defense", n: "17", title: "氣候防禦", meta: "防曬、防蟲、足部救護。", audience: ["common"], stage: "go", topics: ["裝備", "露營"], published: true },
   { slug: "timetable-strategy", n: "18", title: "演出排程", meta: "舞台距離、撞場、體力。", audience: ["common"], stage: "go", topics: [], published: true },
   { slug: "power-and-signal", n: "20", title: "充電與通訊", meta: "行動電源、入境 Wh、離線地圖。", audience: ["common"], stage: "prep", topics: [], published: true },
