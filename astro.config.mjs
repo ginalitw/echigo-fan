@@ -57,11 +57,14 @@ function rehypeFrfArticle() {
       }
     }
 
-    const wrap = (test, className, stopExtra) => {
+    const wrap = (startTest, className, stopExtra, headingOnly = true) => {
       const out = [];
       for (let i = 0; i < children.length; i++) {
         const node = children[i];
-        if (isHeading(node) && test(textOf(node))) {
+        const hit = headingOnly
+          ? isHeading(node) && startTest(textOf(node))
+          : node?.type === 'element' && startTest(textOf(node));
+        if (hit) {
           const group = [node];
           let j = i + 1;
           while (j < children.length) {
@@ -91,6 +94,12 @@ function rehypeFrfArticle() {
       (t) => t.includes('延伸閱讀'),
       'frf-related',
       (n) => n.type === 'element' && (n.tagName === 'hr' || n.tagName === 'blockquote'),
+    );
+    wrap(
+      (t) => t.includes('還有問題') || t.includes('加入我們的社群'),
+      'frf-signoff',
+      (n) => n.type === 'element' && n.tagName === 'hr',
+      false,
     );
 
     for (const node of children) {
