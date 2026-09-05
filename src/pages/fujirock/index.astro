@@ -45,7 +45,7 @@ const firstFour = [
   <div class="frf-count" id="frf-count" hidden>
     <span class="frf-count-num" id="frf-days">—</span>
     <span class="frf-count-unit">天</span>
-    <span class="frf-count-label" id="frf-count-label">距 2027 開幕</span>
+    <span class="frf-count-label" id="frf-count-label">距 2027.7.23–25</span>
   </div>
 
   <div class="frf-doors">
@@ -84,8 +84,7 @@ const firstFour = [
   </p>
 
   <script is:inline>
-    // 下一屆開幕日。官方正式公布後改這一行。
-    // 2027 目前是現場公布的 7/23（五）～7/25（日），還沒有官網正式頁面。
+    // 下一屆開幕日。2027/7/23（五）～7/25（日）已確認。
     const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
     const daysLeft = Math.ceil((NEXT_FRF.getTime() - Date.now()) / 86400000);
     const box = document.getElementById('frf-count');
@@ -94,12 +93,12 @@ const firstFour = [
     if (box && num && label) {
       if (daysLeft > 0) {
         num.textContent = String(daysLeft);
-        label.textContent = '距 2027.7.23 開幕（尚未官宣）';
+        label.textContent = '距 2027/7/23–25 開幕';
         box.hidden = false;
       } else if (daysLeft > -3) {
         num.textContent = 'NOW';
         num.classList.add('is-now');
-        label.textContent = '今屆進行中';
+        label.textContent = '2027/7/23–25 進行中';
         box.hidden = false;
       }
     }
