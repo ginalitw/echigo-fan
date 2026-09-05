@@ -53,6 +53,18 @@ const featured = FEATURED.map((item) => {
     ))}
   </div>
 
+  <h2 class="frf-section">先看這四篇</h2>
+  <ol class="frf-first">
+    {featured.map((item) => (
+      <li>
+        <a href={url(`/fujirock/${item.slug}/`)}>
+          <strong>{item.title}</strong>
+          <p>{item.desc}</p>
+        </a>
+      </li>
+    ))}
+  </ol>
+
   <div class="frf-community" id="community">
     <a href={FB} target="_blank" rel="noopener"><span class="mob">臉書社團</span><span class="desk">加入台灣民間總部臉書社團</span></a>
     <a href={LINE} target="_blank" rel="noopener">LINE 社群</a>
@@ -61,19 +73,6 @@ const featured = FEATURED.map((item) => {
       <span class="frf-line-id">富搖小幫手 @800dbehr</span>
     </a>
   </div>
-
-  <h2 class="frf-section">先看這四篇</h2>
-  <ol class="frf-first">
-    {featured.map((item) => (
-      <li>
-        <a href={url(`/fujirock/${item.slug}/`)}>
-          <span class="n">{item.n}</span>
-          <strong>{item.title}</strong>
-          <p>{item.desc}</p>
-        </a>
-      </li>
-    ))}
-  </ol>
 
   <p class="frf-back"><a href={url('/')}>← 回越後飯</a></p>
 </Layout>
