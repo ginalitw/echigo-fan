@@ -1,12 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
-import { DOORS, FEATURED, SIGNUP, displayTitle, articleFromEntry } from '../../lib/frf';
+import { DOORS, FEATURED, displayTitle, articleFromEntry } from '../../lib/frf';
 import { getCollection } from 'astro:content';
 
 const FB = 'https://www.facebook.com/groups/119131948168427';
 const LINE =
   'https://line.me/ti/g2/ZkbbX0AKZnX8QU0_fg3LBxGMNorVV_gw942nSg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default';
+const LINE_OA = 'https://lin.ee/R12Vd62';
 const canonical = new URL('/fujirock/', Astro.site).href;
 const synced = await getCollection('frf');
 const bySlug = Object.fromEntries(synced.map((e) => [e.slug, articleFromEntry(e)]));
@@ -54,6 +55,14 @@ const featured = FEATURED.map((item) => {
   <div class="frf-community" id="community">
     <a href={FB} target="_blank" rel="noopener"><span class="mob">臉書社團</span><span class="desk">加入台灣民間總部臉書社團</span></a>
     <a href={LINE} target="_blank" rel="noopener">LINE 社群</a>
+    <a class="frf-line-oa" href={LINE_OA} target="_blank" rel="noopener">
+      <svg class="frf-line-icon" viewBox="0 0 36 36" aria-hidden="true">
+        <rect width="36" height="36" rx="8" fill="#06C755"></rect>
+        <path fill="#fff" d="M18 8.2c-5.9 0-10.7 3.86-10.7 8.62 0 4.26 3.78 7.83 8.89 8.5.35.07.82.23.94.52.1.27.07.68.03 1.06l-.14 1.27c-.04.35-.2 1.36 1.2.74 1.39-.62 7.5-4.42 10.23-7.57 1.88-2.07 2.15-3.7 2.15-4.52 0-4.76-4.8-8.62-10.6-8.62z"></path>
+      </svg>
+      <span class="mob">富搖小幫手</span>
+      <span class="desk">加入富搖小幫手 @800dbehr</span>
+    </a>
   </div>
 
   <h2 class="frf-section">先看這四篇</h2>
@@ -68,8 +77,6 @@ const featured = FEATURED.map((item) => {
       </li>
     ))}
   </ol>
-
-  <aside class="frf-signup">{SIGNUP.title}</aside>
 
   <p class="frf-back"><a href={url('/')}>← 回越後飯</a></p>
 </Layout>
