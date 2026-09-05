@@ -212,14 +212,17 @@ body.theme-frf .site-nav {
 }
 .frf-community .frf-line-oa {
   grid-column: 1 / -1;
-  gap: 8px;
+  gap: 10px;
 }
-.frf-line-icon {
-  width: 20px;
-  height: 20px;
+.frf-line-btn {
+  height: 36px;
+  width: auto;
   flex: none;
-  border-radius: 4px;
   display: block;
+}
+.frf-line-id {
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .frf-first {
