@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/url';
+import { ARTICLES, displayTitle, getArticle, getStage } from '../../lib/frf';
+import { FRF_BODIES } from '../../lib/frf-bodies';
+
+export function getStaticPaths() {
+  return ARTICLES.filter((a) => a.published).map((a) => ({ params: { slug: a.slug } }));
+}
+
+const { slug } = Astro.params;
+const article = getArticle(slug);
+if (!article) throw new Error('not found');
+const stage = article.stage ? getStage(article.stage) : undefined;
+const body = FRF_BODIES[article.slug];
+const canonical = new URL(`/fujirock/${article.slug}/`, Astro.site).href;
+const audienceLabel = article.audience.includes('beginner')
+  ? '新手首衝'
+  : article.audience.includes('returner')
+    ? '老手升級'
+    : article.audience.includes('start')
+      ? '開始之前'
+      : '通用必修';
+const h1 = displayTitle(article.title);
+---
+<Layout
+  theme="frf"
+  title={`${h1}｜富士搖滾攻略｜越後飯`}
+  description={article.meta}
+  canonical={canonical}
+  ogImage={article.image}
+>
+  <p class="frf-crumb">
+    <a href={url('/fujirock/')}>← 攻略入口</a>
+    {stage && <span> / {stage.title}</span>}
+  </p>
+  <p class="frf-kicker">#{article.n} · {audienceLabel}{stage ? ` · ${stage.title}` : ''}</p>
+  <h1 class="frf-title">{h1}</h1>
+  <p class="frf-lead">{article.meta}</p>
+  {article.image && !body && <img class="frf-cover" src={url(article.image)} alt="" />}
+
+  {body ? (
+    <article class="frf-prose" set:html={body} />
+  ) : (
+    <p class="frf-callout tip">
+      這篇摘要已上線。全文下一波從 Notion 灌進來。
+    </p>
+  )}
+
+  <aside class="frf-repost">
+    <p>本文原載於 <strong>越後飯 ECHIGO FAN</strong> —— 富士搖滾攻略</p>
+    <p>原文網址：<a href={canonical}>{canonical}</a></p>
+    <p class="terms">歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。</p>
+  </aside>
+</Layout>

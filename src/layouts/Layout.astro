@@ -8,9 +8,14 @@ const {
   canonical,
   theme = 'echigo',
   description,
+  ogImage,
 } = Astro.props;
 
 const isFrf = theme === 'frf';
+const FB = 'https://www.facebook.com/groups/119131948168427';
+const site = Astro.site ? Astro.site.href : 'https://echigo.fans/';
+const abs = (path) => new URL(path, site).href;
+const shareImage = ogImage ? abs(ogImage) : isFrf ? abs('/images/frf/og.jpg') : undefined;
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -20,6 +25,12 @@ const isFrf = theme === 'frf';
   <title>{title}</title>
   {description && <meta name="description" content={description} />}
   {canonical && <link rel="canonical" href={canonical} />}
+  {description && <meta property="og:title" content={title} />}
+  {description && <meta property="og:description" content={description} />}
+  {canonical && <meta property="og:url" content={canonical} />}
+  {shareImage && <meta property="og:image" content={shareImage} />}
+  <meta property="og:locale" content="zh_TW" />
+  <meta name="theme-color" content={isFrf ? '#3F7A4A' : '#D9A03C'} />
 
   <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WV5P4V2MWM"></script>
   <script is:inline>
@@ -30,30 +41,32 @@ const isFrf = theme === 'frf';
   </script>
 </head>
 <body class={isFrf ? 'theme-frf' : ''}>
-  <header class="site-header">
-    <div class="brand">越後飯<span class="en">ECHIGO FAN</span></div>
-    {isFrf ? (
-      <>
-        <div class="tagline">富士搖滾｜苗場・越後湯澤</div>
-        <div class="slogan">報了團也要自己準備</div>
-      </>
-    ) : (
-      <>
-        <div class="tagline serif">是新潟的鐵粉，也吃新潟的飯。</div>
-        <div class="slogan">追過了，才帶你去</div>
-      </>
-    )}
-    <div class="site-nav">
-      <a href={url('/')} class={!isFrf ? 'is-active' : undefined}>越後飯</a>
-      <a href={url('/fujirock/')} class={isFrf ? 'is-active' : undefined}>音樂祭</a>
-      <a href="https://www.threads.net/@echigo.fan" target="_blank" rel="noopener">Threads</a>
-      {isFrf ? (
-        <a href="#community">社團</a>
-      ) : (
+  {isFrf ? (
+    <header class="site-header frf-top">
+      <div class="frf-bar wrap">
+        <a class="brand" href={url('/')}>越後飯<span class="en">ECHIGO FAN</span></a>
+        <nav class="site-nav">
+          <a href={url('/')}>越後飯</a>
+          <a href={url('/fujirock/')} class="is-active">音樂祭</a>
+          <a href={FB} target="_blank" rel="noopener">社團</a>
+        </nav>
+      </div>
+    </header>
+  ) : (
+    <header class="site-header">
+      <div class="brand">越後飯<span class="en">ECHIGO FAN</span></div>
+      <div class="tagline serif">是新潟的鐵粉，也吃新潟的飯。</div>
+      <div class="slogan">追過了，才帶你去</div>
+      <div class="site-nav">
+        <a href={url('/')} class="is-active">越後飯</a>
+        <a href={url('/fujirock/')}>音樂祭</a>
+        <a href="https://www.threads.net/@echigo.fan" target="_blank" rel="noopener">Threads</a>
         <a href="https://www.instagram.com/echigo.fan" target="_blank" rel="noopener">Instagram</a>
-      )}
-    </div>
-  </header>
+      </div>
+    </header>
+  )}
+
+  <slot name="hero" />
 
   <main class="wrap">
     <slot />

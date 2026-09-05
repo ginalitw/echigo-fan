@@ -1,0 +1,43 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { url } from '../../../lib/url';
+import { articlesByAudience, displayTitle, getDoor, type AudienceId } from '../../../lib/frf';
+
+export function getStaticPaths() {
+  return [
+    { params: { id: 'beginner' } },
+    { params: { id: 'returner' } },
+  ];
+}
+
+const { id } = Astro.params;
+const door = getDoor(id);
+if (!door) throw new Error('not found');
+const items = articlesByAudience(id as AudienceId);
+const canonical = new URL(`/fujirock/audience/${id}/`, Astro.site).href;
+---
+<Layout
+  theme="frf"
+  title={`${door.title}｜富士搖滾攻略｜越後飯`}
+  description={door.desc}
+  canonical={canonical}
+>
+  <p class="frf-crumb"><a href={url('/fujirock/')}>← 攻略入口</a></p>
+  <img class="frf-cover" src={url(door.image)} alt="" />
+  <p class="frf-kicker">{door.kicker}</p>
+  <h1 class="frf-title">{door.title}</h1>
+  <p class="frf-lead">{door.desc}。含通用必修。</p>
+  <ul class="frf-list">
+    {items.map((a) => (
+      <li>
+        <a href={url(`/fujirock/${a.slug}/`)}>
+          <span class="n">{a.n}</span>
+          <span>
+            <strong>{displayTitle(a.title)}</strong>
+            <p>{a.meta}</p>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>
