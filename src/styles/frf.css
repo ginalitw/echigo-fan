@@ -30,6 +30,7 @@ body.theme-frf h4 {
 
 body.theme-frf .brand {
   font-family: "Noto Serif TC", serif;
+  font-size: 22px;
 }
 
 body.theme-frf header.site-header {
@@ -37,9 +38,6 @@ body.theme-frf header.site-header {
   text-align: left;
 }
 
-body.theme-frf .brand {
-  font-size: 22px;
-}
 body.theme-frf .brand .en {
   display: inline;
   margin-left: 8px;
@@ -102,7 +100,39 @@ body.theme-frf .slogan {
   color: var(--ink-soft);
   line-height: 1.7;
   max-width: 34em;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
+}
+
+.frf-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0 0 28px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--punch);
+  border-radius: 2px;
+}
+.frf-count-num {
+  font-size: 28px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--punch);
+  line-height: 1;
+}
+.frf-count-num.is-now {
+  font-size: 22px;
+}
+.frf-count-unit {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.frf-count-label {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-left: 4px;
 }
 
 .frf-doors {
