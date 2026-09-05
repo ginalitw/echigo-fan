@@ -1,7 +1,16 @@
 ---
 import { url } from '../lib/url';
 import '../styles/global.css';
-const { title = '越後飯 ECHIGO FAN', canonical } = Astro.props;
+import '../styles/frf.css';
+
+const {
+  title = '越後飯 ECHIGO FAN',
+  canonical,
+  theme = 'echigo',
+  description,
+} = Astro.props;
+
+const isFrf = theme === 'frf';
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -9,10 +18,9 @@ const { title = '越後飯 ECHIGO FAN', canonical } = Astro.props;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  {description && <meta name="description" content={description} />}
   {canonical && <link rel="canonical" href={canonical} />}
 
-  <!-- Google Analytics (GA4)。評估 ID 不是機密，本來就會出現在網頁原始碼裡。
-       記得在 GA 後台設定「內部流量排除」濾掉自己的 IP，否則數據會被自己的瀏覽灌水。 -->
   <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WV5P4V2MWM"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -21,15 +29,29 @@ const { title = '越後飯 ECHIGO FAN', canonical } = Astro.props;
     gtag('config', 'G-WV5P4V2MWM');
   </script>
 </head>
-<body>
+<body class={isFrf ? 'theme-frf' : ''}>
   <header class="site-header">
     <div class="brand">越後飯<span class="en">ECHIGO FAN</span></div>
-    <div class="tagline serif">是新潟的鐵粉，也吃新潟的飯。</div>
-    <div class="slogan">追過了，才帶你去</div>
+    {isFrf ? (
+      <>
+        <div class="tagline serif">富士搖滾｜苗場・越後湯澤</div>
+        <div class="slogan">報了團也要自己準備</div>
+      </>
+    ) : (
+      <>
+        <div class="tagline serif">是新潟的鐵粉，也吃新潟的飯。</div>
+        <div class="slogan">追過了，才帶你去</div>
+      </>
+    )}
     <div class="site-nav">
-      <a href={url('/')}>首頁</a>
+      <a href={url('/')} class={!isFrf ? 'is-active' : undefined}>越後飯</a>
+      <a href={url('/fujirock/')} class={isFrf ? 'is-active' : undefined}>音樂祭</a>
       <a href="https://www.threads.net/@echigo.fan" target="_blank" rel="noopener">Threads</a>
-      <a href="https://www.instagram.com/echigo.fan" target="_blank" rel="noopener">Instagram</a>
+      {isFrf ? (
+        <a href="#community">社團</a>
+      ) : (
+        <a href="https://www.instagram.com/echigo.fan" target="_blank" rel="noopener">Instagram</a>
+      )}
     </div>
   </header>
 
@@ -37,6 +59,8 @@ const { title = '越後飯 ECHIGO FAN', canonical } = Astro.props;
     <slot />
   </main>
 
-  <footer class="site-footer">越後飯 ECHIGO FAN · 追過了，才帶你去 · 繁體中文</footer>
+  <footer class="site-footer">
+    {isFrf ? '越後飯 · 音樂祭 · 富士搖滾攻略' : '越後飯 ECHIGO FAN · 追過了，才帶你去 · 繁體中文'}
+  </footer>
 </body>
 </html>

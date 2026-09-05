@@ -1,0 +1,158 @@
+/* 富士搖滾入口專用色票。越後飯頁不加 theme-frf，不會被這份改到。 */
+body.theme-frf {
+  --snow: #E8EEE6;
+  --rice: #F4F7F2;
+  --ink: #1F2A24;
+  --ink-soft: #5C6B60;
+  --gold: #3F7A4A;
+  --punch: #E35B2D;
+  --line: #C5D1C4;
+  --summer: #2F5E4A;
+}
+
+.site-nav a.is-active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.cats-three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.door-link {
+  text-align: center;
+  margin: 8px 0 12px;
+}
+.door-link a {
+  font-family: "Noto Serif TC", serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+.door-link a:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.frf-kicker {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  margin: 36px 0 8px;
+}
+.frf-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.frf-lead {
+  text-align: center;
+  font-family: "Noto Serif TC", serif;
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+.frf-doors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.frf-door {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 18px 16px 16px;
+  border-top-width: 6px;
+}
+.frf-door.beginner { border-top-color: var(--gold); }
+.frf-door.returner { border-top-color: var(--punch); }
+.frf-door h2 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.frf-door p {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.frf-community {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 14px 16px;
+  font-size: 14px;
+  margin: 8px 0 8px;
+}
+.frf-community a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+}
+.frf-community .sep { color: var(--line); }
+
+.frf-first {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 48px;
+}
+.frf-first li {
+  display: flex;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.frf-first .n {
+  font-family: "Noto Serif TC", serif;
+  font-size: 22px;
+  color: var(--gold);
+  width: 36px;
+  flex: none;
+}
+.frf-first strong {
+  font-family: "Noto Serif TC", serif;
+  font-size: 17px;
+  font-weight: 500;
+}
+.frf-first p {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 4px 0 0;
+}
+.frf-first .soon {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.frf-back {
+  text-align: center;
+  margin: 8px 0 48px;
+}
+.frf-back a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 13px;
+}
+.frf-back a:hover { color: var(--gold); }
+
+@media (max-width: 640px) {
+  .cats-three { grid-template-columns: 1fr; }
+  .frf-doors { grid-template-columns: 1fr; }
+  .frf-title { font-size: 30px; }
+}

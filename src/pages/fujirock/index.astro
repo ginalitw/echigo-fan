@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/url';
+
+const FB_GROUP = 'https://www.facebook.com/groups/119131948168427';
+const LINE_URL = 'https://line.me/ti/g2/ZkbbX0AKZnX8QU0_fg3LBxGMNorVV_gw942nSg?utm_source=invitation&utm_medium=link_copy&utm_campaign=default';
+
+const firstFour = [
+  {
+    n: '01',
+    title: '富士搖滾新手 Q&A',
+    desc: '門票、預算、交通、露營最常問的問題。',
+    slug: 'beginner-faq',
+  },
+  {
+    n: '02',
+    title: '行前準備',
+    desc: '機票、住宿、岩盤買票順序。',
+    slug: 'before-you-go',
+  },
+  {
+    n: '03',
+    title: '上野→湯澤→苗場',
+    desc: '新幹線、接駁車、行李與時刻表。',
+    slug: 'tokyo-to-naeba',
+  },
+  {
+    n: '04',
+    title: '露營還是民宿',
+    desc: '斜坡、暴雨、洗澡。住哪種之前先看真相。',
+    slug: 'camping-reality',
+  },
+];
+---
+
+<Layout
+  theme="frf"
+  title="富士搖滾 Fuji Rock 攻略｜苗場・越後湯澤｜越後飯"
+  description="第一次衝、第二次想舒服、報了團也要自己準備。台灣人版富士搖滾攻略：行前、交通、住宿、裝備。"
+>
+  <p class="frf-kicker">FUJI ROCK GUIDE</p>
+  <h1 class="frf-title serif">富士搖滾</h1>
+  <p class="frf-lead">第一次衝、第二次想舒服、報了團也要自己準備。</p>
+
+  <div class="frf-doors">
+    <section class="frf-door beginner">
+      <h2>新手首衝</h2>
+      <p>行前 · 交通 · 預算 · 裝備</p>
+    </section>
+    <section class="frf-door returner">
+      <h2>二衝升級</h2>
+      <p>免搭帳 · 指定席 · 露營分區</p>
+    </section>
+  </div>
+
+  <div class="frf-community" id="community">
+    <a href={FB_GROUP} target="_blank" rel="noopener">加入台灣民間總部臉書社團</a>
+    <span class="sep">｜</span>
+    <a href={LINE_URL} target="_blank" rel="noopener">LINE 社群</a>
+  </div>
+
+  <div class="section-label">先看這四篇</div>
+  <ol class="frf-first">
+    {firstFour.map((item) => (
+      <li>
+        <span class="n">{item.n}</span>
+        <div>
+          <strong>{item.title}</strong>
+          <p>{item.desc}</p>
+          <span class="soon">文章尚未同步上站 · /fujirock/{item.slug}/</span>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <p class="frf-back">
+    <a href={url('/')}>← 回越後飯</a>
+  </p>
+</Layout>

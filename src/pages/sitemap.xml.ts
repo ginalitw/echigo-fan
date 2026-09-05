@@ -1,11 +1,3 @@
-// 手寫的 sitemap，刻意不裝 @astrojs/sitemap 套件：
-// 少一個相依套件就少一個 CI 上可能出問題的地方，而且這樣能完全掌控要收錄哪些頁面。
-//
-// 產出網址：https://ginalitw.github.io/echigo-fan/sitemap.xml
-//
-// 注意：GitHub Pages 的專案頁面沒辦法放網域根目錄的 robots.txt
-//（那個位置屬於 ginalitw.github.io 這個帳號主站），
-// 所以要讓 Google 看到這份 sitemap，請到 Google Search Console 手動提交上面那個網址。
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
@@ -18,6 +10,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const entries: { loc: string; lastmod?: string; priority: string }[] = [
     { loc: abs('/'), priority: '1.0' },
+    { loc: abs('/fujirock/'), priority: '0.9' },
     { loc: abs('/archive'), priority: '0.7' },
 
     ...posts.map((p) => ({
