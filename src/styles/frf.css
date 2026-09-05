@@ -210,6 +210,15 @@ body.theme-frf .site-nav {
   text-decoration: none;
   text-align: center;
 }
+.frf-community .frf-line-oa {
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+.frf-line-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
 
 .frf-first {
   list-style: none;
@@ -255,16 +264,6 @@ body.theme-frf .site-nav {
 .frf-community .desk { display: none; }
 .frf-prose .frf-community { margin-top: 32px; }
 .frf-lead + .frf-callout { margin-top: 28px; }
-
-.frf-signup {
-  margin: 32px 0 8px;
-  padding: 10px 14px;
-  background: #fff;
-  border: 1px solid rgba(227, 91, 45, 0.3);
-  border-radius: 2px;
-  font-size: 14px;
-  font-weight: 700;
-}
 
 .frf-crumb {
   font-size: 14px;
@@ -453,6 +452,7 @@ body.theme-frf .site-nav {
   .frf-door .desc { padding: 20px; font-size: 18px; }
   .frf-community {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 16px;
     min-height: 48px;
@@ -467,6 +467,10 @@ body.theme-frf .site-nav {
     padding: 0;
     border: 0;
     background: transparent;
+  }
+  .frf-community .frf-line-oa {
+    grid-column: auto;
+    margin-left: auto;
   }
   .frf-community .mob { display: none; }
   .frf-community .desk { display: inline; }
