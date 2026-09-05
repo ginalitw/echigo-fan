@@ -65,6 +65,7 @@ jobs:
           NOTION_FRF_DATABASE_ID: 2f414f28e4568001b22ad297299115e8
           NOTION_FRF_DATA_SOURCE_ID: 2f414f28-e456-80cb-b742-000b2aeb130f
         run: npm run sync:frf -- --prune-all
+        continue-on-error: true
 
       - name: 內容有變化就存回 repo
         run: |
