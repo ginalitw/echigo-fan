@@ -3,6 +3,26 @@ import { defineConfig } from 'astro/config';
 const SITE = 'https://echigo.fans';
 const BASE = '/';
 
+function textOf(node) {
+  if (!node) return '';
+  if (node.type === 'text') return node.value || '';
+  return (node.children || []).map(textOf).join('');
+}
+
+function setText(node, value) {
+  node.children = [{ type: 'text', value }];
+}
+
+function isHeading(node) {
+  return node?.type === 'element' && /^h[1-6]$/.test(node.tagName);
+}
+
+function stripDecor(s) {
+  return String(s)
+    .replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\s]+/u, '')
+    .trim();
+}
+
 function rehypePrefixBase() {
   const prefix = BASE === '/' ? '' : BASE.replace(/\/$/, '');
   return (tree) => {
@@ -27,11 +47,80 @@ function rehypePrefixBase() {
   };
 }
 
+function rehypeFrfArticle() {
+  return (tree) => {
+    const children = tree.children || [];
+    for (const node of children) {
+      if (isHeading(node)) {
+        const cleaned = stripDecor(textOf(node));
+        if (cleaned) setText(node, cleaned);
+      }
+    }
+
+    const wrap = (test, className, stopExtra) => {
+      const out = [];
+      for (let i = 0; i < children.length; i++) {
+        const node = children[i];
+        if (isHeading(node) && test(textOf(node))) {
+          const group = [node];
+          let j = i + 1;
+          while (j < children.length) {
+            const n = children[j];
+            if (isHeading(n)) break;
+            if (stopExtra && stopExtra(n)) break;
+            group.push(n);
+            j++;
+          }
+          out.push({
+            type: 'element',
+            tagName: 'aside',
+            properties: { className: [className] },
+            children: group,
+          });
+          i = j - 1;
+        } else {
+          out.push(node);
+        }
+      }
+      children.length = 0;
+      children.push(...out);
+    };
+
+    wrap((t) => t.includes('懶人重點'), 'frf-takeaway');
+    wrap(
+      (t) => t.includes('延伸閱讀'),
+      'frf-related',
+      (n) => n.type === 'element' && (n.tagName === 'hr' || n.tagName === 'blockquote'),
+    );
+
+    for (const node of children) {
+      if (node.type !== 'element' || ![].concat(node.properties?.className || []).includes('frf-related')) continue;
+      node.children = (node.children || []).filter((child) => {
+        if (child.type === 'element' && child.tagName === 'p' && /想繼續深入/.test(textOf(child))) {
+          return false;
+        }
+        return true;
+      });
+      const tidy = (n) => {
+        if (n.type === 'element' && n.tagName === 'a') {
+          const t = textOf(n)
+            .replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\s]+/u, '')
+            .replace(/^#\s*\d+\s*/, '')
+            .trim();
+          if (t) setText(n, t);
+        }
+        for (const c of n.children || []) tidy(c);
+      };
+      tidy(node);
+    }
+  };
+}
+
 export default defineConfig({
   site: SITE,
   base: BASE,
   markdown: {
     shikiConfig: { theme: 'github-light' },
-    rehypePlugins: [rehypePrefixBase],
+    rehypePlugins: [rehypePrefixBase, rehypeFrfArticle],
   },
 });
