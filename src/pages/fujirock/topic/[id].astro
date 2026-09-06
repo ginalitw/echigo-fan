@@ -30,25 +30,30 @@ const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
   title={`${topic.title}｜富士搖滾攻略｜越後飯`}
   description={topic.desc}
   canonical={canonical}
+  ogImage={topic.cover}
 >
+  <figure class="frf-topic-cover">
+    <img src={url(topic.cover)} alt={topic.coverAlt} />
+  </figure>
+
   <p class="frf-crumb">
     <a href={url('/fujirock/')}>富士搖滾攻略</a>
     <span> / {topic.title}</span>
   </p>
   <h1 class="frf-title">{topic.title}</h1>
   <p class="frf-lead">{topic.desc}</p>
-  <ul class="frf-list">
+
+  <ol class="frf-topic-dir">
     {items.map((a) => (
       <li>
         <a href={url(`/fujirock/${a.slug}/`)}>
-          <span>
-            <strong>{displayTitle(a.title)}</strong>
-            <p>{a.meta}</p>
-          </span>
+          <strong>{displayTitle(a.title)}</strong>
+          {a.meta && <span> — {a.meta}</span>}
         </a>
       </li>
     ))}
-  </ul>
+  </ol>
+
   <p class="frf-neighbors">
     <a href={url(`/fujirock/topic/${prev.id}/`)}>← {prev.title}</a>
     <a href={url(`/fujirock/topic/${next.id}/`)}>{next.title} →</a>

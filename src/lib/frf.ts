@@ -32,36 +32,48 @@ export const TOPICS: {
   title: string;
   desc: string;
   preview: string[];
+  cover: string;
+  coverAlt: string;
 }[] = [
   {
     id: "planning",
     title: "預算與行前",
     desc: "要不要去、花多少、機票住宿門票先弄哪件。",
     preview: ["beginner-faq", "budget-beginner"],
+    cover: "/images/frf/neon.jpg",
+    coverAlt: "台灣民間總部的富士搖滾霓虹招牌，寫著苗場我們來了",
   },
   {
     id: "transport",
     title: "交通與移動",
     desc: "東京到苗場、上野採購、回程湯澤。",
     preview: ["tokyo-to-naeba", "ueno-ameyoko"],
+    cover: "/images/frf/transport.jpg",
+    coverAlt: "新幹線站台等車上山的人，背影是山區",
   },
   {
     id: "camping",
     title: "露營與裝備",
     desc: "斜坡、下雨、洗澡、帳篷跟住宿取捨。",
     preview: ["camping-reality", "camping-shower"],
+    cover: "/images/frf/camping.jpg",
+    coverAlt: "苗場滑雪道營區斜坡上一排彩色帳篷",
   },
   {
     id: "onsite",
     title: "現場生存",
     desc: "手環、排程、天氣、充電、物販。",
     preview: ["wristband", "timetable-strategy"],
+    cover: "/images/frf/stage-rain.jpg",
+    coverAlt: "苗場雨霧中的舞台，觀眾穿雨衣在拍手",
   },
   {
     id: "food",
     title: "飲食與周邊",
     desc: "前夜祭要不要趁早到、苗場哪幾攤值得排。",
     preview: ["naeba-food", "eve-festival"],
+    cover: "/images/frf/street.jpg",
+    coverAlt: "音樂祭期間苗場街上的人流、停車場與店家",
   },
 ];
 
@@ -165,14 +177,12 @@ export function articleFromEntry(entry: {
 }
 
 export function articlesByTopicFrom(list: Article[], id: TopicId) {
-  // 老手專用篇只出現在 /upgrade，主題頁不重複。
   return sortByStageThenNumber(
     list.filter((a) => a.published && a.topic === id && !isReturnerOnly(a)),
   );
 }
 
 export function upgradeFrom(list: Article[]) {
-  // 同時掛新手與老手的文章（目前為 tokyo-to-naeba）刻意不納入二衝頁。
   return sortByStageThenNumber(list.filter((a) => a.published && isReturnerOnly(a)));
 }
 
