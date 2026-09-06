@@ -48,8 +48,8 @@ export const TOPICS: {
     title: "交通與移動",
     desc: "東京到苗場、上野採購、回程湯澤。",
     preview: ["tokyo-to-naeba", "ueno-ameyoko"],
-    cover: "/images/frf/transport.jpg",
-    coverAlt: "新幹線站台等車上山的人，背影是山區",
+    cover: "/images/frf/street.jpg",
+    coverAlt: "音樂祭期間苗場街上，車往場地的路與停車場",
   },
   {
     id: "camping",
