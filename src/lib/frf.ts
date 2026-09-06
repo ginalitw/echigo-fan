@@ -165,30 +165,22 @@ export function articleFromEntry(entry: {
 }
 
 export function articlesByTopicFrom(list: Article[], id: TopicId) {
-  return sortByStageThenNumber(list.filter((a) => a.published && a.topic === id));
+  // 老手專用篇只出現在 /upgrade，主題頁不重複。
+  return sortByStageThenNumber(
+    list.filter((a) => a.published && a.topic === id && !isReturnerOnly(a)),
+  );
 }
 
 export function upgradeFrom(list: Article[]) {
   // 同時掛新手與老手的文章（目前為 tokyo-to-naeba）刻意不納入二衝頁。
-  // 二衝頁的價值在於「這幾篇是專門寫給你的」，混入共用文章會稀釋這個訊號。
-  // 老手要看交通，從主題柱進入即可。
   return sortByStageThenNumber(list.filter((a) => a.published && isReturnerOnly(a)));
 }
 
 export function relatedFrom(list: Article[], slug: string, limit = 3) {
   const current = list.find((a) => a.slug === slug);
   if (!current) return [];
-
   const others = (arr: Article[]) => arr.filter((a) => a.slug !== slug);
-  const picked: Article[] = isReturnerOnly(current) ? others(upgradeFrom(list)) : [];
-
-  if (picked.length < limit && current.topic) {
-    const seen = new Set(picked.map((a) => a.slug));
-    for (const a of others(articlesByTopicFrom(list, current.topic))) {
-      if (picked.length >= limit) break;
-      if (!seen.has(a.slug)) picked.push(a);
-    }
-  }
-
-  return picked.slice(0, limit);
+  if (isReturnerOnly(current)) return others(upgradeFrom(list)).slice(0, limit);
+  if (!current.topic) return [];
+  return others(articlesByTopicFrom(list, current.topic)).slice(0, limit);
 }
