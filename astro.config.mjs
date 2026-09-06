@@ -47,6 +47,28 @@ function rehypePrefixBase() {
   };
 }
 
+function rehypeFixBoldStars() {
+  return (tree) => {
+    const walk = (node) => {
+      if (node.type === 'text' && node.value) {
+        node.value = node.value
+          .replace(/\*\*\*\*/g, '')
+          .replace(/\*\*(\S(?:[\s\S]*?\S)?)\s+\*\*/g, '$1')
+          .replace(/\*\*(\S(?:[\s\S]*?\S)?)\*\*/g, '$1');
+      }
+      if (node.type === 'element' && node.tagName === 'strong') {
+        for (const child of node.children || []) {
+          if (child.type === 'text' && child.value) {
+            child.value = child.value.replace(/\*+/g, '');
+          }
+        }
+      }
+      for (const child of node.children || []) walk(child);
+    };
+    walk(tree);
+  };
+}
+
 function rehypeFrfArticle() {
   return (tree) => {
     const children = tree.children || [];
@@ -130,6 +152,6 @@ export default defineConfig({
   base: BASE,
   markdown: {
     shikiConfig: { theme: 'github-light' },
-    rehypePlugins: [rehypePrefixBase, rehypeFrfArticle],
+    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypeFrfArticle],
   },
 });
