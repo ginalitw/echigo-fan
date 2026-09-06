@@ -411,6 +411,37 @@ body.theme-frf .site-nav {
   font-variant-numeric: tabular-nums;
 }
 
+.frf-faq {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+.frf-faq summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 28px 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  position: relative;
+}
+.frf-faq summary::-webkit-details-marker { display: none; }
+.frf-faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 12px;
+  color: var(--gold);
+  font-weight: 700;
+}
+.frf-faq[open] summary::after { content: "–"; }
+.frf-faq-body {
+  padding: 0 0 14px;
+  font-size: 15px;
+  color: var(--ink);
+}
+.frf-faq-body p { margin: 0 0 10px; }
+.frf-faq-body p:last-child { margin-bottom: 0; }
+
 .frf-takeaway {
   margin: 36px 0 20px;
   padding: 16px 18px 10px;
