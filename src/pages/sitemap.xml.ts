@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { ARTICLES } from '../lib/frf';
+import { ARTICLES, TOPICS } from '../lib/frf';
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
@@ -14,8 +14,8 @@ export const GET: APIRoute = async ({ site }) => {
   const entries: { loc: string; lastmod?: string; priority: string }[] = [
     { loc: abs('/'), priority: '1.0' },
     { loc: abs('/fujirock/'), priority: '0.9' },
-    { loc: abs('/fujirock/audience/beginner/'), priority: '0.6' },
-    { loc: abs('/fujirock/audience/returner/'), priority: '0.6' },
+    { loc: abs('/fujirock/upgrade/'), priority: '0.7' },
+    ...TOPICS.map((t) => ({ loc: abs(`/fujirock/topic/${t.id}/`), priority: '0.7' })),
     ...frfUrls.map((slug) => ({
       loc: abs(`/fujirock/${slug}/`),
       priority: '0.8',
