@@ -1,112 +1,202 @@
+/* 入口：路徑用直線串起來，主題用方框並排。 */
+
 .frf-count-line {
-  margin: 22px 0 0;
-  padding-left: 10px;
+  margin: 20px 0 0;
+  padding: 2px 0 2px 12px;
   border-left: 3px solid var(--gold);
   font-size: 14px;
   color: var(--ink-soft);
-}
-.frf-count-line strong {
-  font-size: 20px;
-  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  color: var(--ink);
+}
+
+.frf-count-line strong {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-right: 2px;
 }
 
 .frf-note {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: 4px 0 0;
+  font-size: 14px;
   color: var(--ink-soft);
 }
 
 .frf-toc {
   list-style: none;
+  margin: 16px 0 0;
   padding: 0;
-  margin: 12px 0 0;
+  position: relative;
 }
+
+.frf-toc::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 22px;
+  bottom: 22px;
+  width: 2px;
+  background: var(--line);
+}
+
+.frf-toc li {
+  margin: 0;
+  position: relative;
+}
+
 .frf-toc a {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  min-height: 44px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 14px;
+  align-items: start;
   padding: 10px 0;
-  border-bottom: 1px solid var(--line);
   text-decoration: none;
   color: inherit;
 }
+
 .frf-toc .n {
-  width: 1.2em;
-  flex: none;
-  font-size: 13px;
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--ink-soft);
+  line-height: 28px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
+
 .frf-toc strong {
   display: block;
   font-size: 16px;
   font-weight: 700;
+  line-height: 1.5;
 }
+
 .frf-toc em {
   display: block;
   margin-top: 2px;
-  font-style: normal;
   font-size: 13px;
+  font-style: normal;
   color: var(--ink-soft);
 }
 
+.frf-toc a:hover strong {
+  color: var(--gold);
+}
+
 .frf-index {
-  margin: 8px 0 0;
-  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0 0;
 }
-.frf-index section {
-  padding: 16px 0 12px;
-  border-bottom: 1px solid var(--line);
+
+.frf-index > section {
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--gold);
+  border-radius: 0;
+  padding: 12px 14px 10px;
+  background: #fff;
 }
+
 .frf-index-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
   color: inherit;
 }
+
 .frf-index-head strong {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
 }
+
 .frf-index-head span {
-  font-size: 13px;
+  flex: none;
+  font-size: 12px;
   color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
 }
+
+.frf-index-head:hover strong {
+  color: var(--gold);
+}
+
 .frf-index ol {
   list-style: none;
-  padding: 0;
   margin: 8px 0 0;
+  padding: 0;
 }
+
+.frf-index ol li {
+  margin: 0;
+  border-top: 1px solid var(--snow);
+}
+
 .frf-index ol a {
   display: block;
-  min-height: 36px;
-  padding: 4px 0;
-  font-size: 15px;
-  font-weight: 700;
+  padding: 7px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
   text-decoration: none;
-  color: inherit;
 }
-.frf-index a:hover,
-.frf-toc a:hover { color: var(--gold); }
+
+.frf-index ol a:hover {
+  color: var(--gold);
+}
 
 .frf-upgrade {
-  margin: 28px 0 0;
-  padding-left: 10px;
-  border-left: 3px solid var(--punch);
+  margin: 12px 0 0;
 }
+
 .frf-upgrade a {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--punch);
+  border-left-width: 4px;
+  background: #fdf4f0;
   color: var(--punch);
   font-size: 15px;
   font-weight: 700;
   text-decoration: none;
 }
-.frf-upgrade a:hover { text-decoration: underline; }
 
+.frf-upgrade a:hover {
+  background: var(--punch);
+  color: #fff;
+}
+
+.frf-kicker + .frf-section {
+  margin-top: 4px;
+}
+
+.frf-index + .frf-upgrade {
+  margin-top: 16px;
+}
+
+.frf-upgrade + .frf-community {
+  margin-top: 28px;
+}
+
+@media (max-width: 640px) {
+  .frf-index {
+    grid-template-columns: 1fr;
+  }
+
+  .frf-count-line strong {
+    font-size: 20px;
+  }
+}
+
+/* 主題頁／文章頁，不在這次入口改稿裡 */
 .frf-neighbors {
   display: flex;
   justify-content: space-between;
