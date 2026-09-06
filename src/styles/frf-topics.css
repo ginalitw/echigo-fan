@@ -196,7 +196,6 @@
   }
 }
 
-/* 主題頁／文章頁，不在這次入口改稿裡 */
 .frf-neighbors {
   display: flex;
   justify-content: space-between;
@@ -211,29 +210,41 @@
 .frf-neighbors a:hover { color: var(--gold); }
 
 .frf-more {
-  margin: 32px 0 0;
-  padding-top: 8px;
+  margin: 28px 0 0;
+  padding-top: 12px;
   border-top: 1px solid var(--line);
+}
+.frf-more-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
 }
 .frf-more ol {
   list-style: none;
   padding: 0;
-  margin: 8px 0 0;
+  margin: 6px 0 0;
 }
-.frf-more a {
+.frf-more ol a {
   display: block;
-  min-height: 36px;
-  padding: 4px 0;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  color: inherit;
-}
-.frf-more a:hover { color: var(--gold); }
-.frf-more p {
-  margin: 10px 0 0;
+  padding: 5px 0;
   font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  text-decoration: none;
 }
+.frf-more ol a:hover { color: var(--gold); }
+.frf-more-back {
+  margin: 8px 0 0;
+  font-size: 12px;
+}
+.frf-more-back a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.frf-more-back a:hover { color: var(--gold); }
 
 .frf-upgrade-group { margin-top: 8px; }
 .frf-upgrade-group .frf-list { margin-top: 8px; }
