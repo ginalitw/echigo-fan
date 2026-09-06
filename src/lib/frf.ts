@@ -56,6 +56,15 @@ export const FEATURED = [
   { slug: "gear-beginner", title: "天氣、穿搭與裝備", desc: "雨衣、雨鞋、山上天氣" },
 ];
 
+/** 入口「依你要查什麼」。每欄只掛主力篇，不倒出全部編號。 */
+export const TOPICS: { id: string; title: string; slugs: string[] }[] = [
+  { id: "plan", title: "行前與預算", slugs: ["beginner-faq", "before-you-go", "budget-beginner"] },
+  { id: "move", title: "交通與移動", slugs: ["tokyo-to-naeba", "ueno-ameyoko", "echigo-yuzawa"] },
+  { id: "camp", title: "露營與裝備", slugs: ["camping-reality", "gear-beginner", "camping-shower"] },
+  { id: "site", title: "現場怎麼活", slugs: ["timetable-strategy", "weather-defense", "power-and-signal"] },
+  { id: "food", title: "吃喝與周邊", slugs: ["naeba-food", "eve-festival"] },
+];
+
 /** 預覽用報名卡。正式站改這幾個欄位即可，不必新開 Notion 庫。 */
 export const SIGNUP = {
   title: "2027富搖包棟計劃敬請期待",
