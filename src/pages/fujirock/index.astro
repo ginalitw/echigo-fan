@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
-import { DOORS, FEATURED, displayTitle, articleFromEntry } from '../../lib/frf';
+import { DOORS, FEATURED, TOPICS, displayTitle, articleFromEntry } from '../../lib/frf';
 import { getCollection } from 'astro:content';
 
 const FB = 'https://www.facebook.com/groups/119131948168427';
@@ -20,6 +20,16 @@ const featured = FEATURED.map((item) => {
     desc: live?.meta || item.desc,
   };
 });
+const topics = TOPICS.map((topic) => ({
+  ...topic,
+  items: topic.slugs
+    .map((slug) => {
+      const live = bySlug[slug];
+      if (!live) return null;
+      return { slug, title: displayTitle(live.title) };
+    })
+    .filter((x): x is { slug: string; title: string } => Boolean(x)),
+}));
 ---
 <Layout
   theme="frf"
@@ -44,6 +54,7 @@ const featured = FEATURED.map((item) => {
     <span class="frf-count-label" id="frf-count-label">距 2027/7/23–25 開幕</span>
   </div>
 
+  <p class="frf-kicker">依你是誰</p>
   <div class="frf-doors">
     {DOORS.map((door) => (
       <a class={`frf-door ${door.id}`} href={url(`/fujirock/audience/${door.id}/`)}>
@@ -64,6 +75,22 @@ const featured = FEATURED.map((item) => {
       </li>
     ))}
   </ol>
+
+  <h2 class="frf-section" id="topics">依你要查什麼</h2>
+  <div class="frf-topics">
+    {topics.map((topic) => (
+      <section class="frf-topic">
+        <h3>{topic.title}</h3>
+        <ol>
+          {topic.items.map((item) => (
+            <li>
+              <a href={url(`/fujirock/${item.slug}/`)}>{item.title}</a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+  </div>
 
   <div class="frf-community" id="community">
     <a href={FB} target="_blank" rel="noopener"><span class="mob">臉書社團</span><span class="desk">加入台灣民間總部臉書社團</span></a>
