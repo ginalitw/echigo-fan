@@ -1,7 +1,18 @@
 ---
-const { id } = Astro.params;
 export function getStaticPaths() {
   return [{ params: { id: 'beginner' } }, { params: { id: 'returner' } }];
 }
-return Astro.redirect(id === 'returner' ? '/fujirock/upgrade/' : '/fujirock/', 301);
+const { id } = Astro.params;
+const dest = id === 'returner' ? 'https://echigo.fans/fujirock/upgrade/' : 'https://echigo.fans/fujirock/';
 ---
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="canonical" href={dest} />
+    <meta http-equiv="refresh" content={`0;url=${dest}`} />
+    <title>改址</title>
+  </head>
+  <body>
+    <p><a href={dest}>攻略已搬網址</a></p>
+  </body>
+</html>

@@ -2,36 +2,33 @@
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
 import {
-  ARTICLES,
   STAGE_LABEL,
   TOPICS,
   displayTitle,
   articleFromEntry,
   relatedFrom,
+  isReturnerOnly,
 } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
 import { getCollection, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const synced = await getCollection('frf');
-  if (synced.length) {
-    return synced.map((entry) => ({ params: { slug: entry.slug } }));
-  }
-  return ARTICLES.filter((a) => a.published).map((a) => ({ params: { slug: a.slug } }));
+  return synced.map((entry) => ({ params: { slug: entry.slug } }));
 }
 
 const { slug } = Astro.params;
 const entry = await getEntry('frf', slug);
-const fallback = ARTICLES.find((a) => a.slug === slug);
-const article = entry ? articleFromEntry(entry) : fallback;
-if (!article) throw new Error('not found');
+if (!entry) throw new Error('not found');
+const article = articleFromEntry(entry);
 
 const synced = await getCollection('frf');
-const list = synced.length ? synced.map(articleFromEntry) : ARTICLES.filter((a) => a.published);
+const list = synced.map(articleFromEntry);
 const related = relatedFrom(list, article.slug);
 const topic = TOPICS.find((t) => t.id === article.topic);
+const showUpgrade = isReturnerOnly(article);
 
-const rendered = entry ? await entry.render() : null;
+const rendered = await entry.render();
 const Content = rendered?.Content;
 const body = Content ? null : FRF_BODIES[article.slug];
 const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
@@ -68,7 +65,7 @@ const h1 = displayTitle(article.title);
     <p class="frf-note">這篇摘要已上線。全文會在下次 Notion 同步時進來。</p>
   )}
 
-  {related.length > 0 && (
+  {(related.length > 0 || showUpgrade) && (
     <nav class="frf-more">
       <p class="frf-kicker">同一主題</p>
       <ol>
@@ -81,6 +78,11 @@ const h1 = displayTitle(article.title);
       {topic && (
         <p>
           <a href={url(`/fujirock/topic/${topic.id}/`)}>回{topic.title}</a>
+        </p>
+      )}
+      {showUpgrade && (
+        <p>
+          <a href={url('/fujirock/upgrade/')}>回二衝升級</a>
         </p>
       )}
     </nav>

@@ -29,6 +29,12 @@ const topics = TOPICS.map((topic) => {
   return { ...topic, count: items.length, preview };
 });
 const upgradeCount = upgradeFrom(list).length;
+
+const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
+const FRF_END = new Date('2027-07-26T00:00:00+09:00');
+const now = Date.now();
+const daysLeft = Math.ceil((NEXT_FRF.getTime() - now) / 86400000);
+const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
 ---
 <Layout
   theme="frf"
@@ -47,9 +53,10 @@ const upgradeCount = upgradeFrom(list).length;
     </div>
   </section>
 
-  <p class="frf-count-line" id="frf-count" hidden>
-    還有 <strong id="frf-days">—</strong> 天開幕，2027/7/23–25 苗場
-  </p>
+  {daysLeft > 0 && (
+    <p class="frf-count-line">還有 <strong>{daysLeft}</strong> 天開幕，2027/7/23–25 苗場</p>
+  )}
+  {isLive && <p class="frf-count-line">苗場開演中</p>}
 
   <p class="frf-kicker">第一次去？</p>
   <h2 class="frf-section">從這三篇開始</h2>
@@ -102,14 +109,3 @@ const upgradeCount = upgradeFrom(list).length;
 
   <p class="frf-back"><a href={url('/')}>← 回越後飯</a></p>
 </Layout>
-
-<script is:inline>
-  const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
-  const daysLeft = Math.ceil((NEXT_FRF.getTime() - Date.now()) / 86400000);
-  const box = document.getElementById('frf-count');
-  const num = document.getElementById('frf-days');
-  if (box && num && daysLeft > 0) {
-    num.textContent = String(daysLeft);
-    box.hidden = false;
-  }
-</script>
