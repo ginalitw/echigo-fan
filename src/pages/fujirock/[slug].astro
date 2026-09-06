@@ -67,7 +67,7 @@ const h1 = displayTitle(article.title);
 
   {(related.length > 0 || showUpgrade) && (
     <nav class="frf-more">
-      <p class="frf-kicker">同一主題</p>
+      <p class="frf-more-label">延伸閱讀</p>
       <ol>
         {related.map((a) => (
           <li>
@@ -76,12 +76,12 @@ const h1 = displayTitle(article.title);
         ))}
       </ol>
       {topic && (
-        <p>
+        <p class="frf-more-back">
           <a href={url(`/fujirock/topic/${topic.id}/`)}>回{topic.title}</a>
         </p>
       )}
       {showUpgrade && (
-        <p>
+        <p class="frf-more-back">
           <a href={url('/fujirock/upgrade/')}>回二衝升級</a>
         </p>
       )}

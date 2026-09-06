@@ -79,7 +79,7 @@ function rehypeFrfArticle() {
       }
     }
 
-    const wrap = (startTest, className, stopExtra, headingOnly = true) => {
+    const splice = (startTest, headingOnly, stopExtra, keep) => {
       const out = [];
       for (let i = 0; i < children.length; i++) {
         const node = children[i];
@@ -96,12 +96,14 @@ function rehypeFrfArticle() {
             group.push(n);
             j++;
           }
-          out.push({
-            type: 'element',
-            tagName: 'aside',
-            properties: { className: [className] },
-            children: group,
-          });
+          if (keep) {
+            out.push({
+              type: 'element',
+              tagName: 'aside',
+              properties: { className: [keep] },
+              children: group,
+            });
+          }
           i = j - 1;
         } else {
           out.push(node);
@@ -111,39 +113,20 @@ function rehypeFrfArticle() {
       children.push(...out);
     };
 
-    wrap((t) => t.includes('懶人重點'), 'frf-takeaway');
-    wrap(
+    splice((t) => t.includes('懶人重點'), true, null, 'frf-takeaway');
+    // Notion 延伸閱讀與網站同主題重複，不輸出。
+    splice(
       (t) => t.includes('延伸閱讀'),
-      'frf-related',
+      true,
       (n) => n.type === 'element' && (n.tagName === 'hr' || n.tagName === 'blockquote'),
+      null,
     );
-    wrap(
+    splice(
       (t) => t.includes('還有問題') || t.includes('加入我們的社群'),
-      'frf-signoff',
-      (n) => n.type === 'element' && n.tagName === 'hr',
       false,
+      (n) => n.type === 'element' && n.tagName === 'hr',
+      'frf-signoff',
     );
-
-    for (const node of children) {
-      if (node.type !== 'element' || ![].concat(node.properties?.className || []).includes('frf-related')) continue;
-      node.children = (node.children || []).filter((child) => {
-        if (child.type === 'element' && child.tagName === 'p' && /想繼續深入/.test(textOf(child))) {
-          return false;
-        }
-        return true;
-      });
-      const tidy = (n) => {
-        if (n.type === 'element' && n.tagName === 'a') {
-          const t = textOf(n)
-            .replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\s]+/u, '')
-            .replace(/^#\s*\d+\s*/, '')
-            .trim();
-          if (t) setText(n, t);
-        }
-        for (const c of n.children || []) tidy(c);
-      };
-      tidy(node);
-    }
   };
 }
 
