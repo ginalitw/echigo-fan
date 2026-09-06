@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/url';
+import {
+  TOPICS,
+  displayTitle,
+  articleFromEntry,
+  upgradeFrom,
+} from '../../lib/frf';
+import { getCollection } from 'astro:content';
+
+const synced = await getCollection('frf');
+const items = upgradeFrom(synced.map(articleFromEntry));
+const grouped = TOPICS.map((topic) => ({
+  topic,
+  items: items.filter((a) => a.topic === topic.id),
+})).filter((g) => g.items.length);
+const canonical = new URL('/fujirock/upgrade/', Astro.site).href;
+---
+<Layout
+  theme="frf"
+  title="二衝升級｜富士搖滾攻略｜越後飯"
+  description="第二次去富士搖滾，錢和力氣該花在哪裡：免搭帳、住宿、裝備輕量化。"
+  canonical={canonical}
+>
+  <p class="frf-crumb">
+    <a href={url('/fujirock/')}>富士搖滾攻略</a>
+    <span> / 二衝升級</span>
+  </p>
+  <h1 class="frf-title">二衝升級</h1>
+  <p class="frf-lead">第二次去富士搖滾，錢和力氣該花在哪裡。這些篇也在各自的主題裡。</p>
+  {grouped.map((g) => (
+    <section class="frf-upgrade-group">
+      <p class="frf-kicker">
+        <a href={url(`/fujirock/topic/${g.topic.id}/`)}>{g.topic.title}</a>
+      </p>
+      <ul class="frf-list">
+        {g.items.map((a) => (
+          <li>
+            <a href={url(`/fujirock/${a.slug}/`)}>
+              <span>
+                <strong>{displayTitle(a.title)}</strong>
+                <p>{a.meta}</p>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  <p class="frf-back"><a href={url('/fujirock/')}>← 回攻略入口</a></p>
+</Layout>

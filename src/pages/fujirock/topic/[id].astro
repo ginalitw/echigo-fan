@@ -1,0 +1,57 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { url } from '../../../lib/url';
+import {
+  TOPICS,
+  displayTitle,
+  articleFromEntry,
+  articlesByTopicFrom,
+  getTopic,
+  type TopicId,
+} from '../../../lib/frf';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return TOPICS.map((t) => ({ params: { id: t.id } }));
+}
+
+const { id } = Astro.params;
+const topic = getTopic(id);
+if (!topic) throw new Error('not found');
+const synced = await getCollection('frf');
+const items = articlesByTopicFrom(synced.map(articleFromEntry), id as TopicId);
+const i = TOPICS.findIndex((t) => t.id === topic.id);
+const prev = TOPICS[(i + TOPICS.length - 1) % TOPICS.length];
+const next = TOPICS[(i + 1) % TOPICS.length];
+const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
+---
+<Layout
+  theme="frf"
+  title={`${topic.title}｜富士搖滾攻略｜越後飯`}
+  description={topic.desc}
+  canonical={canonical}
+>
+  <p class="frf-crumb">
+    <a href={url('/fujirock/')}>富士搖滾攻略</a>
+    <span> / {topic.title}</span>
+  </p>
+  <h1 class="frf-title">{topic.title}</h1>
+  <p class="frf-lead">{topic.desc}</p>
+  <ul class="frf-list">
+    {items.map((a) => (
+      <li>
+        <a href={url(`/fujirock/${a.slug}/`)}>
+          <span>
+            <strong>{displayTitle(a.title)}</strong>
+            <p>{a.meta}</p>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="frf-neighbors">
+    <a href={url(`/fujirock/topic/${prev.id}/`)}>← {prev.title}</a>
+    <a href={url(`/fujirock/topic/${next.id}/`)}>{next.title} →</a>
+  </p>
+  <p class="frf-back"><a href={url('/fujirock/')}>← 回攻略入口</a></p>
+</Layout>
