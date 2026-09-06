@@ -32,7 +32,7 @@ const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
   canonical={canonical}
   ogImage={topic.cover}
 >
-  <figure class="frf-topic-cover">
+  <figure slot="hero" class="frf-topic-cover">
     <img src={url(topic.cover)} alt={topic.coverAlt} />
   </figure>
 
