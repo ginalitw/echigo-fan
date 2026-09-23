@@ -6,7 +6,13 @@ export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
   const frf = await getCollection('frf');
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-  const abs = (path: string) => new URL(base + path, site).href;
+  // 尾斜線正規化：GitHub Pages 會把 /posts/xxx 301 導到 /posts/xxx/，
+  // sitemap 若給沒斜線的版本，Google 會報「頁面會重新導向」而不收錄。
+  // 在這裡統一補上，呼叫端有沒有寫斜線都一樣（已有斜線的不受影響）。
+  const abs = (path: string) => {
+    const p = path === '/' ? '/' : path.endsWith('/') ? path : path + '/';
+    return new URL(base + p, site).href;
+  };
   const uniq = (arr: (string | undefined)[]) =>
     [...new Set(arr.filter((x): x is string => Boolean(x)))];
 
