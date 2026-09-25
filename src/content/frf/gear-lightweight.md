@@ -6,6 +6,7 @@ audience: ["returner"]
 stage: "prep"
 topics: ["裝備"]
 status: "公開"
+updated: 2026-09-05
 ---
 > 👑 **本篇適合：** 👑 老手升級 ｜ 去過至少一次，想裝備升級、更舒適更有型
 

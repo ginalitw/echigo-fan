@@ -10,6 +10,7 @@ artworkName: "為了無數失去的窗 For Lots of Lost Windows"
 code: "A0002"
 cover: "/images/posts/lost-windows/image-01.webp"
 status: "已發布"
+updated: 2026-08-28
 lead: "山坡上立著一個空的窗框。"
 date: 2026-07-27
 prevSlug: "kiyotsu-gorge"

@@ -2,6 +2,7 @@
 import { url } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
+import { articleLd, toISODate } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -18,10 +19,23 @@ const { Content } = await post.render();
 // 被整篇搬走時，這行是最直接的出處證明。
 const canonical = new URL(url(`/posts/${post.slug}`), Astro.site).href;
 
+// 可見更新日。沒有 updated 就什麼都不印，不補假日期。
+const updated = post.data.updated;
+const updatedISO = updated ? toISODate(updated) : null;
+
+const ld = articleLd({
+  headline: post.data.title,
+  canonical,
+  description: post.data.lead,
+  image: post.data.cover,
+  updated,
+  section: post.data.category?.[0],
+});
+
 const prevPost = post.data.prevSlug ? await getEntry('posts', post.data.prevSlug) : null;
 const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug) : null;
 ---
-<Layout title={`${post.data.title} - 越後飯`} canonical={canonical}>
+<Layout title={`${post.data.title} - 越後飯`} canonical={canonical} jsonLd={[ld]}>
   <div class="article">
     <div class="kicker">
       {post.data.category.map((c, i) => (
@@ -41,6 +55,13 @@ const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug
     <h1>{post.data.title}</h1>
     {post.data.artworkName && <div class="artwork-name">{post.data.artworkName}</div>}
     {post.data.lead && <div class="lead">{post.data.lead}</div>}
+    {updatedISO && (
+      <p class="byline">
+        <span>越後飯 ECHIGO FAN</span>
+        <span class="sep">·</span>
+        <time datetime={updatedISO}>{updatedISO} 最後更新</time>
+      </p>
+    )}
     <Content />
 
     {post.data.stamps && post.data.stamps.length > 0 && (

@@ -7,6 +7,7 @@ stage: "hesitate"
 topics: ["預算", "快樂遊"]
 cover: "/images/frf-posts/budget-comfort/image-01.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 👑 **本篇適合：** 👑 老手升級 ／ 想把預算花在刀口上、拒絕用體力換省錢的人
 

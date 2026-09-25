@@ -10,6 +10,7 @@ artworkName: "Palimpsest：空の池"
 code: "A0006"
 cover: "/images/posts/monet/image-01.webp"
 status: "已發布"
+updated: 2026-08-28
 lead: "一日遊的最後一站，是十日町的美術館。"
 date: 2026-07-27
 prevSlug: "ehon-museum"

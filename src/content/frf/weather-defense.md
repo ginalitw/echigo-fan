@@ -7,6 +7,7 @@ stage: "go"
 topics: ["露營", "裝備", "住宿"]
 cover: "/images/frf-posts/weather-defense/image-01.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 🌤️ **本篇適合：** 🌐 通用必修（所有人，不分新手老手）
 

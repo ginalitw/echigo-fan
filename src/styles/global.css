@@ -553,3 +553,16 @@ footer.site-footer {
   padding-bottom: 2px;
 }
 .more-link a:hover { border-color: var(--gold); }
+
+/* 署名與更新日。灰階小字，不搶正文。 */
+.byline {
+  margin: .4rem 0 1.4rem;
+  font-size: .82rem;
+  color: #8a8377;
+  letter-spacing: .02em;
+}
+.byline .sep { margin: 0 .45em; opacity: .55; }
+
+.about h2 { margin-top: 2rem; }
+.about .about-links { line-height: 2; }
+.about .terms { margin-top: 2rem; font-size: .85rem; color: #8a8377; }

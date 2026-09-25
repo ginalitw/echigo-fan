@@ -7,6 +7,7 @@ stage: "prep"
 topics: ["快樂遊", "窮遊", "住宿", "裝備"]
 cover: "/images/frf-posts/before-you-go/cover.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 👤 **本篇適合：**
 

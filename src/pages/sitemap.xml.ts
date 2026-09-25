@@ -25,6 +25,7 @@ export const GET: APIRoute = async ({ site }) => {
       loc: abs(`/fujirock/${p.slug}/`),
       priority: '0.8',
     })),
+    { loc: abs('/about'), priority: '0.6' },
     { loc: abs('/archive'), priority: '0.7' },
     ...posts.map((p) => ({
       loc: abs(`/posts/${p.slug}`),

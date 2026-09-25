@@ -7,6 +7,7 @@ stage: "prep"
 topics: ["交通"]
 cover: "/images/frf-posts/tokyo-to-naeba/image-01.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 👤 **本篇適合：** 🔰 新手首衝 ＋ 👑 老手升級（不管幾衝，交通動線都要搞清楚）
 

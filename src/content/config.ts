@@ -20,6 +20,8 @@ const posts = defineCollection({
     prevSlug: z.string().optional(),
     nextSlug: z.string().optional(),
     threads: z.string().optional(),
+    // 內容最後查核／更新日。AI 與搜尋引擎用它判斷新鮮度，不要填假的。
+    updated: z.coerce.date().optional(),
   }),
 });
 
@@ -35,6 +37,8 @@ const frf = defineCollection({
     pillar: z.string().optional(),
     cover: z.string().optional(),
     status: z.string().default('公開'),
+    // 內容最後查核／更新日。AI 與搜尋引擎用它判斷新鮮度，不要填假的。
+    updated: z.coerce.date().optional(),
   }),
 });
 

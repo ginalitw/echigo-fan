@@ -10,6 +10,7 @@ artworkName: "最後の教室 The Last Class"
 code: "A0004"
 cover: "/images/posts/last-class/image-01.webp"
 status: "已發布"
+updated: 2026-08-28
 lead: "這一站，我幾乎沒拍照。"
 date: 2026-07-27
 prevSlug: "nohbutai"

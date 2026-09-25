@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/url';
+import { SITE, SAME_AS } from '../lib/seo';
+
+const canonical = new URL(url('/about'), Astro.site).href;
+
+// 這頁的用途不只是給人看。搜尋引擎與 AI 需要一個「這個網站是誰」的落點，
+// 否則整站的內容就是一堆沒有主人的頁面，不會被當成可引用的來源。
+const ld = {
+  '@type': 'AboutPage',
+  url: canonical,
+  inLanguage: 'zh-Hant',
+  name: '關於越後飯 ECHIGO FAN',
+  mainEntity: { '@id': `${SITE}/#org` },
+};
+---
+<Layout
+  title="關於越後飯 ECHIGO FAN"
+  canonical={canonical}
+  description="越後飯 ECHIGO FAN 是什麼、寫什麼、憑什麼。新潟越後妻有與富士搖滾音樂祭的繁體中文第一手內容。"
+  jsonLd={[ld]}
+>
+  <div class="article about">
+    <h1>關於越後飯</h1>
+
+    <div class="lead">是新潟的鐵粉，也吃新潟的飯。追過了，才帶你去。</div>
+
+    <h2>這裡寫什麼</h2>
+
+    <p>
+      越後飯 ECHIGO FAN 是一個繁體中文的新潟內容站，只寫兩件事：
+      <strong>越後妻有大地藝術祭</strong>，和<strong>富士搖滾音樂祭</strong>。
+      兩者都在新潟的同一片山裡，只是一個在夏天的苗場，一個散在十日町與津南的梯田之間。
+    </p>
+
+    <p>
+      這裡不做維基百科查得到的東西。寫的是實際走過之後才知道的事：
+      露營區的斜坡有多斜、洗澡要排多久、末班車幾點、哪一件作品這一季根本進不去。
+      資料查得到的部分只當註腳，不當主體。
+    </p>
+
+    <h2>憑什麼</h2>
+
+    <p>
+      站上的內容以第一手經驗為主。沒去過的，會說沒去過；沒確認的數字，會標明出處與年份。
+      價格一律標日圓並註記查核年份，因為那裡的票價每一屆都在動。
+    </p>
+
+    <h2>兩個區塊</h2>
+
+    <ul>
+      <li><a href={url('/')}>越後飯</a>：越後妻有大地藝術祭的作品、季節與里山紀錄</li>
+      <li><a href={url('/fujirock/')}>音樂祭</a>：富士搖滾攻略，從第一次去到二衝升級</li>
+    </ul>
+
+    <h2>其他地方</h2>
+
+    <ul class="about-links">
+      <li><a href="https://www.threads.net/@echigo.fan" target="_blank" rel="me noopener">Threads @echigo.fan</a></li>
+      <li><a href="https://www.instagram.com/echigo.fan" target="_blank" rel="me noopener">Instagram @echigo.fan</a></li>
+      <li><a href={SAME_AS[2]} target="_blank" rel="noopener">富士搖滾台灣民間總部（臉書社團）</a></li>
+    </ul>
+
+    <p class="terms">
+      站上文字與照片歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。
+    </p>
+  </div>
+</Layout>

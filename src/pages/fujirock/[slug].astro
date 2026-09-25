@@ -11,6 +11,8 @@ import {
 } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
 import { getCollection, getEntry } from 'astro:content';
+import { articleLd, toISODate } from '../../lib/seo';
+import { extractFaq, faqLd } from '../../lib/faq';
 
 export async function getStaticPaths() {
   const synced = await getCollection('frf');
@@ -34,6 +36,24 @@ const body = Content ? null : FRF_BODIES[article.slug];
 const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
 const canonical = new URL(`/fujirock/${article.slug}/`, Astro.site).href;
 const h1 = displayTitle(article.title);
+
+const updated = entry.data.updated;
+const updatedISO = updated ? toISODate(updated) : null;
+
+// 這篇如果是 Q&A 體，就順便輸出 FAQPage。抓不到配對會回 null，不硬湊。
+const faq = faqLd(extractFaq(entry.body ?? ''));
+
+const ld = [
+  articleLd({
+    headline: h1,
+    canonical,
+    description: article.meta,
+    image: article.image,
+    updated,
+    section: topic?.title ?? '富士搖滾攻略',
+  }),
+  faq,
+].filter(Boolean);
 ---
 <Layout
   theme="frf"
@@ -41,6 +61,7 @@ const h1 = displayTitle(article.title);
   description={article.meta}
   canonical={canonical}
   ogImage={article.image}
+  jsonLd={ld}
 >
   <p class="frf-crumb">
     <a href={url('/fujirock/')}>富士搖滾攻略</a>
@@ -54,6 +75,13 @@ const h1 = displayTitle(article.title);
   {stageLabel && <p class="frf-kicker">{stageLabel}</p>}
   <h1 class="frf-title">{h1}</h1>
   {article.meta && <p class="frf-lead">{article.meta}</p>}
+  {updatedISO && (
+    <p class="frf-byline">
+      <span>越後飯 ECHIGO FAN</span>
+      <span class="sep">·</span>
+      <time datetime={updatedISO}>{updatedISO} 最後更新</time>
+    </p>
+  )}
 
   {Content ? (
     <article class="frf-prose">

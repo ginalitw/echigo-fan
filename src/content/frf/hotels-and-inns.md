@@ -7,6 +7,7 @@ stage: "prep"
 topics: ["住宿"]
 cover: "/images/frf-posts/hotels-and-inns/image-01.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 👑 **本篇適合：** 👑 老手升級 ｜ 去過至少一次，想優化住宿體驗
 

@@ -614,3 +614,12 @@ body.theme-frf .site-nav {
   body.theme-frf .brand .en { display: none; }
   body.theme-frf .site-nav a:first-child { display: none; }
 }
+
+/* 攻略頁的署名與更新日 */
+.frf-byline {
+  margin: .4rem 0 1.6rem;
+  font-size: .82rem;
+  color: #7d8a7f;
+  letter-spacing: .02em;
+}
+.frf-byline .sep { margin: 0 .45em; opacity: .55; }

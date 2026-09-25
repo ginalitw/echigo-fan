@@ -7,6 +7,7 @@ stage: "go"
 topics: ["露營"]
 cover: "/images/frf-posts/campsite-map/image-01.webp"
 status: "公開"
+updated: 2026-09-05
 ---
 > 👤 **本篇適合：** 🌐 通用必修（凡是要露營的人，不管幾衝都要先知道各區地形）
 

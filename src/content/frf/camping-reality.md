@@ -6,6 +6,7 @@ audience: ["beginner"]
 stage: "hesitate"
 topics: ["住宿", "預算", "露營"]
 status: "公開"
+updated: 2026-09-05
 ---
 > 👤 **本篇適合：** 🔰 新手首衝（第一次露營、不知道帶什麼、怕被現實打臉）
 

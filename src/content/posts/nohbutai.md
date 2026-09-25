@@ -10,6 +10,7 @@ artworkName: "カフェ・ルフレ Café Reflet"
 code: "A0003"
 cover: "/images/posts/nohbutai/image-01.webp"
 status: "已發布"
+updated: 2026-08-28
 lead: "走了一整天，中午我們在一件作品裡吃飯。"
 date: 2026-07-27
 prevSlug: "lost-windows"
