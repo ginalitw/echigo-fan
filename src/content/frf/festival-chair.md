@@ -7,7 +7,6 @@ stage: "prep"
 topics: ["裝備"]
 cover: "/images/frf-posts/festival-chair/image-01.webp"
 status: "公開"
-updated: 2026-09-05
 ---
 > 🌐 **本篇適合：** 🌐 通用必修（選錯椅子毀一天，選對椅子爽三天）
 

@@ -6,7 +6,6 @@ audience: ["common"]
 stage: "go"
 topics: ["快樂遊"]
 status: "公開"
-updated: 2026-09-05
 ---
 > 🛍️ **前夜祭只有官方周邊（16:00 開）；藝人周邊全部 7/24 才開賣**
 

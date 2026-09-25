@@ -7,7 +7,6 @@ stage: "go"
 topics: ["裝備"]
 cover: "/images/frf-posts/daypack-packing/image-01.webp"
 status: "公開"
-updated: 2026-09-05
 ---
 > 🌐 **本篇適合：** 🌐 通用必修（第一次打包不確定帶什麼、想對照老手清單的人）
 

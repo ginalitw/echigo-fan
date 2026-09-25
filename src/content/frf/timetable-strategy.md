@@ -6,7 +6,6 @@ audience: ["common"]
 stage: "go"
 topics: ["快樂遊"]
 status: "公開"
-updated: 2026-09-05
 ---
 > 🎵 **本篇適合：** 🔰 新手首衝 ＋ 👑 老手升級
 

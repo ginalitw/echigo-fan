@@ -11,7 +11,6 @@ code: "A0001"
 stamps: ["/images/stamps/kiyotsu-gorge/stamp-01.webp"]
 cover: "/images/posts/kiyotsu-gorge/image-01.webp"
 status: "已發布"
-updated: 2026-08-28
 lead: "那年我決定犧牲最後一天的音樂祭，走出苗場，轉身入里山。"
 date: 2026-07-27
 prevSlug: ""
