@@ -459,6 +459,11 @@ async function main() {
       item.topics.length ? `topics: ${yamlList(item.topics)}` : null,
       ctx.cover ? `cover: ${yaml(ctx.cover)}` : null,
       `status: "公開"`,
+      // 內容最後更新日，給搜尋引擎與 AI 判斷新鮮度用。
+      // 取 Notion 頁面的 last_edited_time，不需要在 Notion 多開欄位。
+      item.page?.last_edited_time
+        ? `updated: ${new Date(item.page.last_edited_time).toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' })}`
+        : null,
       '---',
       '',
     ].filter(Boolean).join('\n');

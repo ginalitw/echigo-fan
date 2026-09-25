@@ -629,6 +629,12 @@ async function main() {
       `status: ${yaml(status)}`,
       ctx.lead ? `lead: ${yaml(ctx.lead)}` : null,
       date ? `date: ${date}` : null,
+      // 內容最後更新日，給搜尋引擎與 AI 判斷新鮮度用。
+      // 取 Notion 頁面的 last_edited_time，所以不需要在 Notion 多開欄位；
+      // 一樣用台北時區格式化，理由同上面的 date。
+      page.last_edited_time
+        ? `updated: ${new Date(page.last_edited_time).toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' })}`
+        : null,
       `prevSlug: ${yaml(sameSeries(i, -1))}`,
       `nextSlug: ${yaml(sameSeries(i, +1))}`,
       threads ? `threads: ${yaml(threads)}` : null,
