@@ -82,7 +82,11 @@ const ld = graph([publisher, website, ...(Array.isArray(jsonLd) ? jsonLd : [json
   </main>
 
   <footer class="site-footer">
-    {isFrf ? '越後飯 · 音樂祭 · 富士搖滾攻略' : '越後飯 ECHIGO FAN · 追過了，才帶你去 · 繁體中文'}
+    {isFrf ? (
+      <><a href={url('/about')}>越後飯</a> · 音樂祭 · 富士搖滾攻略</>
+    ) : (
+      <><a href={url('/about')}>越後飯 ECHIGO FAN</a> · 追過了，才帶你去 · 繁體中文</>
+    )}
   </footer>
 </body>
 </html>

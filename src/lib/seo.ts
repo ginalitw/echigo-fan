@@ -21,6 +21,7 @@ export const publisher = {
   url: `${SITE}/`,
   sameAs: SAME_AS,
   description: '新潟越後妻有與富士搖滾音樂祭的繁體中文第一手內容。追過了，才帶你去。',
+  image: `${SITE}/images/about/afan-tanada.webp`,
 };
 
 export const website = {

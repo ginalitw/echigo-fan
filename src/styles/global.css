@@ -566,3 +566,20 @@ footer.site-footer {
 .about h2 { margin-top: 2rem; }
 .about .about-links { line-height: 2; }
 .about .terms { margin-top: 2rem; font-size: .85rem; color: #8a8377; }
+
+/* about 頁的主視覺。滿版寬度、圓角，手機上也不會溢出。 */
+.about-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 0 1.6rem;
+}
+
+/* 頁尾的品牌名連到 /about。低調，不要搶眼。 */
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .28);
+}
+.site-footer a:hover { border-bottom-color: currentColor; }
