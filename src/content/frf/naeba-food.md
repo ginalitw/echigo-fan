@@ -7,6 +7,7 @@ stage: "go"
 topics: ["快樂遊"]
 cover: "/images/frf-posts/naeba-food/image-01.webp"
 status: "公開"
+updated: 2026-09-06
 ---
 > 🍜 **本篇適合：** 🌐 通用必修（不知道苗場要吃什麼、怕踩雷或想吃有水準的人）
 

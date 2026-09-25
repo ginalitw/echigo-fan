@@ -6,6 +6,7 @@ audience: ["common"]
 stage: "go"
 topics: ["快樂遊"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 🎫 **本篇適合：** 🔰 新手首衝 ／ 🌐 通用必修（第一次到苗場、不確定手環怎麼領的人）
 

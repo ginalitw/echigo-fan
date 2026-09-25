@@ -6,6 +6,7 @@ audience: ["common"]
 stage: "prep"
 topics: ["快樂遊"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 📱 **本篇適合：** 🌐 通用必修（不管露營還是住民宿，手機充電和網路是每個人都要面對的問題）
 

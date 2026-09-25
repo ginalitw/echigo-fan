@@ -6,6 +6,7 @@ audience: ["common"]
 stage: "go"
 topics: ["露營"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 🚿 **本篇適合：** 🌐 通用必修（凡是要在苗場露營三天的人，洗澡戰略一定要先看）
 

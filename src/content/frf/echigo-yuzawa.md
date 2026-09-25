@@ -7,6 +7,7 @@ stage: "go"
 topics: ["快樂遊"]
 cover: "/images/frf-posts/echigo-yuzawa/image-01.webp"
 status: "公開"
+updated: 2026-09-06
 ---
 > 🌐 **本篇適合：** 🌐 通用必修（想帶點新潟好東西回家的所有人）
 

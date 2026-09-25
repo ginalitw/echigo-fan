@@ -6,6 +6,7 @@ audience: ["common"]
 stage: "prep"
 topics: ["快樂遊", "裝備"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 🌐 **本篇適合：** 🌐 通用必修 ｜ 想在出發前於東京補齊裝備、藥妝與伴手禮的人
 

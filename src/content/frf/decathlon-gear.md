@@ -6,6 +6,7 @@ audience: ["common"]
 stage: "prep"
 topics: ["裝備", "露營", "窮遊"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 👤 **本篇適合：** 🔰 新手首衝 ／ 💸 預算有限的朋友
 

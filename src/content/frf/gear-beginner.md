@@ -6,6 +6,7 @@ audience: ["beginner"]
 stage: "prep"
 topics: ["裝備"]
 status: "公開"
+updated: 2026-09-06
 ---
 > 🔰 **本篇適合：** 🔰 新手首衝 ｜ 第一次去、不知道要穿什麼、怕被暴雨淋爛 
 

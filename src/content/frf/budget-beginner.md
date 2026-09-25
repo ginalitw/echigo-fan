@@ -7,6 +7,7 @@ stage: "hesitate"
 topics: ["預算", "窮遊"]
 cover: "/images/frf-posts/budget-beginner/image-01.webp"
 status: "公開"
+updated: 2026-09-06
 ---
 > 👤 **本篇適合：** 🔰 新手首衝（預算有限、想用最低成本體驗音樂祭的熱血青年）
 
