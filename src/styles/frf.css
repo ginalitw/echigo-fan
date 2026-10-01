@@ -5,8 +5,13 @@ body.theme-frf {
   --rice: #f4f7f2;
   --ink: #1f2a24;
   --ink-soft: #5c6b60;
-  --gold: #3f7a4a;
-  --punch: #e35b2d;
+  --gold: #2f6b3b;          /* 苗場綠（加深一階，小字對底色 5.4:1） */
+  --accent: #3f7a4a;
+  --accent-ink: #2f6b3b;
+  --paper: #f4f7f2;
+  --night: #1b2520;
+  --foot-accent: #9CCBA5;
+  --punch: #b23c12;         /* 原 #e35b2d 當文字只有 3.3:1 */
   --line: #c5d1c4;
   --summer: #2f5e4a;
 
@@ -25,58 +30,6 @@ body.theme-frf h2,
 body.theme-frf h3,
 body.theme-frf h4 {
   font-family: "Noto Sans TC", sans-serif;
-}
-
-body.theme-frf header.site-header.frf-top {
-  padding: 0;
-  text-align: left;
-  border-bottom: 1px solid var(--line);
-}
-
-body.theme-frf .frf-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 24px;
-}
-
-body.theme-frf .brand {
-  font-family: "Noto Serif TC", serif;
-  font-size: 20px;
-  text-decoration: none;
-  color: inherit;
-}
-
-body.theme-frf .brand .en {
-  display: inline;
-  margin-left: 8px;
-  letter-spacing: 0.16em;
-}
-
-body.theme-frf .site-nav {
-  margin-top: 0;
-}
-
-.site-nav a.is-active {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-.door-link {
-  text-align: center;
-  margin: 8px 0 12px;
-}
-.door-link a {
-  font-size: 14px;
-  color: var(--ink-soft);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
-}
-.door-link a:hover {
-  color: var(--gold);
-  border-color: var(--gold);
 }
 
 .frf-hero {
@@ -102,9 +55,9 @@ body.theme-frf .site-nav {
 .frf-hero-copy {
   position: relative;
   z-index: 1;
-  max-width: 760px;
+  max-width: calc(760px + 2 * var(--gutter));
   margin: 0 auto;
-  padding: 20px 24px 24px;
+  padding: 20px var(--gutter) 24px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -390,6 +343,16 @@ body.theme-frf .site-nav {
   border-radius: 4px;
   margin: 8px 0 16px;
 }
+/* 單張直式圖最高一個螢幕，不讓一張圖吃掉整頁 */
+.frf-prose p > img {
+  width: auto;
+  max-width: 100%;
+  max-height: 80svh;
+  margin-left: auto;
+  margin-right: auto;
+}
+.frf-prose .gallery img { margin: 0; }
+.frf-prose td.num, .frf-prose th.num { text-align: right; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
 .frf-prose figure { margin: 20px 0; }
 .frf-prose figure img { width: 100%; border-radius: 4px; margin: 0; }
 .frf-prose figcaption {
@@ -552,7 +515,7 @@ body.theme-frf .site-nav {
   color: var(--ink-soft);
 }
 .frf-repost a { color: var(--gold); word-break: break-all; }
-.frf-repost .terms { margin-top: 6px; opacity: 0.75; }
+.frf-repost .terms { margin-top: 6px; }
 
 .frf-back {
   margin: 28px 0 48px;
@@ -572,7 +535,7 @@ body.theme-frf .site-nav {
   }
   .frf-hero-copy {
     min-height: 384px;
-    padding: 40px 24px;
+    padding: 40px var(--gutter);
   }
   .frf-hero-copy h1 { font-size: 60px; }
   .frf-hero-copy p { margin-top: 16px; font-size: 16px; }
@@ -619,7 +582,7 @@ body.theme-frf .site-nav {
 .frf-byline {
   margin: .4rem 0 1.6rem;
   font-size: .82rem;
-  color: #7d8a7f;
+  color: var(--ink-soft);
   letter-spacing: .02em;
 }
 .frf-byline .sep { margin: 0 .45em; opacity: .55; }

@@ -22,84 +22,94 @@ const ld = {
   description="越後飯 ECHIGO FAN 是繁體中文的新潟內容站，寫越後妻有大地藝術祭與富士搖滾音樂祭。追過了，才帶你去。"
   ogImage={hero}
   jsonLd={[ld]}
+  pageClass="page-article"
 >
-  <div class="article about">
+  <div class="about-hero-wrap">
     <img
       class="about-hero"
       src={url(hero)}
+      srcset={`${url('/images/about/afan-tanada-480.webp')} 480w, ${url('/images/about/afan-tanada-800.webp')} 800w, ${url(hero)} 1600w`}
+      sizes="(max-width: 1260px) 100vw, 1200px"
       width="1600"
       height="893"
+      fetchpriority="high"
       alt="越後飯的角色阿飯戴著橘色氈帽、背著背包，站在田埂上，望向越後妻有秋天的金色梯田與後方山林"
     />
-
-    <h1>關於越後飯</h1>
-
-    <div class="lead">是新潟的鐵粉，也吃新潟的飯。追過了，才帶你去。</div>
-
-    <p>
-      越後飯 ECHIGO FAN 是一個繁體中文的新潟內容站，寫兩件事：
-      <strong>越後妻有大地藝術祭</strong>，和<strong>富士搖滾音樂祭</strong>。
-      兩者都在新潟的山裡，一個在苗場的夏天，一個散在十日町與津南的梯田之間。
-      網站在 echigo.fans，社群帳號是 Threads 與 Instagram 的 @echigo.fan。
-    </p>
-
-    <h2>怎麼開始的</h2>
-
-    <p>第一次去富士搖滾是 2010 年。不是年年報到，這些年斷斷續續回去，2026 年是第四次。</p>
-
-    <p>往年就是那三四天。進苗場，看完，走人。清酒販賣機每年都喝。</p>
-
-    <p>但看見的不只是音樂祭。夏天，人群泡在溪裡納涼。冬天，我進過雪封的苗場跟越後湯澤。</p>
-
-    <p>然後開始有很多為什麼。這條溪從哪裡來，溪水養出來的米又去了哪裡，爆彈飯糰為什麼可以那麼好吃。</p>
-
-    <p>那些為什麼串在一起，最後都指向同一件事。米，水，還有守著這片山的人。</p>
-
-    <p>大地藝術祭不是另一個行程。它就長在同一片土地上。</p>
-
-    <p>所以才有了這個站。</p>
-
-    <h2>寫什麼</h2>
-
-    <p>
-      實際走過才知道的事。露營區的斜坡有多斜，洗澡要排多久，末班車幾點收，
-      哪一件作品這一季根本進不去，哪一攤每年都回來。
-    </p>
-
-    <p>不寫維基百科查得到的東西。資料只當註腳，不當主體。</p>
-
-    <h2>不寫什麼</h2>
-
-    <p>沒去過的地方不寫攻略。</p>
-
-    <p>沒確認的數字不寫定論。</p>
-
-    <p>價格一律標日圓並註明查核年份，因為那裡每一屆都在動。</p>
-
-    <h2>阿飯</h2>
-
-    <p>
-      阿飯是越後飯的角色。戴橘色氈帽，背一個舊背包，
-      總是背對鏡頭在看風景，因為重點從來不是他，是他在看的那一片。
-    </p>
-
-    <h2>兩個區塊</h2>
-
-    <ul>
-      <li><a href={url('/')}>越後飯</a>：越後妻有大地藝術祭的作品、季節與里山紀錄</li>
-      <li><a href={url('/fujirock/')}>音樂祭</a>：富士搖滾攻略，從第一次去到二衝升級</li>
-    </ul>
-
-    <h2>其他地方</h2>
-
-    <ul class="about-links">
-      <li><a href="https://www.threads.net/@echigo.fan" target="_blank" rel="me noopener">Threads @echigo.fan</a></li>
-      <li><a href="https://www.instagram.com/echigo.fan" target="_blank" rel="me noopener">Instagram @echigo.fan</a></li>
-      <li><a href={SAME_AS[2]} target="_blank" rel="noopener">富士搖滾台灣民間總部（臉書社團）</a></li>
-    </ul>
-
-    <p class="terms">
-      站上文字與照片歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。
-    </p>
   </div>
+
+  <article class="post about">
+    <header class="post-head">
+      <p class="post-kicker"><span>About</span></p>
+      <h1>關於越後飯</h1>
+      <p class="post-lead">是新潟的鐵粉，也吃新潟的飯。追過了，才帶你去。</p>
+    </header>
+
+    <div class="prose">
+      <p>
+        越後飯 ECHIGO FAN 是一個繁體中文的新潟內容站，寫兩件事：
+        <strong>越後妻有大地藝術祭</strong>，和<strong>富士搖滾音樂祭</strong>。
+        兩者都在新潟的山裡，一個在苗場的夏天，一個散在十日町與津南的梯田之間。
+        網站在 echigo.fans，社群帳號是 Threads 與 Instagram 的 @echigo.fan。
+      </p>
+
+      <h2><span class="no">01</span>怎麼開始的</h2>
+
+      <p>第一次去富士搖滾是 2010 年。不是年年報到，這些年斷斷續續回去，2026 年是第四次。</p>
+
+      <p>往年就是那三四天。進苗場，看完，走人。清酒販賣機每年都喝。</p>
+
+      <p>但看見的不只是音樂祭。夏天，人群泡在溪裡納涼。冬天，我進過雪封的苗場跟越後湯澤。</p>
+
+      <p>然後開始有很多為什麼。這條溪從哪裡來，溪水養出來的米又去了哪裡，爆彈飯糰為什麼可以那麼好吃。</p>
+
+      <p>那些為什麼串在一起，最後都指向同一件事。米，水，還有守著這片山的人。</p>
+
+      <p>大地藝術祭不是另一個行程。它就長在同一片土地上。</p>
+
+      <p>所以才有了這個站。</p>
+
+      <h2><span class="no">02</span>寫什麼</h2>
+
+      <p>
+        實際走過才知道的事。露營區的斜坡有多斜，洗澡要排多久，末班車幾點收，
+        哪一件作品這一季根本進不去，哪一攤每年都回來。
+      </p>
+
+      <p>不寫維基百科查得到的東西。資料只當註腳，不當主體。</p>
+
+      <h2><span class="no">03</span>不寫什麼</h2>
+
+      <p>沒去過的地方不寫攻略。</p>
+
+      <p>沒確認的數字不寫定論。</p>
+
+      <p>價格一律標日圓並註明查核年份，因為那裡每一屆都在動。</p>
+
+      <h2><span class="no">04</span>阿飯</h2>
+
+      <p>
+        阿飯是越後飯的角色。戴橘色氈帽，背一個舊背包，
+        總是背對鏡頭在看風景，因為重點從來不是他，是他在看的那一片。
+      </p>
+
+      <h2><span class="no">05</span>兩個區塊</h2>
+
+      <ul>
+        <li><a href={url('/')}>越後飯</a>：越後妻有大地藝術祭的作品、季節與里山紀錄</li>
+        <li><a href={url('/fujirock/')}>音樂祭</a>：富士搖滾攻略，從第一次去到二衝升級</li>
+      </ul>
+
+      <h2><span class="no">06</span>其他地方</h2>
+
+      <ul class="links">
+        <li><a href="https://www.threads.net/@echigo.fan" target="_blank" rel="me noopener"><span>Threads @echigo.fan</span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.instagram.com/echigo.fan" target="_blank" rel="me noopener"><span>Instagram @echigo.fan</span><span aria-hidden="true">↗</span></a></li>
+        <li><a href={SAME_AS[2]} target="_blank" rel="noopener"><span>富士搖滾台灣民間總部（臉書社團）</span><span aria-hidden="true">↗</span></a></li>
+      </ul>
+
+      <p class="terms">
+        站上文字與照片歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。
+      </p>
+    </div>
+  </article>
 </Layout>

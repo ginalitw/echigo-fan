@@ -3,6 +3,8 @@ import { url } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { articleLd, toISODate } from '../../lib/seo';
+import { imgAttrs } from '../../lib/img';
+import { phrase } from '../../lib/phrase';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -14,76 +16,155 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+const d = post.data;
 
 // 原文網址：拿來當 canonical，也印在文末的署名區塊裡。
 // 被整篇搬走時，這行是最直接的出處證明。
 const canonical = new URL(url(`/posts/${post.slug}`), Astro.site).href;
 
 // 可見更新日。沒有 updated 就什麼都不印，不補假日期。
-const updated = post.data.updated;
+const updated = d.updated;
 const updatedISO = updated ? toISODate(updated) : null;
 
+// Notion 裡常把導言原封不動再貼一次當第一段。
+// 一樣的話就不另外印導言，改由第一段穿上導言的樣式——不重複、也不藏字。
+// 封面圖會被拉到頂端，所以跳過開頭的圖片段落再比
+const firstPara = (post.body ?? '').split(/\n\s*\n/).map((s) => s.trim()).find((s) => s && !s.startsWith('![')) ?? '';
+const leadDup = !!d.lead && firstPara === d.lead.trim();
+
+// 季節決定這篇的環境色（導言左線、清單圓點、資訊區上緣）
+const season = d.season?.[0] ?? '';
+
 const ld = articleLd({
-  headline: post.data.title,
+  headline: d.title,
   canonical,
-  description: post.data.lead,
-  image: post.data.cover,
+  description: d.lead,
+  image: d.cover,
   updated,
-  section: post.data.category?.[0],
+  section: d.category?.[0],
 });
 
-const prevPost = post.data.prevSlug ? await getEntry('posts', post.data.prevSlug) : null;
-const nextPost = post.data.nextSlug ? await getEntry('posts', post.data.nextSlug) : null;
+const prevPost = d.prevSlug ? await getEntry('posts', d.prevSlug) : null;
+const nextPost = d.nextSlug ? await getEntry('posts', d.nextSlug) : null;
+
+// 封面當主視覺（內文裡的同一張由 rehypeLiftCover 拿掉）
+const cover = d.cover ? await imgAttrs(d.cover, '(max-width: 900px) 100vw, 56vw') : null;
+// 站名標上的站號：用作品編號的第一個代碼（N079、T025…）
+const stationNo = (d.artworkNumber?.match(/[A-Z]\d{3}/) ?? [])[0] ?? '';
 ---
-<Layout title={`${post.data.title} - 越後飯`} canonical={canonical} jsonLd={[ld]}>
-  <div class="article">
-    <div class="kicker">
-      {post.data.category.map((c, i) => (
-        <>{i > 0 && ' · '}<a href={url(`/category/${encodeURIComponent(c)}`)}>{c}</a></>
-      ))}
-      {post.data.location && (<> · <a href={url(`/location/${encodeURIComponent(post.data.location)}`)}>{post.data.location}</a></>)}
-      {post.data.artworkNumber && <> · <span class="code">{post.data.artworkNumber}</span></>}
-      {post.data.season && post.data.season.map(s => (
-        <> · <a href={url(`/season/${encodeURIComponent(s)}`)}>{s}</a></>
-      ))}
-      {post.data.artist && post.data.artist.length > 0 && (
-        <> · {post.data.artist.map((a, i) => (
-          <>{i > 0 && '、'}<a href={url(`/artist/${encodeURIComponent(a)}`)}>{a}</a></>
-        ))}</>
-      )}
-    </div>
-    <h1>{post.data.title}</h1>
-    {post.data.artworkName && <div class="artwork-name">{post.data.artworkName}</div>}
-    {post.data.lead && <div class="lead">{post.data.lead}</div>}
-    {updatedISO && (
-      <p class="byline">
-        <span>越後飯 ECHIGO FAN</span>
-        <span class="sep">·</span>
-        <time datetime={updatedISO}>{updatedISO} 最後更新</time>
+<Layout
+  title={`${d.title}｜越後飯 ECHIGO FAN`}
+  canonical={canonical}
+  description={d.lead || `${d.title}：越後飯的實地紀錄。`}
+  ogImage={d.cover}
+  ogType="article"
+  jsonLd={[ld]}
+  progress
+  pageClass="page-article"
+>
+  <article class={`post ${season ? `s-${season}` : ''} ${cover ? 'has-cover' : ''}`}>
+    <div class="post-hero">
+    <header class="post-head">
+      <p class="post-kicker">
+        {d.category.map((c) => (
+          <a href={url(`/category/${encodeURIComponent(c)}`)}>{c}</a>
+        ))}
+        {d.artworkNumber && <span class="code">{(d.artworkNumber.match(/[A-Z]\d{3}/g) ?? [d.artworkNumber]).join(' · ')}</span>}
       </p>
-    )}
-    <Content />
+      <h1 set:html={phrase(d.title)} />
+      {d.artworkName && <p class="post-work">{d.artworkName}</p>}
 
-    {post.data.stamps && post.data.stamps.length > 0 && (
-      <div class="stamps">
-        <div class="stamps-label">蓋到的章</div>
-        <div class="stamps-row">
-          {post.data.stamps.map((src, i) => (
-            <img src={url(src)} alt={`${post.data.title} 紀念章 ${i + 1}`} loading="lazy" />
-          ))}
+      {(d.location || d.artist?.length || d.season?.length || d.postType) && (
+        <dl class="post-facts">
+          {d.location && (
+            <div><dt>地點</dt><dd><a href={url(`/location/${encodeURIComponent(d.location)}`)}>{d.location}</a></dd></div>
+          )}
+          {d.artist && d.artist.length > 0 && (
+            <div><dt>藝術家</dt><dd>{d.artist.map((a, i) => (
+              <>{i > 0 && '、'}<a href={url(`/artist/${encodeURIComponent(a)}`)}>{a}</a></>
+            ))}</dd></div>
+          )}
+          {d.season && d.season.length > 0 && (
+            <div><dt>季節</dt><dd>{d.season.map((s, i) => (
+              <>{i > 0 && '・'}<a href={url(`/season/${encodeURIComponent(s)}`)}>{s}</a></>
+            ))}</dd></div>
+          )}
+          {d.postType && <div><dt>類型</dt><dd>{d.postType}</dd></div>}
+        </dl>
+      )}
+
+      {updatedISO && (
+        <p class="byline">
+          <span>越後飯 ECHIGO FAN</span>
+          <span class="sep">·</span>
+          <time datetime={updatedISO}>{updatedISO} 最後更新</time>
+        </p>
+      )}
+    </header>
+    {cover && (
+      <figure class="post-cover">
+        <img {...cover} alt={`${d.title}：現場照片`} fetchpriority="high" decoding="async" style={`view-transition-name: cover-${post.slug}`} />
+      </figure>
+    )}
+    </div>
+
+    {d.lead && !leadDup && <p class="post-lead">{d.lead}</p>}
+
+    <div class={`prose ${leadDup ? 'lead-dup' : ''}`}>
+      <Content />
+    </div>
+
+    <footer class="post-end">
+      {d.stamps && d.stamps.length > 0 && (
+        <div class="stamps" data-reveal>
+          <p class="stamps-label">蓋到的章</p>
+          <div class="stamps-row">
+            {d.stamps.map((src, i) => (
+              <img src={url(src)} alt={`${d.title} 紀念章 ${i + 1}`} loading="lazy" decoding="async" />
+            ))}
+          </div>
         </div>
+      )}
+
+      <!-- 站名標：仿日本車站月台的站名牌。這篇就是「這一站」，左右是上一站、下一站。 -->
+      <nav class="eki" aria-label="上一站與下一站" data-reveal>
+        <div class="eki-board">
+          {stationNo && <p class="eki-no"><span>{stationNo}</span></p>}
+          <p class="eki-name" set:html={phrase(d.title)} />
+          {(d.artworkName || d.location) && <p class="eki-sub">{d.artworkName || d.location}</p>}
+        </div>
+        <div class="eki-band" aria-hidden="true"><span></span></div>
+        <div class="eki-links">
+          {prevPost ? (
+            <a class="eki-prev" href={url(`/posts/${prevPost.slug}`)}>
+              <span class="dir-label">◀ 上一站</span>
+              <span class="t" set:html={phrase(prevPost.data.title)} />
+            </a>
+          ) : (
+            <a class="eki-prev" href={url('/')}>
+              <span class="dir-label">◀ 起點</span>
+              <span class="t">回首頁</span>
+            </a>
+          )}
+          {nextPost ? (
+            <a class="eki-next" href={url(`/posts/${nextPost.slug}`)}>
+              <span class="dir-label">下一站 ▶</span>
+              <span class="t" set:html={phrase(nextPost.data.title)} />
+            </a>
+          ) : (
+            <a class="eki-next" href={url('/archive/')}>
+              <span class="dir-label">終點 ▶</span>
+              <span class="t">看全部文章</span>
+            </a>
+          )}
+        </div>
+      </nav>
+
+      <div class="repost-notice">
+        <p>本文原載於 <strong>越後飯 ECHIGO FAN</strong> ——「追過了，才帶你去」</p>
+        <p class="src">原文網址：<a href={canonical}>{canonical}</a></p>
+        <p class="terms">歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。</p>
       </div>
-    )}
-
-    <div class="repost-notice">
-      <p>本文原載於 <strong>越後飯 ECHIGO FAN</strong> ——「追過了，才帶你去」</p>
-      <p class="src">原文網址：<a href={canonical}>{canonical}</a></p>
-      <p class="terms">歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。</p>
-    </div>
-
-    <div class="article-nav">
-      <span>{prevPost ? <a href={url(`/posts/${prevPost.slug}`)}>◀ 上一站：{prevPost.data.title}</a> : <a href={url('/')}>◀ 回首頁</a>}</span>
-      <span>{nextPost ? <a href={url(`/posts/${nextPost.slug}`)}>下一站：{nextPost.data.title} ▶</a> : <a href={url('/')}>回首頁 ▶</a>}</span>
-    </div>
-  </div>
+    </footer>
+  </article>
 </Layout>

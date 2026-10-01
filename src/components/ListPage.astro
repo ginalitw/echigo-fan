@@ -1,0 +1,34 @@
+---
+// 清單頁共用骨架：分類／地點／季節／藝術家／全部文章
+import Layout from '../layouts/Layout.astro';
+import RouteList from './RouteList.astro';
+import { url } from '../lib/url';
+import { phrase } from '../lib/phrase';
+
+const { title, eyebrow, intro, posts = [], canonicalPath, emptyText = '這一區正在寫。' } = Astro.props;
+const canonical = canonicalPath ? new URL(url(canonicalPath), Astro.site).href : undefined;
+---
+<Layout
+  title={`${title}｜越後飯 ECHIGO FAN`}
+  canonical={canonical}
+  description={intro ? `${title}：${intro}` : `越後飯 ECHIGO FAN 的「${title}」文章，共 ${posts.length} 篇。`}
+>
+  <header class="page-head">
+    <p class="eyebrow"><a href={url('/')}>越後飯</a> ／ {eyebrow}</p>
+    <h1 set:html={phrase(title)} />
+    {intro && <p>{intro}</p>}
+    {posts.length > 0 && <p><span class="count">{posts.length}</span> 篇</p>}
+  </header>
+
+  {posts.length > 0 ? (
+    <RouteList posts={posts} />
+  ) : (
+    <div class="empty">
+      <p>{emptyText}</p>
+      <p>先去看已經走過的路。</p>
+      <a class="text-link" href={url('/archive/')}>全部文章 <span aria-hidden="true">→</span></a>
+    </div>
+  )}
+
+  <p class="page-back"><a class="text-link" href={url('/')}>← 回首頁</a></p>
+</Layout>

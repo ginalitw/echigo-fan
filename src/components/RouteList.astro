@@ -1,0 +1,68 @@
+---
+// 「走過的路」：首頁與所有清單頁共用的文章列表。
+// 一篇文章就是路線上的一站：虛線是路，圓點顏色是季節。
+// 同一天走的站收在同一個日期底下，像行程表。
+import { url } from '../lib/url';
+import { formatDate } from '../lib/posts';
+import { imgAttrs } from '../lib/img';
+import { phrase } from '../lib/phrase';
+
+const { posts = [] } = Astro.props;
+
+// 作品編號只留代碼（D053、T025…），括號裡的說明留給文章頁
+const codesOf = (s) => (s ? (s.match(/[A-Z]\d{3}/g) ?? []).join(' · ') : '');
+
+const rows = await Promise.all(
+  posts.map(async (post, i) => ({
+    post,
+    i,
+    day: post.data.date ? formatDate(post.data.date) : '',
+    season: post.data.season?.[0] ?? '',
+    codes: codesOf(post.data.artworkNumber),
+    thumb: post.data.cover
+      ? await imgAttrs(post.data.cover, '(max-width: 560px) 84px, 240px')
+      : null,
+  })),
+);
+
+// 依日期分組；同一天有幾站也一併算出來
+const days = [];
+for (const r of rows) {
+  const last = days[days.length - 1];
+  if (last && last.day === r.day) last.rows.push(r);
+  else days.push({ day: r.day, rows: [r] });
+}
+---
+<ol class="route">
+  {days.map((g) => (
+    <>
+      {g.day && (
+        <li class="route-day">
+          <time datetime={g.day.replace(/\./g, '-')}>{g.day}</time>
+        </li>
+      )}
+      {g.rows.map(({ post, i, season, codes, thumb }) => (
+        <li class={`stop ${season ? `s-${season}` : ''}`} data-reveal style={`--i:${Math.min(i, 3)}`}>
+          <a class="stop-link" href={url(`/posts/${post.slug}`)}>
+            <span class="stop-dot" aria-hidden="true"></span>
+            <div class="stop-body">
+              <p class="stop-meta">
+                {codes && <span class="code">{codes}</span>}
+                {post.data.location && <span>{post.data.location}</span>}
+                {season && <span class="season">{post.data.season.join('・')}</span>}
+              </p>
+              <h3 set:html={phrase(post.data.title)} />
+              {post.data.lead && <p class="stop-lead">{post.data.lead}</p>}
+              {post.data.postType && <span class="tag">{post.data.postType}</span>}
+            </div>
+            {thumb ? (
+              <div class="stop-thumb">
+                <img {...thumb} alt="" loading="lazy" decoding="async" style={`view-transition-name: cover-${post.slug}`} />
+              </div>
+            ) : <span />}
+          </a>
+        </li>
+      ))}
+    </>
+  ))}
+</ol>

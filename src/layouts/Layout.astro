@@ -1,6 +1,7 @@
 ---
 import { url } from '../lib/url';
-import { graph, publisher, website } from '../lib/seo';
+import { graph, publisher, website, SAME_AS } from '../lib/seo';
+import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/frf.css';
 import '../styles/frf-topics.css';
@@ -9,16 +10,33 @@ const {
   title = '越後飯 ECHIGO FAN',
   canonical,
   theme = 'echigo',
-  description,
+  description = '越後飯 ECHIGO FAN：繁體中文的新潟第一手紀錄。越後妻有大地藝術祭的作品與路線、富士搖滾音樂祭攻略、米與水的風土。追過了，才帶你去。',
   ogImage,
+  ogType = 'website',
   jsonLd = [],
+  progress = false,
+  pageClass = '',
 } = Astro.props;
 
 const isFrf = theme === 'frf';
-const FB = 'https://www.facebook.com/groups/119131948168427';
+const FB = SAME_AS[2];
+const THREADS = SAME_AS[0];
+const IG = SAME_AS[1];
 const site = Astro.site ? Astro.site.href : 'https://echigo.fans/';
 const abs = (path) => new URL(path, site).href;
-const shareImage = ogImage ? abs(ogImage) : isFrf ? abs('/images/frf/og.jpg') : undefined;
+const shareImage = ogImage
+  ? abs(ogImage)
+  : isFrf
+    ? abs('/images/frf/og.jpg')
+    : abs('/images/about/afan-tanada.webp');
+
+// 導覽列的「目前所在」。首頁只在 / 亮，音樂祭在 /fujirock/ 底下都亮。
+const path = Astro.url.pathname;
+const here = path.startsWith('/fujirock')
+  ? 'frf'
+  : path.startsWith('/about')
+    ? 'about'
+    : 'home';
 
 // 每頁都輸出一包 JSON-LD：站台與經營者的身分是固定的，
 // 個別頁面（文章、FAQ）再把自己的節點併進來。
@@ -30,15 +48,28 @@ const ld = graph([publisher, website, ...(Array.isArray(jsonLd) ? jsonLd : [json
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
-  {description && <meta name="description" content={description} />}
+  <meta name="description" content={description} />
   {canonical && <link rel="canonical" href={canonical} />}
-  {description && <meta property="og:title" content={title} />}
-  {description && <meta property="og:description" content={description} />}
+  <meta property="og:site_name" content="越後飯 ECHIGO FAN" />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
   {canonical && <meta property="og:url" content={canonical} />}
-  {shareImage && <meta property="og:image" content={shareImage} />}
+  <meta property="og:image" content={shareImage} />
   <meta property="og:locale" content="zh_TW" />
-  <meta name="theme-color" content={isFrf ? '#3F7A4A' : '#D9A03C'} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content={isFrf ? '#3F7A4A' : '#F5F3EF'} />
+  <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+  <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;500;700&display=swap"
+  />
+
+  <script is:inline>document.documentElement.classList.add('js');</script>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
 
   <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-WV5P4V2MWM"></script>
@@ -49,44 +80,87 @@ const ld = graph([publisher, website, ...(Array.isArray(jsonLd) ? jsonLd : [json
     gtag('config', 'G-WV5P4V2MWM');
   </script>
 </head>
-<body class={isFrf ? 'theme-frf' : ''}>
-  {isFrf ? (
-    <header class="site-header frf-top">
-      <div class="frf-bar wrap">
-        <a class="brand" href={url('/')}>越後飯<span class="en">ECHIGO FAN</span></a>
-        <nav class="site-nav">
-          <a href={url('/')}>越後飯</a>
-          <a href={url('/fujirock/')} class="is-active">音樂祭</a>
-          <a href={FB} target="_blank" rel="noopener">社團</a>
-        </nav>
-      </div>
-    </header>
-  ) : (
-    <header class="site-header">
-      <div class="brand">越後飯<span class="en">ECHIGO FAN</span></div>
-      <div class="tagline serif">是新潟的鐵粉，也吃新潟的飯。</div>
-      <div class="slogan">追過了，才帶你去</div>
-      <div class="site-nav">
-        <a href={url('/')} class="is-active">越後飯</a>
-        <a href={url('/fujirock/')}>音樂祭</a>
-        <a href="https://www.threads.net/@echigo.fan" target="_blank" rel="noopener">Threads</a>
-        <a href="https://www.instagram.com/echigo.fan" target="_blank" rel="noopener">Instagram</a>
-      </div>
-    </header>
-  )}
+<body class={[isFrf ? 'theme-frf' : 'theme-echigo', pageClass].filter(Boolean).join(' ')}>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  {progress && <div class="read-progress" aria-hidden="true"></div>}
+
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="bar-brand" href={url('/')} aria-label="越後飯 ECHIGO FAN 首頁">
+        <span class="bar-mark" aria-hidden="true"></span>
+        <span class="bar-zh">越後飯</span>
+        <span class="bar-en">ECHIGO FAN</span>
+      </a>
+      <nav class="bar-nav" aria-label="主要導覽">
+        <a href={url('/')} aria-current={here === 'home' ? 'page' : undefined}>越後飯</a>
+        <a href={url('/fujirock/')} aria-current={here === 'frf' ? 'page' : undefined}>音樂祭</a>
+        <a href={url('/about/')} aria-current={here === 'about' ? 'page' : undefined}>關於</a>
+        <span class="bar-social">
+          <a href={THREADS} target="_blank" rel="me noopener" aria-label="Threads @echigo.fan">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.6 11.2c-.1 0-.2-.1-.3-.1-.2-3.2-1.9-5-4.9-5-1.8 0-3.2.8-4.1 2.1l1.6 1.1c.7-1 1.7-1.2 2.5-1.2 1 0 1.8.3 2.3.9.4.4.6 1 .7 1.8-.8-.1-1.7-.2-2.6-.1-2.6.1-4.3 1.7-4.2 3.8.1 1.1.6 2 1.5 2.6.8.5 1.8.8 2.9.7 1.4-.1 2.5-.6 3.3-1.6.6-.8 1-1.8 1.1-3 .7.4 1.2 1 1.5 1.6.5 1.2.5 3.1-1 4.6-1.3 1.3-2.9 1.9-5.3 1.9-2.7 0-4.7-.9-6-2.6C5.3 17 4.7 14.8 4.6 12c.1-2.8.7-5 1.9-6.6C7.8 3.7 9.8 2.8 12.5 2.8s4.8.9 6.1 2.6c.7.8 1.2 1.9 1.5 3.1l1.9-.5c-.4-1.5-1-2.8-1.9-3.9C18.4 1.9 15.8.8 12.5.8 9.2.8 6.6 1.9 4.9 4.1 3.4 6 2.6 8.7 2.6 12c0 3.3.8 6 2.3 7.9 1.7 2.2 4.3 3.3 7.6 3.3 2.9 0 5-.8 6.7-2.5 2.3-2.3 2.2-5.1 1.5-6.8-.5-1.2-1.6-2.2-3.1-2.7zm-5 4.9c-1.2.1-2.4-.5-2.5-1.5 0-.8.5-1.6 2.3-1.7h.6c.7 0 1.3.1 1.9.2-.2 2.4-1.3 2.9-2.3 3z"/></svg>
+          </a>
+          <a href={IG} target="_blank" rel="me noopener" aria-label="Instagram @echigo.fan">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.2.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
+          </a>
+        </span>
+      </nav>
+    </div>
+  </header>
 
   <slot name="hero" />
 
-  <main class="wrap">
+  <main id="main" class="wrap">
     <slot />
   </main>
 
-  <footer class="site-footer">
-    {isFrf ? (
-      <><a href={url('/about')}>越後飯</a> · 音樂祭 · 富士搖滾攻略</>
-    ) : (
-      <><a href={url('/about')}>越後飯 ECHIGO FAN</a> · 追過了，才帶你去 · 繁體中文</>
-    )}
+  <footer class="foot">
+    <div class="foot-wave" aria-hidden="true"></div>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <a class="foot-zh" href={url('/about/')}>越後飯</a>
+        <p class="foot-en">ECHIGO FAN</p>
+        <p class="foot-slogan">追過了，才帶你去。</p>
+      </div>
+      <nav class="foot-cols" aria-label="頁尾導覽">
+        <div>
+          <p class="foot-h">越後飯</p>
+          <a href={url('/category/' + encodeURIComponent('越後大地藝術祭') + '/')}>越後大地藝術祭</a>
+          <a href={url('/category/' + encodeURIComponent('我吃的不只是飯') + '/')}>我吃的不只是飯</a>
+          <a href={url('/archive/')}>全部文章</a>
+        </div>
+        <div>
+          <p class="foot-h">音樂祭</p>
+          <a href={url('/fujirock/')}>富士搖滾攻略</a>
+          <a href={url('/fujirock/beginner-faq/')}>新手 Q&amp;A</a>
+          <a href={url('/fujirock/upgrade/')}>二衝升級</a>
+        </div>
+        <div>
+          <p class="foot-h">一起追</p>
+          <a href={THREADS} target="_blank" rel="me noopener">Threads</a>
+          <a href={IG} target="_blank" rel="me noopener">Instagram</a>
+          <a href={FB} target="_blank" rel="noopener">臉書社團</a>
+          <a href={url('/about/')}>關於越後飯</a>
+        </div>
+      </nav>
+    </div>
+    <p class="foot-legal">© {new Date().getFullYear()} 越後飯 ECHIGO FAN · 文字與照片歡迎分享連結，轉載請註明出處</p>
   </footer>
+
+  <script is:inline>
+    (function () {
+      var els = document.querySelectorAll('[data-reveal]');
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (still || !('IntersectionObserver' in window)) {
+        els.forEach(function (e) { e.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -6% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    })();
+  </script>
 </body>
 </html>

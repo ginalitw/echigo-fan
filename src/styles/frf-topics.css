@@ -297,3 +297,124 @@
 
 .frf-upgrade-group { margin-top: 8px; }
 .frf-upgrade-group .frf-list { margin-top: 8px; }
+
+/* ─────────────────────────────────────────────────────────────
+   音樂祭 × 越後飯設計系統
+   內文維持黑體、掃描用；標題、數字、線條跟主站同一套語言，
+   只把主色換成苗場綠。這樣兩區是同一個站的兩個房間，不是兩個站。
+   ───────────────────────────────────────────────────────────── */
+.theme-frf .frf-hero { height: clamp(300px, 42vw, 480px); }
+.theme-frf .frf-hero-mask {
+  background:
+    linear-gradient(to top, rgba(18, 26, 21, 0.92) 0%, rgba(18, 26, 21, 0.55) 45%, rgba(18, 26, 21, 0.15) 100%),
+    linear-gradient(to right, rgba(18, 26, 21, 0.45), transparent 70%);
+}
+.theme-frf .frf-hero-copy { padding-bottom: clamp(24px, 4vw, 48px); }
+.theme-frf .frf-hero-copy .kicker {
+  font-family: var(--font-latin);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.34em;
+}
+.theme-frf .frf-hero-copy h1 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 4.6rem);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  margin-top: var(--sp-2);
+}
+.theme-frf .frf-hero-copy p { font-size: 0.95rem; line-height: 1.85; opacity: 0.92; }
+
+.theme-frf .frf-count-line {
+  margin-top: var(--sp-6);
+  padding: var(--sp-3) 0;
+  border-left: 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.theme-frf .frf-count-line strong {
+  font-family: var(--font-latin);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.8rem);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.theme-frf .frf-kicker {
+  margin-top: var(--sp-7);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.24em;
+}
+.theme-frf .frf-section,
+.theme-frf .frf-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.theme-frf .frf-section { font-size: var(--fs-h2); margin-top: var(--sp-2); }
+.theme-frf .frf-title { font-size: var(--fs-h1); line-height: 1.35; margin-top: var(--sp-2); text-wrap: balance; }
+.theme-frf .frf-lead { border-left-width: 3px; padding-left: var(--sp-4); margin-top: var(--sp-4); }
+
+.theme-frf .frf-toc .n {
+  background: var(--snow);
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+  font-family: var(--font-latin);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 25px;
+}
+.theme-frf .frf-toc a:hover .n { background: var(--gold); color: #fff; }
+.theme-frf .frf-toc strong { font-family: var(--font-serif); font-size: 1.05rem; }
+
+.theme-frf .frf-index {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--sp-6);
+  margin-top: var(--sp-4);
+}
+.theme-frf .frf-index > section {
+  background: none;
+  border: 0;
+  border-top: 2px solid var(--ink);
+  padding: var(--sp-3) 0 var(--sp-5);
+}
+.theme-frf .frf-index > section:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.theme-frf .frf-index-head strong { font-family: var(--font-serif); font-size: 1.1rem; letter-spacing: 0.06em; }
+.theme-frf .frf-index-head span { font-family: var(--font-latin); font-size: 0.95rem; }
+.theme-frf .frf-index ol li { border-top: 1px solid var(--line); }
+.theme-frf .frf-index ol a { font-size: var(--fs-small); color: var(--ink); padding: var(--sp-2) 0; }
+@media (max-width: 640px) {
+  .theme-frf .frf-index { grid-template-columns: 1fr; }
+}
+
+.theme-frf .frf-upgrade a {
+  border-width: 1px;
+  border-left-width: 1px;
+  border-radius: var(--radius-m);
+  padding: var(--sp-4) var(--sp-5);
+  background: none;
+  font-family: var(--font-serif);
+}
+
+.theme-frf .frf-community a {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  transition: border-color var(--dur-1), background-color var(--dur-1);
+}
+.theme-frf .frf-community a:hover { border-color: var(--ink); background: var(--paper); }
+.theme-frf .frf-community {
+  background: none;
+  border: 0;
+  padding: 0;
+  gap: var(--sp-3);
+}
+.theme-frf .frf-community a { padding: var(--sp-3) var(--sp-4); min-height: 48px; }
+.theme-frf .frf-count-line,
+.theme-frf .frf-index-head span,
+.theme-frf .frf-toc .n { font-variant-numeric: lining-nums tabular-nums; }

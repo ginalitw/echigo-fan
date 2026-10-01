@@ -13,6 +13,7 @@ import { FRF_BODIES } from '../../lib/frf-bodies';
 import { getCollection, getEntry } from 'astro:content';
 import { articleLd, toISODate } from '../../lib/seo';
 import { extractFaq, faqLd } from '../../lib/faq';
+import { phrase } from '../../lib/phrase';
 
 export async function getStaticPaths() {
   const synced = await getCollection('frf');
@@ -73,7 +74,7 @@ const ld = [
     )}
   </p>
   {stageLabel && <p class="frf-kicker">{stageLabel}</p>}
-  <h1 class="frf-title">{h1}</h1>
+  <h1 class="frf-title" set:html={phrase(h1)} />
   {article.meta && <p class="frf-lead">{article.meta}</p>}
   {updatedISO && (
     <p class="frf-byline">

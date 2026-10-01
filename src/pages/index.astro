@@ -1,85 +1,177 @@
 ---
 import { url } from '../lib/url';
-import { byNewest, formatDate } from '../lib/posts';
+import { byNewest } from '../lib/posts';
+import { imgAttrs } from '../lib/img';
 import Layout from '../layouts/Layout.astro';
+import RouteList from '../components/RouteList.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('posts');
-const published = allPosts.filter(p => p.data.status !== '待填');
-
+const published = allPosts.filter((p) => p.data.status !== '待填');
 const ordered = [...published].sort(byNewest);
 
 const HOME_LIMIT = 5;
 const homePosts = ordered.slice(0, HOME_LIMIT);
 const hasMore = ordered.length > HOME_LIMIT;
 
+// 主視覺：刻意挑一張，不自動抽。換圖只要改這三行。
+// 文章被下架時退回最新一篇的封面，首頁不會破圖。
+const HERO_SLUG = 'kiyotsu-gorge';
+const HERO_IMAGE = '/images/posts/kiyotsu-gorge/image-05.webp';
+const heroPost = published.find((p) => p.slug === HERO_SLUG) ?? ordered[0];
+const heroSrc = heroPost?.slug === HERO_SLUG ? HERO_IMAGE : heroPost?.data.cover;
+const heroAlt = heroPost?.slug === HERO_SLUG
+  ? `${heroPost.data.title}：隧道盡頭的圓形出口映在水面上，一個人站在光裡`
+  : heroPost?.data.title ?? '';
+const hero = heroSrc
+  ? await imgAttrs(heroSrc, '(max-width: 860px) 100vw, 45vw')
+  : null;
+
+// 倒數：每小時重建一次，數字會自己往下走。
+const DAY = 86400000;
+const daysTo = (iso) => Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / DAY));
+// data-target 給瀏覽器端的小腳本用：兩次重建之間，數字仍以讀者當下的時間為準。
+const dates = [
+  { label: '大地藝術祭 第 10 屆', when: '2027.7.17 – 11.7', target: '2027-07-17T00:00:00+09:00', days: daysTo('2027-07-17T00:00:00+09:00'), href: '/category/' + encodeURIComponent('越後大地藝術祭') + '/' },
+  { label: '富士搖滾 FUJI ROCK', when: '2027.7.23 – 7.25（預定）', target: '2027-07-23T00:00:00+09:00', days: daysTo('2027-07-23T00:00:00+09:00'), href: '/fujirock/' },
+];
+
 function newestCover(key) {
   const hit = published
     .filter((p) => p.data.category?.includes(key) && p.data.cover)
-    .sort((a, b) => {
-      const ad = a.data.date ? +new Date(a.data.date) : 0;
-      const bd = b.data.date ? +new Date(b.data.date) : 0;
-      if (ad !== bd) return bd - ad;
-      return String(b.data.code || '').localeCompare(String(a.data.code || ''));
-    })[0];
+    .sort(byNewest)[0];
   return hit?.data.cover || null;
 }
 
-const categories = [
-  { key: '越後大地藝術祭', icon: '📕', cls: 'art', desc: '越後妻有的作品、路線、官方一日遊——我實際走過的部分。', fallback: '/images/cat-art.jpg' },
-  { key: '富士搖滾二三事', icon: '🎸', cls: 'frf', desc: '舞台之外的筆記與見聞。跟生存攻略不是同一種文。', fallback: '/images/cat-frf.jpg' },
-  { key: '我吃的不只是飯', icon: '🍚', cls: 'rice', desc: '米、酒、山菜、車站便畳。吃過才寫。', fallback: '/images/cat-rice.jpg' },
-  { key: '里山人文和風土', icon: '❄️', cls: 'season', desc: '雪、織物、土地的故事。查得到的知識，我用自己的方式消化。', fallback: '/images/cat-season.jpg' },
-].map((c) => ({ ...c, image: newestCover(c.key) || c.fallback }));
+const categories = await Promise.all(
+  [
+    { key: '越後大地藝術祭', en: 'Art Field', cls: 'art', desc: '越後妻有的作品、路線、官方一日遊——我實際走過的部分。', fallback: '/images/cat-art.jpg' },
+    { key: '富士搖滾二三事', en: 'Fuji Rock', cls: 'frf', desc: '舞台之外的筆記與見聞。跟生存攻略不是同一種文。', fallback: '/images/cat-frf.jpg' },
+    { key: '我吃的不只是飯', en: 'Rice & Sake', cls: 'rice', desc: '米、酒、山菜、車站便當。吃過才寫。', fallback: '/images/cat-rice.jpg' },
+    { key: '里山人文和風土', en: 'Satoyama', cls: 'season', desc: '雪、織物、土地的故事。查得到的知識，我用自己的方式消化。', fallback: '/images/cat-season.jpg' },
+  ].map(async (c, i) => {
+    const image = newestCover(c.key) || c.fallback;
+    return {
+      ...c,
+      no: String(i + 1).padStart(2, '0'),
+      img: await imgAttrs(image, '(max-width: 560px) 112px, (max-width: 1000px) 50vw, 25vw'),
+      count: published.filter((p) => p.data.category.includes(c.key)).length,
+    };
+  }),
+);
 
-function countFor(key) {
-  return published.filter(p => p.data.category.includes(key)).length;
-}
+const afan = await imgAttrs('/images/about/afan-tanada.webp', '(max-width: 760px) 100vw, 58vw');
 ---
-<Layout title="越後飯 ECHIGO FAN">
-  <div class="wave"></div>
-  <div class="section-label">四個方向</div>
-  <div class="cats">
-    {categories.map(c => (
-      <a
-        class={`cat ${c.cls} ${c.image ? '' : 'no-image'}`}
-        href={url(`/category/${encodeURIComponent(c.key)}`)}
-        style={c.image ? `background-image:url(${url(c.image)})` : ''}
-      >
-        <div class="cat-inner">
-          <h3>{c.icon} {c.key}</h3>
-          <p>{c.desc}</p>
-          <div class="count">收錄 {countFor(c.key)} 篇</div>
-        </div>
-      </a>
-    ))}
-  </div>
+<Layout
+  title="越後飯 ECHIGO FAN｜越後妻有大地藝術祭・富士搖滾・新潟的米與水"
+  canonical={new URL('/', Astro.site).href}
+  ogImage={HERO_IMAGE}
+  pageClass="page-home"
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="hero-kicker"><span class="k-far">NIIGATA · </span><b>ECHIGO-TSUMARI</b> × NAEBA</p>
+      <h1 id="hero-title">
+        <span class="l">追過了，</span>
+        <span class="l l2">才帶你去<span class="dot">。</span></span>
+      </h1>
+      <p class="hero-tag">是新潟的鐵粉，也吃新潟的飯。</p>
+      <div class="hero-dates">
+        {dates.map((d) => (
+          <a href={url(d.href)}>
+            <span class="d-label">{d.label}</span>
+            <span class="d-num" data-target={d.target}>{d.days}</span><span class="d-unit">天</span>
+            <span class="d-when">{d.when}</span>
+          </a>
+        ))}
+      </div>
+    </div>
 
-  <p class="door-link">
-    <a href={url('/fujirock/')}>富士搖滾生存攻略 →</a>
-  </p>
+    {hero && heroPost && (
+      <figure class="hero-figure">
+        <a class="frame" href={url(`/posts/${heroPost.slug}`)} aria-label={`閱讀：${heroPost.data.title}`}>
+          <img {...hero} alt={heroAlt} fetchpriority="high" decoding="async" />
+        </a>
+        {heroPost.slug === HERO_SLUG && <span class="v-text" aria-hidden="true">越後妻有・中里・清津峽</span>}
+        <figcaption>
+          <a href={url(`/posts/${heroPost.slug}`)}>
+            {heroPost.data.artworkNumber && <span class={`code s-${heroPost.data.season?.[0] ?? ''}`}>{(heroPost.data.artworkNumber.match(/[A-Z]\d{3}/) ?? [''])[0]}</span>}
+            {heroPost.data.title}
+          </a>
+          {heroPost.data.artworkName && <span class="work">{heroPost.data.artworkName}</span>}
+        </figcaption>
+      </figure>
+    )}
+  </section>
 
-  <div class="wave"></div>
-  <div class="section-label">走過的路</div>
-  <div class="posts">
-    {homePosts.map(post => (
-      <a class="post-row" href={url(`/posts/${post.slug}`)}>
-        <div class="meta">
-          {post.data.date && <span class="date">{formatDate(post.data.date)}</span>}
-          {post.data.season && post.data.season.length > 0 && <span class="season">{post.data.season[0]}</span>}
-          {post.data.location && <span class="loc">{post.data.location}</span>}
-          {post.data.artworkNumber && <span class="code">{post.data.artworkNumber}</span>}
-        </div>
-        <div class="body">
-          <h4>{post.data.title}{post.data.postType && <span class="tag">{post.data.postType}</span>}</h4>
-          <p>{post.data.lead}</p>
-        </div>
+  <section class="home-sec container" aria-labelledby="dirs-title">
+    <header class="sec-head" data-reveal>
+      <h2 id="dirs-title">四個方向</h2>
+      <span class="sec-en">Four ways in</span>
+    </header>
+    <div class="dirs">
+      {categories.map((c, i) => (
+        <a class={`dir ${c.cls} ${c.count > 0 ? '' : 'is-soon'}`} href={url(`/category/${encodeURIComponent(c.key)}`)} data-reveal style={`--i:${i}`}>
+          <div class="dir-img">
+            <img {...c.img} alt="" loading="lazy" decoding="async" />
+          </div>
+          <div class="dir-top">
+            <span class="dir-no">{c.no}</span>
+            <span class="dir-en">{c.en}</span>
+          </div>
+          <h3>{c.key}</h3>
+          <p class="dir-desc">{c.desc}</p>
+          {c.count > 0 ? (
+            <p class="dir-count">{c.count} 篇 <span class="arrow" aria-hidden="true">→</span></p>
+          ) : (
+            <p class="dir-count soon"><span class="soon-badge">正在寫</span></p>
+          )}
+        </a>
+      ))}
+    </div>
+
+    <p class="door-link" data-reveal>
+      <a href={url('/fujirock/')}>
+        <span>
+          <span class="door-en">FUJI ROCK FESTIVAL GUIDE</span>
+          <strong>富士搖滾生存攻略</strong>
+          <span class="door-sub">交通、露營、預算、裝備，第一次去到二衝升級。</span>
+        </span>
+        <span class="door-go" aria-hidden="true">→</span>
       </a>
-    ))}
-  </div>
-  {hasMore && (
-    <p class="more-link">
-      <a href={url('/archive')}>看全部 {ordered.length} 篇 ▶</a>
     </p>
-  )}
+  </section>
+
+  <section class="home-sec container" aria-labelledby="route-title">
+    <header class="sec-head" data-reveal>
+      <h2 id="route-title">走過的路</h2>
+      <span class="sec-en">Stops along the way</span>
+    </header>
+    <RouteList posts={homePosts} />
+    {hasMore && (
+      <p class="more-link" data-reveal>
+        <a href={url('/archive')}>看全部 {ordered.length} 篇 <span aria-hidden="true">→</span></a>
+      </p>
+    )}
+  </section>
+
+  <section class="home-sec container" aria-labelledby="afan-title">
+    <div class="afan" data-reveal>
+      <div class="afan-img">
+        <img {...afan} alt="越後飯的角色阿飯戴著橘色氈帽、背著背包，站在田埂上，望向秋天的金色梯田" loading="lazy" decoding="async" />
+      </div>
+      <div class="afan-copy">
+        <p class="sec-en" id="afan-title">About · 阿飯</p>
+        <blockquote>總是背對鏡頭在看風景。<br />重點從來不是他，<br />是他在看的那一片。</blockquote>
+        <p>2010 年第一次進苗場，後來才發現，溪水、米、梯田和藝術祭，其實長在同一片土地上。</p>
+        <a class="text-link" href={url('/about/')}>關於越後飯 <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <script is:inline>
+    document.querySelectorAll('[data-target]').forEach(function (el) {
+      var d = Math.ceil((new Date(el.dataset.target) - Date.now()) / 86400000);
+      if (d >= 0) el.textContent = d;
+    });
+  </script>
 </Layout>
