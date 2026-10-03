@@ -77,8 +77,8 @@ export function articleLd(opts: {
     url: opts.canonical,
     ...(opts.description ? { description: opts.description } : {}),
     ...(opts.image ? { image: absolute(opts.image) } : {}),
-    ...(pub ? { datePublished: toISODate(pub) } : {}),
-    ...(mod ? { dateModified: toISODate(mod) } : {}),
+    ...(pub ? { datePublished: toISODateTime(pub) } : {}),
+    ...(mod ? { dateModified: toISODateTime(mod) } : {}),
     ...(opts.section ? { articleSection: opts.section } : {}),
     ...(w
       ? {
@@ -88,7 +88,6 @@ export function articleLd(opts: {
             ...(w.alternateName && w.alternateName !== w.name ? { alternateName: w.alternateName } : {}),
             ...(w.identifier ? { identifier: w.identifier } : {}),
             ...(w.creators?.length ? { creator: w.creators.map((name) => ({ '@type': 'Thing', name })) } : {}),
-            isPartOf: { '@type': 'Event', name: '大地の芸術祭 越後妻有アートトリエンナーレ' },
           },
         }
       : {}),
@@ -105,6 +104,11 @@ export function articleLd(opts: {
     author: { '@id': `${SITE}/#afan` },
     publisher: { '@id': `${SITE}/#org` },
   };
+}
+
+/** 結構化資料用：Google 要求日期帶時區，統一用日本時間的當天 00:00。 */
+export function toISODateTime(d: Date) {
+  return `${toISODate(d)}T00:00:00+09:00`;
 }
 
 export function toISODate(d: Date): string {
