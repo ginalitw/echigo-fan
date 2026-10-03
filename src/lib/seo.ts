@@ -24,6 +24,20 @@ export const publisher = {
   image: `${SITE}/images/about/afan-tanada.webp`,
 };
 
+// 文章的作者。用筆名「阿飯」：越後飯的吉祥物，也是每篇第一手紀錄背後那個實際走過的人。
+// E-E-A-T 的 Experience 要落在「人」身上，品牌本身不會去旅行。
+export const author = {
+  '@type': 'Person',
+  '@id': `${SITE}/#afan`,
+  name: '阿飯',
+  alternateName: 'A-Fan',
+  url: `${SITE}/about/`,
+  image: `${SITE}/images/about/afan-tanada.webp`,
+  description: '越後飯 ECHIGO FAN 的筆名作者。年年追富士搖滾，也一季一季回到越後妻有，寫親自走過的路線與作品。',
+  memberOf: { '@id': `${SITE}/#org` },
+  sameAs: SAME_AS.slice(0, 2),
+};
+
 export const website = {
   '@type': 'WebSite',
   '@id': `${SITE}/#website`,
@@ -33,16 +47,28 @@ export const website = {
   publisher: { '@id': `${SITE}/#org` },
 };
 
-/** 文章頁用。datePublished 缺就退回 dateModified，兩個都缺就不輸出日期欄位。 */
+/**
+ * 文章頁用。
+ * datePublished 用實際發布（走訪）日 published；dateModified 用最後查核日 updated。
+ * 任一缺就用另一個補；兩個都缺就不輸出日期欄位，不補假日期。
+ */
 export function articleLd(opts: {
   headline: string;
   canonical: string;
   description?: string;
   image?: string;
+  published?: Date;
   updated?: Date;
   section?: string;
+  /** 文章寫的作品（藝術祭作品頁用） */
+  work?: { name: string; alternateName?: string; identifier?: string; creators?: string[] };
+  /** 文章所在地點，例如「中里」 */
+  place?: string;
+  keywords?: string[];
 }) {
-  const iso = opts.updated ? toISODate(opts.updated) : undefined;
+  const pub = opts.published ?? opts.updated;
+  const mod = opts.updated ?? opts.published;
+  const w = opts.work;
   return {
     '@type': 'Article',
     headline: opts.headline,
@@ -51,9 +77,32 @@ export function articleLd(opts: {
     url: opts.canonical,
     ...(opts.description ? { description: opts.description } : {}),
     ...(opts.image ? { image: absolute(opts.image) } : {}),
-    ...(iso ? { datePublished: iso, dateModified: iso } : {}),
+    ...(pub ? { datePublished: toISODate(pub) } : {}),
+    ...(mod ? { dateModified: toISODate(mod) } : {}),
     ...(opts.section ? { articleSection: opts.section } : {}),
-    author: { '@id': `${SITE}/#org` },
+    ...(w
+      ? {
+          about: {
+            '@type': 'CreativeWork',
+            name: w.name,
+            ...(w.alternateName && w.alternateName !== w.name ? { alternateName: w.alternateName } : {}),
+            ...(w.identifier ? { identifier: w.identifier } : {}),
+            ...(w.creators?.length ? { creator: w.creators.map((name) => ({ '@type': 'Thing', name })) } : {}),
+            isPartOf: { '@type': 'Event', name: '大地の芸術祭 越後妻有アートトリエンナーレ' },
+          },
+        }
+      : {}),
+    ...(opts.place
+      ? {
+          contentLocation: {
+            '@type': 'Place',
+            name: opts.place,
+            address: { '@type': 'PostalAddress', addressRegion: '新潟県', addressCountry: 'JP' },
+          },
+        }
+      : {}),
+    ...(opts.keywords?.length ? { keywords: opts.keywords.join(', ') } : {}),
+    author: { '@id': `${SITE}/#afan` },
     publisher: { '@id': `${SITE}/#org` },
   };
 }

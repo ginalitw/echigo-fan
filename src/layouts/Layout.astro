@@ -1,6 +1,6 @@
 ---
 import { url } from '../lib/url';
-import { graph, publisher, website, SAME_AS } from '../lib/seo';
+import { graph, publisher, website, author, SAME_AS } from '../lib/seo';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/frf.css';
@@ -40,7 +40,7 @@ const here = path.startsWith('/fujirock')
 
 // 每頁都輸出一包 JSON-LD：站台與經營者的身分是固定的，
 // 個別頁面（文章、FAQ）再把自己的節點併進來。
-const ld = graph([publisher, website, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])].filter(Boolean));
+const ld = graph([publisher, website, author, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])].filter(Boolean));
 ---
 <!doctype html>
 <html lang="zh-Hant">

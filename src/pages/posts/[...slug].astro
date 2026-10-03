@@ -35,13 +35,26 @@ const leadDup = !!d.lead && firstPara === d.lead.trim();
 // 季節決定這篇的環境色（導言左線、清單圓點、資訊區上緣）
 const season = d.season?.[0] ?? '';
 
+// 搜尋與 AI 用的描述：導言前面補上作品名、藝術家、地點，讓機器知道這篇在寫什麼。
+// 導言本身一個字都不動，頁面上看到的也不變。
+const artists = d.artist?.filter(Boolean) ?? [];
+const workBits = [d.artworkName && d.artworkName !== d.title ? d.artworkName : '', artists.join('、')].filter(Boolean);
+const subject = `${d.title}${workBits.length ? `（${workBits.join('，')}）` : ''}${d.location ? `｜${d.location}` : ''}`;
+const metaDesc = d.lead ? `${subject}。${d.lead}` : `${subject}：越後飯的實地紀錄。`;
+
 const ld = articleLd({
   headline: d.title,
   canonical,
-  description: d.lead,
+  description: metaDesc,
   image: d.cover,
+  published: d.date,
   updated,
   section: d.category?.[0],
+  work: d.artworkName || d.artworkNumber
+    ? { name: d.title, alternateName: d.artworkName, identifier: d.artworkNumber, creators: artists }
+    : undefined,
+  place: d.location,
+  keywords: [d.title, d.artworkName, ...artists, d.location, ...(d.category ?? [])].filter(Boolean) as string[],
 });
 
 const prevPost = d.prevSlug ? await getEntry('posts', d.prevSlug) : null;
@@ -55,7 +68,7 @@ const stationNo = (d.artworkNumber?.match(/[A-Z]\d{3}/) ?? [])[0] ?? '';
 <Layout
   title={`${d.title}｜越後飯 ECHIGO FAN`}
   canonical={canonical}
-  description={d.lead || `${d.title}：越後飯的實地紀錄。`}
+  description={metaDesc}
   ogImage={d.cover}
   ogType="article"
   jsonLd={[ld]}
