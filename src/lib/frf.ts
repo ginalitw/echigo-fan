@@ -31,6 +31,9 @@ export const TOPICS: {
   id: TopicId;
   title: string;
   desc: string;
+  /** 給搜尋引擎的標題與描述；頁面上顯示的仍是 title／desc */
+  seoTitle: string;
+  seoDesc: string;
   preview: string[];
   cover: string;
   coverAlt: string;
@@ -39,6 +42,8 @@ export const TOPICS: {
     id: "planning",
     title: "預算與行前",
     desc: "要不要去、花多少、機票住宿門票先弄哪件。",
+    seoTitle: "Fuji Rock 預算與行前：機票、住宿、門票怎麼排",
+    seoDesc: "富士搖滾（Fuji Rock）行前準備：值不值得去、新手與老手預算怎麼算，機票、住宿、門票該先處理哪一件。",
     preview: ["beginner-faq", "budget-beginner"],
     cover: "/images/frf/neon.jpg",
     coverAlt: "台灣民間總部的富士搖滾霓虹招牌，寫著苗場我們來了",
@@ -47,6 +52,8 @@ export const TOPICS: {
     id: "transport",
     title: "交通與移動",
     desc: "東京到苗場、上野採購、回程湯澤。",
+    seoTitle: "Fuji Rock 交通攻略：東京到苗場怎麼去",
+    seoDesc: "富士搖滾（Fuji Rock）交通整理：從東京上野搭上越新幹線到越後湯澤，再轉接駁車上苗場；含上野補貨與散場回程。",
     preview: ["tokyo-to-naeba", "ueno-ameyoko"],
     cover: "/images/frf/street.jpg",
     coverAlt: "音樂祭期間苗場街上，車往場地的路與停車場",
@@ -55,6 +62,8 @@ export const TOPICS: {
     id: "camping",
     title: "露營與裝備",
     desc: "斜坡、下雨、洗澡、帳篷跟住宿取捨。",
+    seoTitle: "Fuji Rock 露營攻略：斜坡、下雨、洗澡與裝備",
+    seoDesc: "富士搖滾（Fuji Rock）露營整理：苗場滑雪場營區的斜坡與下雨、洗澡怎麼解決、帳篷還是住宿，加上椅子與裝備。",
     preview: ["camping-reality", "camping-shower"],
     cover: "/images/frf/camping.jpg",
     coverAlt: "苗場滑雪道營區斜坡上一排彩色帳篷",
@@ -63,6 +72,8 @@ export const TOPICS: {
     id: "onsite",
     title: "現場生存",
     desc: "手環、排程、天氣、充電、物販。",
+    seoTitle: "Fuji Rock 現場生存：手環、排程、天氣、充電",
+    seoDesc: "富士搖滾（Fuji Rock）現場指南：入場手環怎麼換、三天演出怎麼排、山上天氣怎麼防、手機怎麼充電，還有物販排隊。",
     preview: ["wristband", "timetable-strategy"],
     cover: "/images/frf/stage-rain.jpg",
     coverAlt: "苗場雨霧中的舞台，觀眾穿雨衣在拍手",
@@ -71,6 +82,8 @@ export const TOPICS: {
     id: "food",
     title: "飲食與周邊",
     desc: "前夜祭要不要趁早到、苗場哪幾攤值得排。",
+    seoTitle: "Fuji Rock 吃什麼：苗場美食與前夜祭",
+    seoDesc: "富士搖滾（Fuji Rock）吃什麼：苗場會場美食的歷年問卷精華，以及前夜祭要不要提早到。",
     preview: ["naeba-food", "eve-festival"],
     cover: "/images/frf/street.jpg",
     coverAlt: "音樂祭期間苗場街上的人流、停車場與店家",

@@ -27,8 +27,8 @@ const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
 ---
 <Layout
   theme="frf"
-  title={`${topic.title}｜富士搖滾攻略｜越後飯`}
-  description={topic.desc}
+  title={`${topic.seoTitle}｜越後飯`}
+  description={topic.seoDesc}
   canonical={canonical}
   ogImage={topic.cover}
 >
