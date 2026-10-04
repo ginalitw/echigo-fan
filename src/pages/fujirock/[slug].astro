@@ -7,11 +7,14 @@ import {
   displayTitle,
   articleFromEntry,
   relatedFrom,
+  BRIDGE,
+  readMinutes,
+  readingOrder,
   isReturnerOnly,
 } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
 import { getCollection, getEntry } from 'astro:content';
-import { articleLd, toISODate } from '../../lib/seo';
+import { articleLd, breadcrumbLd, toISODate } from '../../lib/seo';
 import { extractFaq, faqLd } from '../../lib/faq';
 import { phrase } from '../../lib/phrase';
 
@@ -32,6 +35,20 @@ const topic = TOPICS.find((t) => t.id === article.topic);
 const showUpgrade = isReturnerOnly(article);
 
 const rendered = await entry.render();
+const minutes = readMinutes(entry.body);
+const SKIP = /懶人重點|延伸閱讀|還有問題|加入我們/;
+const heads = (rendered?.headings ?? []).filter((h) => !SKIP.test(h.text));
+const h2s = heads.filter((h) => h.depth === 2);
+// 大標不到三個時，改用帶編號的小標（例如「第一段、第二段」）當目錄
+const tocSrc = h2s.length >= 3 ? h2s : heads.filter((h) => h.depth === 3 && /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text));
+const toc = tocSrc
+  .map((h) => ({ slug: h.slug, text: h.text.replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\d\s]+(?=\S)/u, '').trim() || h.text }));
+const hasTakeaway = /懶人重點/.test(entry.body ?? '');
+const order = readingOrder(list);
+const pos = order.findIndex((a) => a.slug === article.slug);
+const prevA = pos > 0 ? order[pos - 1] : null;
+const nextA = pos >= 0 && pos < order.length - 1 ? order[pos + 1] : null;
+const bandNo = String(article.n ?? '').padStart(2, '0');
 const Content = rendered?.Content;
 const body = Content ? null : FRF_BODIES[article.slug];
 const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
@@ -54,7 +71,14 @@ const ld = [
     section: topic?.title ?? '富士搖滾攻略',
   }),
   faq,
+  breadcrumbLd([
+    { name: '富士搖滾攻略', url: '/fujirock/' },
+    ...(topic ? [{ name: topic.title, url: `/fujirock/topic/${topic.id}/` }] : []),
+    { name: h1, url: `/fujirock/${article.slug}/` },
+  ]),
 ].filter(Boolean);
+
+const showBridge = !!topic && BRIDGE.topics.includes(topic.id);
 ---
 <Layout
   theme="frf"
@@ -63,6 +87,7 @@ const ld = [
   canonical={canonical}
   ogImage={article.image}
   jsonLd={ld}
+  progress
 >
   <p class="frf-crumb">
     <a href={url('/fujirock/')}>富士搖滾攻略</a>
@@ -78,10 +103,26 @@ const ld = [
   {article.meta && <p class="frf-lead">{article.meta}</p>}
   {updatedISO && (
     <p class="frf-byline">
+      <span>文／阿飯</span>
+      <span class="sep">·</span>
       <span>越後飯 ECHIGO FAN</span>
       <span class="sep">·</span>
       <time datetime={updatedISO}>{updatedISO} 最後更新</time>
     </p>
+  )}
+
+  <p class="frf-chips">
+    {!/閱讀時間/.test(entry.body ?? '') && <span class="frf-chip">約 {minutes} 分鐘</span>}
+    {hasTakeaway && <a class="frf-chip frf-chip--go" href="#takeaway">先看懶人重點 ↓</a>}
+  </p>
+
+  {toc.length >= 3 && (
+    <details class="frf-tocbox" open>
+      <summary>本篇目錄</summary>
+      <ol>
+        {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ol>
+    </details>
   )}
 
   {Content ? (
@@ -92,6 +133,32 @@ const ld = [
     <article class="frf-prose" set:html={body} />
   ) : (
     <p class="frf-note">這篇摘要已上線。全文會在下次 Notion 同步時進來。</p>
+  )}
+
+  <nav class="frf-band" aria-label="上一篇與下一篇">
+    <div class="frf-band-strap" aria-hidden="true">
+      <span class="frf-band-logo">FUJI ROCK</span>
+      <span class="frf-band-no">No.{bandNo}</span>
+      <span class="frf-band-topic">{topic?.title ?? '富士搖滾攻略'}</span>
+      <span class="frf-band-snap"></span>
+    </div>
+    <div class="frf-band-links">
+      {prevA ? (
+        <a class="prev" href={url(`/fujirock/${prevA.slug}/`)}><span>← 上一篇</span><strong>{displayTitle(prevA.title)}</strong></a>
+      ) : <span></span>}
+      {nextA ? (
+        <a class="next" href={url(`/fujirock/${nextA.slug}/`)}><span>下一篇 →</span><strong>{displayTitle(nextA.title)}</strong></a>
+      ) : <span></span>}
+    </div>
+  </nav>
+
+  {showBridge && (
+    <aside class="frf-bridge">
+      <p class="frf-more-label">{BRIDGE.label}</p>
+      <p class="frf-bridge-title">{BRIDGE.title}</p>
+      <p>{BRIDGE.text}</p>
+      <p><a href={url(BRIDGE.href)}>{BRIDGE.linkText} →</a></p>
+    </aside>
   )}
 
   {(related.length > 0 || showUpgrade) && (
@@ -123,3 +190,15 @@ const ld = [
     <p class="terms">歡迎分享連結。轉載請註明出處並保留原文連結，勿整篇複製。</p>
   </aside>
 </Layout>
+
+<style>
+  .frf-bridge {
+    margin: 2.5rem 0 1.5rem;
+    padding: 1.25rem 1.25rem 1rem;
+    border-left: 3px solid var(--naeba, #3f7a4a);
+    background: color-mix(in srgb, var(--naeba, #3f7a4a) 7%, transparent);
+  }
+  .frf-bridge p { margin: 0 0 .6rem; }
+  .frf-bridge .frf-more-label { color: var(--ink); }
+  .frf-bridge-title { font-weight: 700; font-size: 1.1rem; }
+</style>

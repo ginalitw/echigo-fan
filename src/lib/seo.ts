@@ -123,3 +123,37 @@ export function absolute(path: string): string {
 export function graph(nodes: unknown[]) {
   return { '@context': 'https://schema.org', '@graph': nodes };
 }
+
+/** 麵包屑：讓搜尋結果顯示「富士搖滾攻略 › 交通與移動」這種層級。 */
+export function breadcrumbLd(items: { name: string; url: string }[]) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      item: absolute(it.url),
+    })),
+  };
+}
+
+/** 主題頁、目錄頁用：告訴搜尋引擎這頁是一組文章的集合。 */
+export function collectionLd(opts: { name: string; url: string; description?: string; items: { name: string; url: string }[] }) {
+  return {
+    '@type': 'CollectionPage',
+    name: opts.name,
+    url: absolute(opts.url),
+    inLanguage: 'zh-Hant',
+    ...(opts.description ? { description: opts.description } : {}),
+    isPartOf: { '@id': `${SITE}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: opts.items.map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: it.name,
+        url: absolute(it.url),
+      })),
+    },
+  };
+}

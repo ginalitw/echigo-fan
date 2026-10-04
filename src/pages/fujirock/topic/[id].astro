@@ -7,9 +7,12 @@ import {
   articleFromEntry,
   articlesByTopicFrom,
   getTopic,
+  readMinutes,
   type TopicId,
 } from '../../../lib/frf';
 import { getCollection } from 'astro:content';
+import { breadcrumbLd, collectionLd } from '../../../lib/seo';
+import { imgAttrs } from '../../../lib/img';
 
 export function getStaticPaths() {
   return TOPICS.map((t) => ({ params: { id: t.id } }));
@@ -20,10 +23,24 @@ const topic = getTopic(id);
 if (!topic) throw new Error('not found');
 const synced = await getCollection('frf');
 const items = articlesByTopicFrom(synced.map(articleFromEntry), id as TopicId);
+const mins = Object.fromEntries(synced.map((e) => [e.slug, readMinutes(e.body)]));
 const i = TOPICS.findIndex((t) => t.id === topic.id);
 const prev = TOPICS[(i + TOPICS.length - 1) % TOPICS.length];
 const next = TOPICS[(i + 1) % TOPICS.length];
 const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
+const coverImg = await imgAttrs(topic.cover, '100vw');
+const ld = [
+  collectionLd({
+    name: topic.seoTitle,
+    url: `/fujirock/topic/${topic.id}/`,
+    description: topic.seoDesc,
+    items: items.map((a) => ({ name: displayTitle(a.title), url: `/fujirock/${a.slug}/` })),
+  }),
+  breadcrumbLd([
+    { name: '富士搖滾攻略', url: '/fujirock/' },
+    { name: topic.title, url: `/fujirock/topic/${topic.id}/` },
+  ]),
+];
 ---
 <Layout
   theme="frf"
@@ -31,9 +48,10 @@ const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
   description={topic.seoDesc}
   canonical={canonical}
   ogImage={topic.cover}
+  jsonLd={ld}
 >
   <figure slot="hero" class="frf-topic-cover">
-    <img src={url(topic.cover)} alt={topic.coverAlt} />
+    <img {...coverImg} alt={topic.coverAlt} fetchpriority="high" decoding="async" />
   </figure>
 
   <p class="frf-crumb">
@@ -43,12 +61,17 @@ const canonical = new URL(`/fujirock/topic/${topic.id}/`, Astro.site).href;
   <h1 class="frf-title">{topic.title}</h1>
   <p class="frf-lead">{topic.desc}</p>
 
-  <ol class="frf-topic-dir">
+  <p class="frf-topic-count">{items.length} 篇・照順序讀</p>
+  <ol class="frf-timetable">
     {items.map((a) => (
       <li>
         <a href={url(`/fujirock/${a.slug}/`)}>
-          <strong>{displayTitle(a.title)}</strong>
-          {a.meta && <span> — {a.meta}</span>}
+          <span class="tt-no">#{String(a.n ?? '').padStart(2, '0')}</span>
+          <span class="tt-body">
+            <strong>{displayTitle(a.title)}</strong>
+            {a.meta && <span class="tt-meta">{a.meta}</span>}
+          </span>
+          <span class="tt-min">{mins[a.slug]} 分</span>
         </a>
       </li>
     ))}

@@ -11,6 +11,7 @@ import {
 } from '../../lib/frf';
 import { getCollection } from 'astro:content';
 import { imgAttrs } from '../../lib/img';
+import { collectionLd } from '../../lib/seo';
 
 const heroImg = await imgAttrs('/images/frf/stage-rain.jpg', '100vw');
 
@@ -23,15 +24,21 @@ const canonical = new URL('/fujirock/', Astro.site).href;
 const synced = await getCollection('frf');
 const list = synced.map(articleFromEntry);
 const bySlug = Object.fromEntries(list.map((a) => [a.slug, a]));
-const topics = TOPICS.map((topic) => {
+const topics = await Promise.all(TOPICS.map(async (topic) => {
   const items = articlesByTopicFrom(list, topic.id);
   const preview = topic.preview
     .map((slug) => bySlug[slug])
     .filter(Boolean)
     .map((a) => ({ slug: a.slug, title: displayTitle(a.title) }));
-  return { ...topic, count: items.length, preview };
-});
+  return { ...topic, count: items.length, preview, thumb: await imgAttrs(topic.cover, '(min-width: 760px) 360px, 100vw') };
+}));
 const upgradeCount = upgradeFrom(list).length;
+const ld = collectionLd({
+  name: '富士搖滾攻略',
+  url: '/fujirock/',
+  description: '台灣人看的富士搖滾音樂祭（Fuji Rock Festival）攻略',
+  items: topics.map((t) => ({ name: t.seoTitle, url: `/fujirock/topic/${t.id}/` })),
+});
 
 const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
 const FRF_END = new Date('2027-07-26T00:00:00+09:00');
@@ -45,6 +52,7 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
   description="台灣人看的富士搖滾音樂祭（Fuji Rock Festival）攻略：東京到苗場交通、露營、預算、裝備。2027 年 7 月 23–25 日在新潟苗場，不是富士山。"
   canonical={canonical}
   ogImage="/images/frf/og.jpg"
+  jsonLd={ld}
 >
   <section slot="hero" class="frf-hero">
     <img {...heroImg} alt="富士搖滾苗場會場雨中舞台" fetchpriority="high" decoding="async" />
@@ -82,6 +90,9 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
   <div class="frf-index">
     {topics.map((topic) => (
       <section>
+        <a class="frf-index-thumb" href={url(`/fujirock/topic/${topic.id}/`)} tabindex="-1" aria-hidden="true">
+          <img {...topic.thumb} alt="" loading="lazy" decoding="async" />
+        </a>
         <a class="frf-index-head" href={url(`/fujirock/topic/${topic.id}/`)}>
           <strong>{topic.title}</strong>
           <span>{topic.count} 篇</span>

@@ -60,12 +60,22 @@ jobs:
         run: npm run sync -- --prune-all
 
       - name: 從 Notion 同步富士搖滾
+        id: frf
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_FRF_DATABASE_ID: 2f414f28e4568001b22ad297299115e8
           NOTION_FRF_DATA_SOURCE_ID: 2f414f28-e456-80cb-b742-000b2aeb130f
         run: npm run sync:frf -- --prune-all
         continue-on-error: true
+
+      # 同步中途失敗時，資料夾會只剩一半（2026-10-03 就因此少了 15 篇）。
+      # 失敗就把富士搖滾的內容還原成上一版，網站維持原狀。
+      - name: 富士搖滾同步失敗就還原
+        if: steps.frf.outcome == 'failure'
+        run: |
+          git checkout -- src/content/frf public/images/frf-posts || true
+          git clean -fd src/content/frf public/images/frf-posts || true
+          echo "富士搖滾同步失敗，已還原上一版內容"
 
       - name: 內容有變化就存回 repo
         run: |

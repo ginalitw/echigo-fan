@@ -586,3 +586,171 @@ body.theme-frf h4 {
   letter-spacing: .02em;
 }
 .frf-byline .sep { margin: 0 .45em; opacity: .55; }
+
+
+/* ═════════════════════════════════════════════════════════════
+   富士搖滾 設計升級（2026-10）
+   招牌元素：入場手環（文末上一篇／下一篇）
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── 標題編號徽章（取代 Notion 的 1️⃣2️⃣3️⃣） ── */
+.frf-prose .frf-has-step { display: flex; align-items: baseline; gap: 10px; }
+.frf-step {
+  flex: none;
+  display: inline-grid; place-items: center;
+  width: 1.7em; height: 1.7em;
+  border-radius: 50%;
+  background: var(--accent-ink);
+  color: #fff;
+  font: 700 0.8em/1 var(--font-latin), sans-serif;
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-1px);
+}
+
+/* ── 路線圖：機場 → 上野 → 越後湯澤 → 苗場 ── */
+.frf-prose .frf-route {
+  list-style: none;
+  margin: 24px 0; padding: 18px 16px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 15px;
+}
+.frf-route-stop {
+  margin: 0; padding: 6px 12px;
+  background: var(--accent-ink); color: #fff;
+  border-radius: 999px; font-weight: 700; white-space: nowrap;
+}
+.frf-route-leg {
+  margin: 0; padding: 0 6px;
+  min-width: 56px; text-align: center;
+  color: var(--ink-soft); font-size: 12px; white-space: nowrap;
+  background: linear-gradient(var(--accent-ink), var(--accent-ink)) center 70% / 100% 2px no-repeat;
+  padding-bottom: 10px;
+}
+@media (max-width: 560px) {
+  .frf-prose .frf-route { flex-direction: column; align-items: flex-start; padding-left: 22px; }
+  .frf-route-leg {
+    min-width: 0; min-height: 26px; padding: 2px 0 2px 16px; text-align: left;
+    background: linear-gradient(var(--accent-ink), var(--accent-ink)) 22px 0 / 2px 100% no-repeat;
+    padding-left: 34px;
+  }
+}
+
+/* ── 提示框分類（⚠️ 💡 👤 ✅ 改用樣式表現） ── */
+.frf-prose .frf-callout { position: relative; padding-left: 44px; background: #fff; }
+.frf-prose .frf-callout::before {
+  position: absolute; left: 14px; top: 13px;
+  width: 20px; height: 20px; border-radius: 50%;
+  display: grid; place-items: center;
+  font: 700 12px/1 var(--font-sans); color: #fff;
+}
+.frf-callout--warn { border-left-color: var(--punch) !important; background: #fff7f3 !important; }
+.frf-callout--warn::before { content: "!"; background: var(--punch); }
+.frf-callout--tip::before { content: "i"; background: var(--accent-ink); font-family: Georgia, serif; font-style: italic; }
+.frf-callout--ok::before { content: "✓"; background: var(--accent-ink); }
+.frf-callout--who { border-left-color: var(--line) !important; background: transparent !important; font-size: 13px; color: var(--ink-soft); }
+.frf-prose .frf-callout--who { padding-left: 16px; }
+.frf-callout--who::before { content: none; }
+
+/* ── 文章頂：閱讀時間、先看重點、目錄 ── */
+.frf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+.frf-chip {
+  display: inline-block; padding: 4px 10px;
+  border: 1px solid var(--line); border-radius: 999px;
+  font-size: 13px; color: var(--ink-soft); background: var(--paper);
+  text-decoration: none;
+}
+.frf-chip--go { border-color: var(--accent-ink); color: var(--accent-ink); font-weight: 700; }
+.frf-chip--go:hover { background: var(--accent-ink); color: #fff; }
+
+.frf-tocbox {
+  margin: 20px 0 0; padding: 12px 16px;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--paper); font-size: 14px;
+}
+.frf-tocbox summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+.frf-tocbox ol { margin: 10px 0 2px; padding-left: 20px; }
+.frf-tocbox li { margin: 4px 0; }
+.frf-tocbox a { color: var(--ink); text-decoration: none; }
+.frf-tocbox a:hover { color: var(--accent-ink); text-decoration: underline; }
+@media (min-width: 1240px) {
+  .frf-tocbox {
+    position: sticky; top: 88px;
+    float: right; width: 220px; margin: 28px -268px 0 0;
+    background: transparent; border: 0; border-left: 2px solid var(--line);
+    border-radius: 0; padding: 0 0 0 14px;
+  }
+  .frf-tocbox summary { list-style: none; font-size: 12px; letter-spacing: .08em; color: var(--ink-soft); }
+  .frf-tocbox summary::-webkit-details-marker { display: none; }
+}
+.frf-prose h2, .frf-prose h3, #takeaway { scroll-margin-top: 80px; }
+
+/* ── 招牌：入場手環 ── */
+.frf-band { margin: 48px 0 8px; }
+.frf-band-strap {
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  height: 46px; padding: 0 56px 0 18px;
+  color: #fff;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(45deg, rgba(0,0,0,.08) 0 2px, transparent 2px 6px),
+    var(--accent-ink);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.18);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+}
+.frf-band-logo { font: 700 13px/1 var(--font-latin), sans-serif; letter-spacing: .22em; }
+.frf-band-no {
+  padding: 4px 8px; border-radius: 3px;
+  background: #fff; color: var(--accent-ink);
+  font: 700 12px/1 var(--font-sans); letter-spacing: .06em;
+}
+.frf-band-topic { font-size: 13px; opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.frf-band-snap {
+  position: absolute; right: 14px; top: 50%;
+  width: 22px; height: 22px; margin-top: -11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff 0 18%, #c9d3cc 19% 55%, #8fa096 56%);
+  box-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.frf-band-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.frf-band-links a {
+  display: block; padding: 12px 14px;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--paper); text-decoration: none; color: var(--ink);
+  transition: border-color var(--dur-1), transform var(--dur-1) var(--ease-out);
+}
+.frf-band-links a:hover { border-color: var(--accent-ink); transform: translateY(-2px); }
+.frf-band-links a span { display: block; font-size: 12px; color: var(--accent-ink); font-weight: 700; margin-bottom: 4px; }
+.frf-band-links a strong { font-size: 14px; line-height: 1.45; }
+.frf-band-links .next { text-align: right; }
+@media (max-width: 560px) {
+  .frf-band-topic { display: none; }
+  .frf-band-links { grid-template-columns: 1fr; }
+  .frf-band-links .next { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .frf-band-links a { transition: none; } }
+
+/* ── 主題頁：時刻表 ── */
+.frf-topic-count { margin: 6px 0 14px; font-size: 13px; color: var(--ink-soft); }
+.frf-timetable { list-style: none; margin: 0 0 28px; padding: 0; border-top: 2px solid var(--ink); }
+.frf-timetable li { margin: 0; border-bottom: 1px solid var(--line); }
+.frf-timetable a {
+  display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: baseline;
+  padding: 14px 4px; text-decoration: none; color: var(--ink);
+  transition: background var(--dur-1);
+}
+.frf-timetable a:hover { background: var(--paper); }
+.frf-timetable .tt-no { font: 700 20px/1 var(--font-latin), sans-serif; color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.frf-timetable strong { display: block; font-size: 16px; line-height: 1.45; }
+.frf-timetable .tt-meta { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+.frf-timetable .tt-min { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+/* ── 攻略首頁：主題卡加縮圖 ── */
+.frf-index-thumb { display: block; aspect-ratio: 16 / 7; overflow: hidden; border-radius: var(--radius-m); margin-bottom: 10px; }
+.frf-index-thumb img { width: 100%; height: 100%; object-fit: cover; margin: 0; transition: transform var(--dur-2) var(--ease-out); }
+.frf-index section:hover .frf-index-thumb img { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .frf-index-thumb img { transition: none; } }

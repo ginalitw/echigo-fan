@@ -193,6 +193,97 @@ function rehypeFrfArticle() {
   };
 }
 
+
+// ── 富士搖滾：標題編號、路線圖、提示框分類 ─────────────────────
+const KEYCAP_RE = /^\s*(\d{1,2}|🔟)\uFE0F?\u20E3?\s*/u;
+function frfStepHeading(node) {
+  if (!isHeading(node)) return;
+  const first = node.children?.[0];
+  if (!first || first.type !== 'text') return;
+  const m = first.value.match(/^\s*(\d)\uFE0F\u20E3\s*/u) || first.value.match(/^\s*(🔟)\s*/u);
+  if (!m) return;
+  const n = m[1] === '🔟' ? '10' : m[1];
+  first.value = first.value.slice(m[0].length);
+  node.children.unshift({
+    type: 'element', tagName: 'span',
+    properties: { className: ['frf-step'], ariaHidden: 'true' },
+    children: [{ type: 'text', value: n }],
+  });
+  node.properties = node.properties || {};
+  node.properties.className = [...(node.properties.className || []), 'frf-has-step'];
+}
+
+const ARROW_RE = /\s*[➔→➡]\s*/u;
+function frfRoute(node) {
+  if (node?.type !== 'element' || node.tagName !== 'blockquote') return null;
+  const t = textOf(node).trim();
+  const parts = t.split(ARROW_RE).map((x) => x.trim()).filter(Boolean);
+  if (parts.length < 3 || t.length > 140) return null;
+  const stops = parts.map((p) => {
+    const dur = (p.match(/[（(]\s*([^）)]+?)\s*[）)]/) || [])[1] || '';
+    const name = stripDecor(p.replace(/[（(][^）)]*[）)]/g, '').replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '')).replace(/[*]/g, '').trim();
+    return { name, dur };
+  });
+  if (stops.some((s) => !s.name || s.name.length > 16)) return null;
+  const items = [];
+  stops.forEach((s, i) => {
+    items.push({ type: 'element', tagName: 'li', properties: { className: ['frf-route-stop'] }, children: [{ type: 'text', value: s.name }] });
+    if (i < stops.length - 1) {
+      items.push({ type: 'element', tagName: 'li', properties: { className: ['frf-route-leg'], ariaHidden: 'true' }, children: [{ type: 'text', value: s.dur || '' }] });
+    }
+  });
+  return { type: 'element', tagName: 'ol', properties: { className: ['frf-route'], ariaLabel: '路線：' + stops.map((s) => s.name).join(' → ') }, children: items };
+}
+
+const CALLOUT_KIND = [
+  [/^[⚠🚫❗‼]/u, 'warn'],
+  [/^[💡📝ℹ🔎✨]/u, 'tip'],
+  [/^[👤🙋]/u, 'who'],
+  [/^[✅👉]/u, 'ok'],
+];
+function frfCallout(node) {
+  if (node?.type !== 'element' || node.tagName !== 'blockquote') return;
+  const t = textOf(node).trim();
+  const hit = CALLOUT_KIND.find(([re]) => re.test(t));
+  if (!hit) return;
+  node.properties = node.properties || {};
+  node.properties.className = [...(node.properties.className || []), 'frf-callout', 'frf-callout--' + hit[1]];
+  // 拿掉開頭那顆 emoji，改由樣式表現類型
+  const strip = (n) => {
+    if (!n) return false;
+    if (n.type === 'text') {
+      const v = n.value.replace(/^\s*[\p{Extended_Pictographic}\uFE0F]+\s*/u, '');
+      if (v !== n.value) { n.value = v; return true; }
+      return n.value.trim() !== '';
+    }
+    for (const c of n.children || []) { if (strip(c)) return true; }
+    return false;
+  };
+  strip(node);
+}
+
+function rehypeFrfDesign() {
+  return (tree, file) => {
+    const src = String(file?.path || file?.history?.[0] || '').replace(/\\/g, '/');
+    if (!src.includes('/content/frf/')) return; // 只處理富士搖滾，不動越後飯文章
+    const children = tree.children || [];
+    for (let i = 0; i < children.length; i++) {
+      const node = children[i];
+      frfStepHeading(node);
+      const route = frfRoute(node);
+      if (route) { children[i] = route; continue; }
+      frfCallout(node);
+      if (node?.type === 'element' && node.tagName === 'aside' && (node.properties?.className || []).includes('frf-takeaway')) {
+        node.properties.id = 'takeaway';
+        for (const c of node.children || []) frfCallout(c);
+      }
+    }
+    // 巢狀在 h3 等處的 keycap 也處理（例如列表裡的段落標題不動，只處理標題）
+    const walk = (n) => { for (const c of n.children || []) { if (isHeading(c)) frfStepHeading(c); walk(c); } };
+    walk(tree);
+  };
+}
+
 // ── 圖片：尺寸、延遲載入、手機小圖 ──────────────────────────────
 // 規則要跟 src/lib/img.ts 一致：寬度超過 900px 的圖，建置後多兩份 `-480.webp`、`-800.webp`。
 const VARIANT_W = 800;
@@ -460,6 +551,6 @@ export default defineConfig({
   base: BASE,
   markdown: {
     shikiConfig: { theme: 'github-light' },
-    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypeFrfFaq, rehypeFrfArticle, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
+    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypeFrfFaq, rehypeFrfArticle, rehypeFrfDesign, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
   },
 });

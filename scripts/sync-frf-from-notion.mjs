@@ -25,6 +25,7 @@ function isHeic(buf) {
 const ARGS = process.argv.slice(2);
 const SYNC_ALL = ARGS.includes('--all');
 const PRUNE_ALL = ARGS.includes('--prune-all');
+const ARGS_FORCE = process.argv.includes('--force');
 
 const NOTION_TOKEN = process.env.NOTION_FRF_TOKEN || process.env.NOTION_TOKEN;
 const DATABASE_ID = process.env.NOTION_FRF_DATABASE_ID || '2f414f28e4568001b22ad297299115e8';
@@ -373,6 +374,16 @@ async function main() {
   console.log(`✅ 要同步 ${pages.length} 篇${SYNC_ALL ? '（含草稿）' : '（發布狀態=公開）'}。`);
 
   fs.mkdirSync(POSTS_DIR, { recursive: true });
+
+  // 安全閥：這次讀到的篇數比網站上現有的少太多，多半是 Notion 讀取異常，
+  // 不是真的下架。這時候什麼都不動，直接失敗，等下一輪再試。
+  const existing = fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith('.md')).length;
+  if (!SYNC_ALL && existing >= 5 && pages.length < Math.ceil(existing * 0.7)) {
+    console.error(`❌ 安全閥：網站上有 ${existing} 篇，這次只讀到 ${pages.length} 篇，差距過大，本次不更新。`);
+    console.error('   如果真的是大量下架，請在本機加 --force 執行一次。');
+    if (!ARGS_FORCE) process.exit(1);
+  }
+
   if (PRUNE_ALL) {
     for (const f of fs.readdirSync(POSTS_DIR)) {
       if (f.endsWith('.md')) fs.unlinkSync(path.join(POSTS_DIR, f));

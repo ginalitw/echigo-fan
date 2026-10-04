@@ -207,3 +207,27 @@ export function relatedFrom(list: Article[], slug: string, limit = 3) {
   if (!current.topic) return [];
   return others(articlesByTopicFrom(list, current.topic)).slice(0, limit);
 }
+
+/**
+ * 「橋」：FRF 文章結尾通往越後妻有大地藝術祭的入口。
+ * 文案在這裡改；topics 決定哪些主題的文章會出現；想全部關掉就把 topics 清空。
+ */
+export const BRIDGE = {
+  topics: ['transport', 'food'] as TopicId[],
+  label: '散場之後',
+  title: '多留一天，從越後湯澤走進大地藝術祭',
+  text: '回東京之前，越後湯澤也是越後妻有的入口。官方一日遊巴士從這裡出發，清津峽、農舞台、里山裡的藝術作品，一天就能走一圈。',
+  href: '/category/越後大地藝術祭/',
+  linkText: '看越後飯走過的作品',
+};
+
+/** 閱讀時間：中文約每分鐘 500 字，最少 1 分鐘。 */
+export function readMinutes(body: string | undefined) {
+  const chars = (body ?? '').replace(/[\s#>*\-|`\[\]()!]/g, '').length;
+  return Math.max(1, Math.round(chars / 500));
+}
+
+/** 全站閱讀順序：照主題順序，主題內照階段與編號。手環上的上一站／下一站用這個。 */
+export function readingOrder(list: Article[]) {
+  return TOPICS.flatMap((t) => articlesByTopicFrom(list, t.id));
+}
