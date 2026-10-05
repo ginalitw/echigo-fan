@@ -177,6 +177,10 @@ a { color: inherit; }
   .bar-inner { height: 54px; }
   .bar-en { display: none; }
   .bar-social { gap: 4px; padding-left: 8px; }
+  /* 手機：左上 logo 已經是回首頁，選單的「越後飯」收起來，騰出位置給「作品地圖」 */
+  .bar-nav { gap: 14px; letter-spacing: 0.06em; }
+  .bar-nav > a { white-space: nowrap; }
+  .bar-nav > a.nav-home { display: none; }
 }
 
 /* ── 共用：節標題 ────────────────────────────────────────── */
@@ -545,6 +549,9 @@ a { color: inherit; }
   transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2);
 }
 .door-link a:hover .door-go { transform: translateX(4px); background: rgba(245, 243, 239, 0.12); }
+/* 作品地圖入口：藝術祭用秋色（文字版，白字對比 ≥ 4.5:1），緊接在音樂祭入口上方 */
+.door-map a { background: var(--autumn-ink); }
+.door-map + .door-link { margin-top: var(--sp-3); }
 
 /* ── 路線清單（首頁「走過的路」與所有清單頁共用） ────────────── */
 .route {

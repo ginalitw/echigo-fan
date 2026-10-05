@@ -1,5 +1,6 @@
 ---
 import { url } from '../lib/url';
+import { MAP_URL } from '../lib/seo';
 import { byNewest } from '../lib/posts';
 import { imgAttrs } from '../lib/img';
 import Layout from '../layouts/Layout.astro';
@@ -129,6 +130,17 @@ const afan = await imgAttrs('/images/about/afan-tanada.webp', '(max-width: 760px
         </a>
       ))}
     </div>
+
+    <p class="door-link door-map" data-reveal>
+      <a href={MAP_URL}>
+        <span>
+          <span class="door-en">ART FIELD MAP 2026</span>
+          <strong>大地藝術祭 2026 作品地圖</strong>
+          <span class="door-sub">231 件作品，選日期看開不開，排出開車、步行或巴士路線。</span>
+        </span>
+        <span class="door-go" aria-hidden="true">→</span>
+      </a>
+    </p>
 
     <p class="door-link" data-reveal>
       <a href={url('/fujirock/')}>

@@ -5,6 +5,10 @@
 export const SITE = 'https://echigo.fans';
 export const BRAND = '越後飯 ECHIGO FAN';
 
+// 大地藝術祭作品地圖（另一個 repo：ginalitw/echigo-tsumari-map-2026，GitHub Pages 自訂網域）。
+// 只連公開版；飯團專頁不公開、不放任何連結。
+export const MAP_URL = 'https://map.echigo.fans/';
+
 // 對外帳號。sameAs 是實體消歧的關鍵：
 // 它告訴機器「這個網站」跟「這些帳號」是同一個人在經營。
 export const SAME_AS = [

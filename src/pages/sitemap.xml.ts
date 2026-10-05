@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { TOPICS } from '../lib/frf';
+import { MAP_URL } from '../lib/seo';
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection('posts');
@@ -26,6 +27,8 @@ export const GET: APIRoute = async ({ site }) => {
       priority: '0.8',
     })),
     { loc: abs('/about'), priority: '0.6' },
+    // 作品地圖在子網域，GSC 用 DNS 驗證整個 echigo.fans，跨子網域列在這裡是允許的
+    { loc: MAP_URL, priority: '0.8' },
     { loc: abs('/archive'), priority: '0.7' },
     ...posts.map((p) => ({
       loc: abs(`/posts/${p.slug}`),

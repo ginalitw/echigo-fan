@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { SAME_AS } from '../lib/seo';
+import { SAME_AS, MAP_URL } from '../lib/seo';
 
 // 給 AI 讀的網站說明（llmstxt.org 格式）。
 // 跟 sitemap 一樣每次建置時從內容自動產生，新文章同步進來就會自己出現，不用手動維護。
@@ -43,6 +43,7 @@ ${postLines.join('\n')}
 ## 其他
 
 - [關於越後飯](${abs('/about')}): 這個網站是誰在寫、為什麼寫
+- [大地藝術祭 2026 作品地圖](${MAP_URL}): 越後妻有 231 件常設與公開作品的開館日曆與路線規劃（開車、步行、巴士）
 - [富士搖滾攻略首頁](${abs('/fujirock')})
 - [Sitemap](${new URL(base + '/sitemap.xml', site).href})
 `;

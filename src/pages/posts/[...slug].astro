@@ -2,7 +2,7 @@
 import { url } from '../../lib/url';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, getEntry } from 'astro:content';
-import { articleLd, toISODate } from '../../lib/seo';
+import { articleLd, toISODate, MAP_URL } from '../../lib/seo';
 import { imgAttrs } from '../../lib/img';
 import { phrase } from '../../lib/phrase';
 
@@ -103,6 +103,9 @@ const stationNo = (d.artworkNumber?.match(/[A-Z]\d{3}/) ?? [])[0] ?? '';
             ))}</dd></div>
           )}
           {d.postType && <div><dt>類型</dt><dd>{d.postType}</dd></div>}
+          {stationNo && (
+            <div><dt>地圖</dt><dd><a href={`${MAP_URL}#open=${stationNo}`} title={`在大地藝術祭 2026 作品地圖上看 ${stationNo}`}>看作品地圖</a></dd></div>
+          )}
         </dl>
       )}
 
