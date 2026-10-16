@@ -87,6 +87,10 @@ const ld = [
 
 const isBridgePage = BRIDGE_SLUGS.includes(article.slug);
 const showBridge = !isBridgePage && !!topic && BRIDGE.topics.includes(topic.id);
+// 組合篇已公開就導去組合篇（讀者在這裡想知道的是怎麼排），還沒公開就導去藝術祭主頁
+const bridgeTarget = list.find((a) => BRIDGE_SLUGS.includes(a.slug));
+const bridgeHref = bridgeTarget ? `/fujirock/${bridgeTarget.slug}/` : BRIDGE.href;
+const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎麼排' : BRIDGE.linkText;
 ---
 <Layout
   theme="frf"
@@ -187,7 +191,7 @@ const showBridge = !isBridgePage && !!topic && BRIDGE.topics.includes(topic.id);
       <p class="frf-more-label">{BRIDGE.label}</p>
       <p class="frf-bridge-title">{BRIDGE.title}</p>
       <p>{BRIDGE.text}</p>
-      <p><a href={url(BRIDGE.href)}>{BRIDGE.linkText} →</a></p>
+      <p><a href={url(bridgeHref)}>{bridgeLinkText} →</a></p>
     </aside>
   )}
 

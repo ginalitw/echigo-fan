@@ -122,7 +122,7 @@ export const PILLAR_BY_SLUG: Record<string, TopicId> = {
   "naeba-stages": "onsite",
   "eve-festival": "food",
   "naeba-food": "food",
-  "echigo-tsumari": "food",
+  "echigo-tsumari": "transport",
 };
 
 export function displayTitle(title: string) {
