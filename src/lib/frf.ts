@@ -214,11 +214,11 @@ export function relatedFrom(list: Article[], slug: string, limit = 3) {
  */
 export const BRIDGE = {
   topics: ['transport', 'food'] as TopicId[],
-  label: '散場之後',
-  title: '多留一天，從越後湯澤走進大地藝術祭',
-  text: '回東京之前，越後湯澤也是越後妻有的入口。官方一日遊巴士從這裡出發，清津峽、農舞台、里山裡的藝術作品，一天就能走一圈。',
-  href: '/category/越後大地藝術祭/',
-  linkText: '看越後飯走過的作品',
+  label: '音樂祭前後',
+  title: '同一個夏天，從越後湯澤走進大地藝術祭',
+  text: '越後湯澤也是越後妻有的入口。2027 年大地藝術祭辦第 10 屆三年展（7/17–11/7），官方一日遊巴士從這裡出發。實際走過的建議：排在音樂祭之前，體力和心情都比較好。',
+  href: '/art-field/',
+  linkText: '看大地藝術祭 2027',
 };
 
 /** 閱讀時間：中文約每分鐘 500 字，最少 1 分鐘。 */

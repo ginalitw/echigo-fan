@@ -2,6 +2,7 @@
 import { byNewest } from '../../lib/posts';
 import ListPage from '../../components/ListPage.astro';
 import { getCollection } from 'astro:content';
+import { SEASON_INTRO } from '../../lib/intros';
 
 export async function getStaticPaths() {
   return ['春', '夏', '秋', '冬'].map((season) => ({ params: { season } }));
@@ -11,4 +12,4 @@ const { season } = Astro.params;
 const allPosts = await getCollection('posts');
 const posts = allPosts.filter((p) => p.data.status !== '待填' && p.data.season?.includes(season)).sort(byNewest);
 ---
-<ListPage title={`${season}天的越後`} eyebrow="季節" posts={posts} canonicalPath={`/season/${season}/`} emptyText={`${season}天還沒去。去了就寫。`} />
+<ListPage title={`${season}天的越後`} eyebrow="季節" intro={SEASON_INTRO[season]} pillar={{ href: '/art-field/', text: '大地藝術祭 2027 攻略' }} posts={posts} canonicalPath={`/season/${season}/`} emptyText={`${season}天還沒去。去了就寫。`} />

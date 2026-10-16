@@ -1520,3 +1520,9 @@ a { color: inherit; }
 .lost .links { margin-top: var(--sp-6); display: flex; flex-wrap: wrap; gap: var(--sp-5); }
 .lost img { border-radius: var(--radius-m); aspect-ratio: 4 / 3; object-fit: cover; object-position: 62% 50%; width: 100%; }
 @media (max-width: 760px) { .lost { grid-template-columns: 1fr; } .lost figure { order: -1; } }
+
+/* 主頁（/art-field/）用的價格表 */
+.pillar .prose table { width: 100%; border-collapse: collapse; margin: var(--sp-5) 0; font-family: var(--font-sans); font-size: var(--fs-small); }
+.pillar .prose th, .pillar .prose td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.pillar .prose th { font-weight: 700; color: var(--ink-soft); border-bottom: 2px solid var(--line); }
+.pillar .prose td:not(:first-child), .pillar .prose th:not(:first-child) { white-space: nowrap; }
