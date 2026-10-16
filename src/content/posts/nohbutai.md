@@ -12,7 +12,7 @@ cover: "/images/posts/nohbutai/image-01.webp"
 status: "已發布"
 lead: "走了一整天，中午我們在一件作品裡吃飯。"
 date: 2026-07-27
-updated: 2026-08-28
+updated: 2026-10-16
 prevSlug: "lost-windows"
 nextSlug: "last-class"
 ---
