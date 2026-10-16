@@ -49,6 +49,8 @@ const ld = graph([publisher, website, author, ...(Array.isArray(jsonLd) ? jsonLd
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <!-- Bing Webmaster Tools 驗證。驗證成功後也不要刪，刪了會失去驗證。 -->
+  <meta name="msvalidate.01" content="391C2465D37B9E3F1D94B445F5FC3473" />
   {canonical && <link rel="canonical" href={canonical} />}
   <meta property="og:site_name" content="越後飯 ECHIGO FAN" />
   <meta property="og:type" content={ogType} />
