@@ -36,6 +36,8 @@ const frf = defineCollection({
     title: z.string(),
     n: z.string().optional(),
     meta: z.string().optional(),
+    // 速覽：每年會變的數字，每項一行。
+    glance: z.array(z.string()).optional(),
     audience: z.array(z.string()).default([]),
     stage: z.string().optional(),
     topics: z.array(z.string()).optional(),

@@ -124,6 +124,13 @@ const showBridge = !!topic && BRIDGE.topics.includes(topic.id);
     {hasTakeaway && <a class="frf-chip frf-chip--go" href="#takeaway">先看懶人重點 ↓</a>}
   </p>
 
+  {entry.data.glance && entry.data.glance.length > 0 && (
+    <aside class="frf-glance" aria-label="速覽">
+      <p class="frf-glance-label">速覽</p>
+      <ul>{entry.data.glance.map((g) => <li>{g}</li>)}</ul>
+    </aside>
+  )}
+
   {toc.length >= 3 && (
     <details class="frf-tocbox" open>
       <summary>本篇目錄</summary>
