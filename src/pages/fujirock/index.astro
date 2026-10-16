@@ -127,15 +127,22 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
     <aside class="frf-glance" aria-label="速覽">
       <p class="frf-glance-label">速覽</p>
       <ul>{glance2027.map((g) => <li>{g}</li>)}</ul>
+      <p class="frf-glance-foot">{UPDATED} 更新・陣容、票價、接駁公布後更新</p>
     </aside>
-    <p class="frf-note">{UPDATED} 更新。陣容、票價、接駁公布後，這一區會第一時間更新。</p>
-    <p class="frf-note">
-      同一個夏天，越後妻有大地藝術祭辦第 10 屆三年展（7/17–11/7）。
-      <a href={url('/art-field/')}>看大地藝術祭 2027 →</a>
-    </p>
-    {comboArticle && (
-      <p class="frf-note"><a href={url('/fujirock/echigo-tsumari/')}>音樂祭前後怎麼順遊藝術祭：2027 排法 →</a></p>
-    )}
+
+    <p class="frf-kicker frf-summer-kicker">同一個夏天</p>
+    <div class="frf-summer">
+      <a href={url('/art-field/')}>
+        <strong>大地藝術祭 2027 →</strong>
+        <span>越後妻有第 10 屆三年展，7/17–11/7</span>
+      </a>
+      {comboArticle && (
+        <a href={url('/fujirock/echigo-tsumari/')}>
+          <strong>音樂祭前後怎麼排 →</strong>
+          <span>藝術祭哪幾天有開、排前面還是後面</span>
+        </a>
+      )}
+    </div>
   </section>
 
   <p class="frf-kicker">第一次去？</p>

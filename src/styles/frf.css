@@ -730,8 +730,18 @@ body.theme-frf.frf-bridge-page {
 .frf-bridge-band span { color: var(--ink-soft); font-weight: 400; }
 
 /* ── 入口頁：年度區塊與 Q&A ── */
-.frf-year { margin: 8px 0 40px; }
-.frf-year .frf-note a { color: var(--accent-ink); }
+.frf-year { margin: 8px 0 48px; }
+.frf-glance-foot { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); }
+.frf-summer-kicker { margin-top: 28px; }
+.frf-summer { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 8px; }
+.frf-summer a {
+  display: block; padding: 14px 16px; text-decoration: none;
+  border: 1px solid var(--line); border-left: 3px solid #C08A2E; border-radius: var(--radius-m);
+  background: var(--paper); color: var(--ink);
+}
+.frf-summer a:hover { border-color: #C08A2E; }
+.frf-summer strong { display: block; font-size: 16px; color: #8F5F17; }
+.frf-summer span { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-soft); }
 .frf-faq { margin: 48px 0 32px; }
 .frf-faq details { border-top: 1px solid var(--line); padding: 12px 0; }
 .frf-faq details:last-of-type { border-bottom: 1px solid var(--line); }
