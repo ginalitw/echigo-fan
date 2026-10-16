@@ -48,8 +48,9 @@ const stepped = new Set(
 const tocSrc = h2s.length >= 3
   ? h2s
   : heads.filter((h) => h.depth === 3 && (stepped.has(plain(h.text)) || /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text)));
+// 只清掉開頭的 emoji、1️⃣ 與「1. 」這類編號（目錄本身會編號）；「2027」這種標題本身的數字要留著
 const toc = tocSrc
-  .map((h) => ({ slug: h.slug, text: h.text.replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\d\s]+(?=\S)/u, '').trim() || h.text }));
+  .map((h) => ({ slug: h.slug, text: h.text.replace(/^(?:[\p{Extended_Pictographic}\uFE0F\s]|\d\uFE0F?\u20E3)*(?:\d{1,2}[.．、]\s*)?/u, '').trim() || h.text }));
 const hasTakeaway = /懶人重點/.test(entry.body ?? '');
 const order = readingOrder(list);
 const pos = order.findIndex((a) => a.slug === article.slug);
