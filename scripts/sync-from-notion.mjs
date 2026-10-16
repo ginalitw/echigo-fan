@@ -605,6 +605,12 @@ async function main() {
     const artworkName = readText(props, '作品名稱');
     const status = readSelect(props, '狀態') || '已發布';
     const threads = readText(props, '對應Threads');
+    // 搜尋結果用的標題與描述。頁面上的 H1 與內文不受影響；沒填就沿用原標題與導言。
+    const seoTitle = readText(props, 'SEO標題');
+    const meta = readText(props, 'meta');
+    // 速覽：文章最上方的重點框，用「｜」分隔每一項。給趕時間的讀者，也給 AI 直接引用。
+    const glance = readText(props, '速覽')
+      .split(/[｜|\n]/).map((x) => x.trim()).filter(Boolean);
 
     // 顯示日期優先用「發布時間」，沒填才退回 Notion 頁面建立時間。
     // 一定要用台北時區格式化：台灣時間 8/20 00:00 換算成 UTC 是 8/19 16:00，
@@ -616,6 +622,9 @@ async function main() {
     const fm = [
       '---',
       `title: ${yaml(title)}`,
+      seoTitle ? `seoTitle: ${yaml(seoTitle)}` : null,
+      meta ? `meta: ${yaml(meta)}` : null,
+      glance.length ? `glance: ${yamlList(glance)}` : null,
       `category: ${yamlList(category)}`,
       location ? `location: ${yaml(location)}` : null,
       season.length ? `season: ${yamlList(season)}` : null,
