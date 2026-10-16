@@ -409,6 +409,8 @@ async function main() {
       page, props, title, slug,
       n: nFromTitle(title),
       meta: readText(props, 'meta'),
+      // 速覽：每年會變的數字（票價、日期、班次），用「｜」分隔，網站排在文章最上方。
+      glance: readText(props, '速覽').split(/[｜|\n]/).map((x) => x.trim()).filter(Boolean),
       audience: mapAudience(readMulti(props, '客群標籤')),
       stage: mapStage(readSelect(props, '階段')),
       topics: readMulti(props, '主題標籤').map(topicName),
@@ -465,6 +467,7 @@ async function main() {
       `title: ${yaml(title)}`,
       item.n ? `n: ${yaml(item.n)}` : null,
       item.meta ? `meta: ${yaml(item.meta)}` : null,
+      item.glance.length ? `glance: ${yamlList(item.glance)}` : null,
       `audience: ${yamlList(item.audience)}`,
       item.stage ? `stage: ${yaml(item.stage)}` : null,
       item.topics.length ? `topics: ${yamlList(item.topics)}` : null,

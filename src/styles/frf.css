@@ -688,6 +688,23 @@ body.theme-frf h4 {
 }
 .frf-prose h2, .frf-prose h3, #takeaway { scroll-margin-top: 80px; }
 
+/* ── 速覽：每年會變的數字。用主題綠壓淡，不搶標題與目錄 ── */
+.frf-glance {
+  margin: 20px 0 0; padding: 14px 18px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+  border-top: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: var(--radius-s);
+  font-size: 14px; line-height: 1.75; color: var(--ink);
+}
+.frf-glance-label { margin: 0 0 6px; font-size: 12px; letter-spacing: .2em; color: var(--accent-ink); }
+.frf-glance ul { margin: 0; padding: 0; list-style: none; }
+.frf-glance li { position: relative; padding-left: 1em; }
+.frf-glance li + li { margin-top: 2px; }
+.frf-glance li::before {
+  content: ""; position: absolute; left: 0; top: .75em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+}
+
 /* ── 招牌：入場手環 ── */
 .frf-band { margin: 48px 0 8px; }
 .frf-band-strap {
