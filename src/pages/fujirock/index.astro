@@ -42,10 +42,10 @@ const collection = collectionLd({
 });
 
 // 2027 年度資訊。官方公布日期後，把 FRF_2027_CONFIRMED 改成 true，並更新數字與 UPDATED。
-const FRF_2027_CONFIRMED = false;
+const FRF_2027_CONFIRMED = true;
 const UPDATED = '2026-10-16';
 const glance2027 = [
-  `2027 日期：7/23（五）～7/25（日）${FRF_2027_CONFIRMED ? '' : '預定，官方尚未公布'}`,
+  `2027 日期：7/23（五）～7/25（日）${FRF_2027_CONFIRMED ? '，前夜祭 7/22（四）' : '預定，官方尚未公布'}`,
   '地點：新潟縣湯澤町 苗場滑雪場（不在富士山）',
   '1997 年創辦，2027 年是第 30 年',
   '參考票價：三日券早鳥 ¥54,000、一般 ¥59,000（2026，不含手續費）',
@@ -54,7 +54,7 @@ const glance2027 = [
 const faq = [
   {
     question: '富士搖滾 2027 是哪幾天？',
-    answer: '富士搖滾音樂祭（FUJI ROCK FESTIVAL）2027 預定在 7 月 23 日到 25 日（週五到週日）舉行，週四有前夜祭。官方尚未正式公布，越後飯會在公布後更新。',
+    answer: '富士搖滾音樂祭（FUJI ROCK FESTIVAL）2027 在 7 月 23 日到 25 日（週五到週日）舉行，前一天 7 月 22 日（週四）有前夜祭，地點一樣是新潟苗場。',
   },
   {
     question: '富士搖滾在富士山嗎？',
@@ -77,6 +77,20 @@ const ld = [
   collection,
   breadcrumbLd([{ name: '越後飯', url: '/' }, { name: '富士搖滾攻略', url: '/fujirock/' }]),
   faqLd(faq),
+  {
+    '@type': 'Event',
+    name: 'FUJI ROCK FESTIVAL 2027（富士搖滾音樂祭）',
+    startDate: '2027-07-23',
+    endDate: '2027-07-25',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: '苗場スキー場（苗場滑雪場）',
+      address: { '@type': 'PostalAddress', addressLocality: '湯沢町', addressRegion: '新潟県', addressCountry: 'JP' },
+    },
+    url: 'https://www.fujirockfestival.com/',
+  },
 ];
 const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
 const FRF_END = new Date('2027-07-26T00:00:00+09:00');
@@ -87,7 +101,7 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
 <Layout
   theme="frf"
   title="富士搖滾 2027 攻略｜Fuji Rock 苗場交通、住宿、門票、露營｜越後飯"
-  description="富士搖滾音樂祭（Fuji Rock Festival）2027 預定 7/23–25 在新潟苗場，不在富士山。東京到苗場交通、門票預算、露營與裝備，去過的人寫的中文攻略，官方公布即更新。"
+  description="富士搖滾音樂祭（Fuji Rock Festival）2027 於 7/23–25 在新潟苗場，不在富士山。東京到苗場交通、門票預算、露營與裝備，去過的人寫的中文攻略，官方公布即更新。"
   canonical={canonical}
   ogImage="/images/frf/og.jpg"
   jsonLd={ld}
@@ -103,7 +117,7 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
   </section>
 
   {daysLeft > 0 && (
-    <p class="frf-count-line">還有 <strong>{daysLeft}</strong> 天開幕，2027/7/23–25（預定）苗場</p>
+    <p class="frf-count-line">還有 <strong>{daysLeft}</strong> 天開幕，2027/7/23–25 苗場</p>
   )}
   {isLive && <p class="frf-count-line">苗場開演中</p>}
 

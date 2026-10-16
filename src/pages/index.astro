@@ -34,7 +34,7 @@ const daysTo = (iso) => Math.max(0, Math.ceil((new Date(iso).getTime() - Date.no
 // data-target 給瀏覽器端的小腳本用：兩次重建之間，數字仍以讀者當下的時間為準。
 const dates = [
   { label: '大地藝術祭 第 10 屆', when: '2027.7.17 – 11.7', target: '2027-07-17T00:00:00+09:00', days: daysTo('2027-07-17T00:00:00+09:00'), href: '/art-field/' },
-  { label: '富士搖滾 FUJI ROCK', when: '2027.7.23 – 7.25（預定）', target: '2027-07-23T00:00:00+09:00', days: daysTo('2027-07-23T00:00:00+09:00'), href: '/fujirock/' },
+  { label: '富士搖滾 FUJI ROCK', when: '2027.7.23 – 7.25', target: '2027-07-23T00:00:00+09:00', days: daysTo('2027-07-23T00:00:00+09:00'), href: '/fujirock/' },
 ];
 
 function newestCover(key) {
