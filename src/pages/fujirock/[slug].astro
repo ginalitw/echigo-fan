@@ -7,7 +7,7 @@ import {
   displayTitle,
   articleFromEntry,
   relatedFrom,
-  BRIDGE,
+  BRIDGE, BRIDGE_SLUGS,
   readMinutes,
   readingOrder,
   isReturnerOnly,
@@ -85,7 +85,8 @@ const ld = [
   ]),
 ].filter(Boolean);
 
-const showBridge = !!topic && BRIDGE.topics.includes(topic.id);
+const isBridgePage = BRIDGE_SLUGS.includes(article.slug);
+const showBridge = !isBridgePage && !!topic && BRIDGE.topics.includes(topic.id);
 ---
 <Layout
   theme="frf"
@@ -96,10 +97,24 @@ const showBridge = !!topic && BRIDGE.topics.includes(topic.id);
   ogType="article"
   jsonLd={ld}
   progress
+  pageClass={isBridgePage ? 'frf-bridge-page' : ''}
 >
+  {isBridgePage && (
+    <p class="frf-bridge-band" aria-label="富士搖滾與大地藝術祭">
+      <a href={url('/fujirock/')}>富士搖滾</a>
+      <span aria-hidden="true">×</span>
+      <a href={url('/art-field/')}>大地藝術祭</a>
+    </p>
+  )}
   <p class="frf-crumb">
     <a href={url('/fujirock/')}>富士搖滾攻略</a>
-    {topic && (
+    {isBridgePage && (
+      <>
+        <span> / </span>
+        <a href={url('/art-field/')}>大地藝術祭 2027</a>
+      </>
+    )}
+    {!isBridgePage && topic && (
       <>
         <span> / </span>
         <a href={url(`/fujirock/topic/${topic.id}/`)}>{topic.title}</a>

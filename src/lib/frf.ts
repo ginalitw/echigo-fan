@@ -212,6 +212,9 @@ export function relatedFrom(list: Article[], slug: string, limit = 3) {
  * 「橋」：FRF 文章結尾通往越後妻有大地藝術祭的入口。
  * 文案在這裡改；topics 決定哪些主題的文章會出現；想全部關掉就把 topics 清空。
  */
+/** 橋樑頁：放在富士搖滾底下、但一半在講大地藝術祭的文章。用越後飯的配色，跟一般攻略區分。 */
+export const BRIDGE_SLUGS = ['echigo-tsumari'];
+
 export const BRIDGE = {
   topics: ['transport', 'food'] as TopicId[],
   label: '音樂祭前後',
