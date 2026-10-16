@@ -1,0 +1,210 @@
+---
+// 大地藝術祭 2027 主頁。
+// 用途：承接「大地藝術祭 2027」「越後妻有 2027」這類搜尋，也是 AI 回答時可以引用的中文總整理。
+// 網址刻意不帶年份，之後每一屆改這一頁就好，累積的權重不會流失。
+// 官方資訊一公布就更新，並同步改 UPDATED。
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/url';
+import { getCollection } from 'astro:content';
+import { faqLd } from '../../lib/faq';
+import { MAP_URL, SITE, breadcrumbLd, toISODateTime } from '../../lib/seo';
+import { byNewest } from '../../lib/posts';
+
+const UPDATED = new Date('2026-10-16');
+const canonical = new URL(url('/art-field/'), Astro.site).href;
+const OFFICIAL_NEWS = 'https://www.echigo-tsumari.jp/zh-tw/news/20261008/';
+const OFFICIAL_VISIT = 'https://www.echigo-tsumari.jp/visit/?anchor=visit1';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.status !== '待填' && p.data.category.includes('越後大地藝術祭'))
+  .sort(byNewest);
+
+// 富士搖滾＋藝術祭的組合篇還是草稿時，不放連結，免得連到不存在的頁面
+const frf = await getCollection('frf');
+const combo = frf.find((e) => e.slug === 'echigo-tsumari' && e.data.status === '公開');
+
+const glance = [
+  '2027 第 10 屆三年展：7/17（六）～11/7（日）',
+  '每週二、三休館；8/10、8/11、11/3 例外照常開放',
+  '作品鑑賞通行證：預售成人 ¥4,000（2027/2/28–7/16），當日 ¥5,000（2027 官方）',
+  '通行證已含清津峽溪谷隧道與 KYORORO，不必另外買票',
+  '東京→越後湯澤：上越新幹線約 80 分鐘，再轉車進越後妻有',
+];
+
+const faq = [
+  {
+    question: '2027 大地藝術祭是哪幾天？',
+    answer: '第 10 屆越後妻有大地藝術祭三年展從 2027 年 7 月 17 日（週六）到 11 月 7 日（週日）。每週二、三固定休館，但 8 月 10 日、8 月 11 日與 11 月 3 日照常開放。',
+  },
+  {
+    question: '週二、週三去得了嗎？',
+    answer: '大部分作品與設施週二、三休館，只有部分設施照常營業。排行程時建議避開週二、三，或只安排戶外、全年可看的作品。',
+  },
+  {
+    question: '作品鑑賞通行證多少錢、什麼時候買？',
+    answer: '2027 年成人（高中以上）預售 ¥4,000、當日 ¥5,000；中小學生預售 ¥1,000、當日 ¥2,000；未滿小學免費。預售期間是 2027 年 2 月 28 日到 7 月 16 日。每件展出作品可各參觀一次，活動型作品另外收費。',
+  },
+  {
+    question: '通行證有包含清津峽溪谷隧道嗎？',
+    answer: '有。官方公告 2027 年通行證可直接參觀清津峽溪谷隧道（Tunnel of Light）與十日町市立里山科學館 KYORORO；JIKU #13 HOKUHOKU-LINE 也可參觀，但乘車費另計。',
+  },
+  {
+    question: '不會開車可以去大地藝術祭嗎？',
+    answer: '可以。最省事的是參加從越後湯澤站出發的官方一日遊，交通、門票與導覽一次包辦。自己走的話，以車站為中心：十日町站步行可到 MonET，まつだい站出站就是農舞台。清津峽從越後湯澤站搭巴士約 25 分鐘，下車再走約 30 分鐘。',
+  },
+  {
+    question: '第一次去要排幾天？',
+    answer: '只有一天，跟官方一日遊看代表作最有效率。有兩到三天，可以把 MonET、農舞台到松代城的步道各留半天，慢慢看。作品分散在 760 平方公里的範圍，一天看完全部是不可能的。',
+  },
+];
+
+const ld = [
+  {
+    '@type': 'Event',
+    name: '大地藝術祭 越後妻有藝術三年展 2027（第 10 屆）',
+    alternateName: ['大地の芸術祭 越後妻有アートトリエンナーレ2027', 'Echigo-Tsumari Art Triennale 2027'],
+    startDate: toISODateTime(new Date('2027-07-17')),
+    endDate: toISODateTime(new Date('2027-11-07')),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: '越後妻有（新潟縣十日町市、津南町）',
+      address: { '@type': 'PostalAddress', addressRegion: '新潟県', addressCountry: 'JP' },
+    },
+    url: 'https://www.echigo-tsumari.jp/',
+    offers: [
+      { '@type': 'Offer', name: '作品鑑賞通行證 成人（預售）', price: 4000, priceCurrency: 'JPY', validFrom: '2027-02-28', url: OFFICIAL_NEWS },
+      { '@type': 'Offer', name: '作品鑑賞通行證 成人（當日）', price: 5000, priceCurrency: 'JPY', validFrom: '2027-07-17', url: OFFICIAL_NEWS },
+    ],
+  },
+  {
+    '@type': 'Article',
+    headline: '大地藝術祭 2027 攻略：越後妻有第 10 屆三年展',
+    inLanguage: 'zh-Hant',
+    url: canonical,
+    mainEntityOfPage: canonical,
+    dateModified: toISODateTime(UPDATED),
+    author: { '@id': `${SITE}/#afan` },
+    publisher: { '@id': `${SITE}/#org` },
+  },
+  breadcrumbLd([
+    { name: '越後飯', url: '/' },
+    { name: '大地藝術祭 2027', url: '/art-field/' },
+  ]),
+  faqLd(faq),
+];
+
+const updatedISO = UPDATED.toISOString().slice(0, 10);
+---
+<Layout
+  title="大地藝術祭 2027 攻略｜越後妻有第 10 屆三年展日期、通行證、交通｜越後飯"
+  canonical={canonical}
+  description="2027 越後妻有大地藝術祭第 10 屆：7/17–11/7，週二三休館。作品鑑賞通行證預售 ¥4,000，已含清津峽。不開車怎麼去、排幾天，實地走過的中文整理，官方公布即更新。"
+  ogImage="/images/posts/kiyotsu-gorge/image-05.webp"
+  jsonLd={ld}
+  pageClass="page-article"
+>
+  <article class="post about pillar s-夏">
+    <header class="post-head">
+      <p class="post-kicker"><a href={url('/category/越後大地藝術祭/')}>越後大地藝術祭</a><span class="code">2027</span></p>
+      <h1>大地藝術祭 2027</h1>
+      <p class="post-work">越後妻有第 10 屆三年展　中文整理</p>
+      <p class="byline"><span>文／阿飯</span><span class="sep">·</span><time datetime={updatedISO}>{updatedISO} 最後更新</time></p>
+    </header>
+
+    <aside class="post-glance" aria-label="速覽">
+      <p class="glance-label">速覽</p>
+      <ul>{glance.map((g) => <li>{g}</li>)}</ul>
+    </aside>
+
+    <p class="post-lead">越後妻有大地藝術祭（大地の芸術祭）2027 年迎來第 10 屆，會期 7 月 17 日到 11 月 7 日。這頁整理日期、通行證、交通與排法，官方一公布新資訊就更新。</p>
+
+    <div class="prose">
+      <h2><span class="no">01</span>大地藝術祭是什麼？</h2>
+      <p>越後妻有大地藝術祭從 2000 年開始，在新潟縣十日町市與津南町、約 760 平方公里的山村裡舉辦。作品放在梯田、廢校、空屋和隧道裡，每三年辦一次大型三年展，三年展之間的年份是通年展。2027 年是第 10 屆三年展。</p>
+      <p>平年也有不少常設作品可看。越後飯整理的 <a href={MAP_URL}>大地藝術祭 2026 作品地圖</a> 收錄了 231 件作品，可以選日期查開館狀態、排路線。</p>
+
+      <h2><span class="no">02</span>2027 會期與休館日</h2>
+      <ul>
+        <li><strong>會期</strong>：2027 年 7 月 17 日（週六）～ 11 月 7 日（週日）</li>
+        <li><strong>休館</strong>：每週二、三固定休館</li>
+        <li><strong>例外照常開放</strong>：8 月 10 日（週二）、8 月 11 日（週三，國定假日）、11 月 3 日（週三，國定假日）</li>
+        <li>部分設施週二、三照常營業，以官方公告為準</li>
+      </ul>
+      <p>戶外作品（例如神社、公園裡的作品）不受開館時間限制，但需要導覽或室內的作品都要對準開館日。</p>
+
+      <h2><span class="no">03</span>作品鑑賞通行證多少錢？</h2>
+      <table>
+        <thead><tr><th>票種（2027）</th><th>預售 2/28–7/16</th><th>當日 7/17–11/7</th></tr></thead>
+        <tbody>
+          <tr><td>成人（高中以上）</td><td>¥4,000</td><td>¥5,000</td></tr>
+          <tr><td>中小學生</td><td>¥1,000</td><td>¥2,000</td></tr>
+          <tr><td>未滿小學</td><td>免費</td><td>免費</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>每件展出作品可各參觀一次；活動型作品另外收費</li>
+        <li>清津峽溪谷隧道、KYORORO 已包含在通行證內；JIKU #13 HOKUHOKU-LINE 乘車費另計</li>
+        <li>確定會去就買預售，成人省 ¥1,000</li>
+      </ul>
+      <p>參考：2026 通年展的共通票是成人 ¥2,500、中小學生 ¥1,000。出處：<a href={OFFICIAL_NEWS} rel="noopener">大地藝術祭官網 2027 通行證公告</a>、<a href={OFFICIAL_VISIT} rel="noopener">2026 參觀資訊</a>。</p>
+
+      <h2><span class="no">04</span>怎麼去越後妻有？</h2>
+      <ol>
+        <li><strong>東京 → 越後湯澤</strong>：上野或東京站搭上越新幹線，約 80 分鐘</li>
+        <li><strong>越後湯澤 → 十日町、松代</strong>：轉北越急行ほくほく線，十日町站、まつだい站都在這條線上</li>
+        <li><strong>越後湯澤 → 清津峽</strong>：東口搭南越後交通巴士約 25 分鐘，下車後步行約 30 分鐘</li>
+      </ol>
+      <p>越後妻有範圍很大，作品分散在各個聚落。沒有車的話，行程要以車站或官方巴士為中心來排。清津峽的實際走法見 <a href={url('/posts/kiyotsu-gorge/')}>清津峽溪谷隧道</a>。</p>
+
+      <h2><span class="no">05</span>不開車可以玩嗎？</h2>
+      <p>可以，三種方式：</p>
+      <ul>
+        <li><strong>官方一日遊</strong>：從越後湯澤站出發，交通、門票、導覽一次包辦，最省事。導覽以日文為主，2027 年的路線與日程待官方公布</li>
+        <li><strong>車站步行圈</strong>：十日町站走路可到 <a href={url('/posts/monet/')}>MonET</a>；まつだい站出站就是 <a href={url('/posts/nohbutai/')}>農舞台</a>，農舞台到松代城的步道約 2 公里、沿路近四十件作品</li>
+        <li><strong>電動輔助自行車</strong>：十日町、松代一帶可以租借，適合把車站周邊的作品串起來</li>
+      </ul>
+
+      <h2><span class="no">06</span>住哪裡比較方便？</h2>
+      <ul>
+        <li><strong>越後湯澤</strong>：新幹線停靠站，官方一日遊從這裡出發，適合只去一兩天、或要接東京的人</li>
+        <li><strong>十日町站周邊</strong>：在越後妻有的中心，ほくほく線與巴士都方便，適合多住幾晚慢慢看</li>
+        <li><strong>松代、松之山</strong>：離作品近、有溫泉，但沒車移動不便</li>
+      </ul>
+      <p>三年展期間住宿很搶，確定日期就先訂。</p>
+
+      <h2><span class="no">07</span>第一次去，排幾天？</h2>
+      <ul>
+        <li><strong>一天</strong>：跟官方一日遊，看清津峽、農舞台、MonET 這類代表作</li>
+        <li><strong>兩到三天</strong>：MonET 單獨留半天（一日遊只停約一小時），農舞台到松代城的步道再留半天</li>
+        <li><strong>更多天</strong>：加上松之山的《最後的教室》、鉢集落的繪本與木之實美術館，依開館日分區走</li>
+      </ul>
+
+      <h2><span class="no">08</span>跟富士搖滾同一個夏天</h2>
+      <p>富士搖滾音樂祭在苗場，跟越後妻有一樣都從越後湯澤進出。2027 年的音樂祭在 7 月 23 日到 25 日，正好落在三年展會期內。</p>
+      {combo ? (
+        <p>音樂祭前後怎麼順遊，見 <a href={url('/fujirock/echigo-tsumari/')}>富士搖滾＋大地藝術祭 2027 怎麼排</a>。</p>
+      ) : (
+        <p>富士搖滾的交通、住宿與預算，見 <a href={url('/fujirock/')}>富士搖滾攻略</a>。</p>
+      )}
+
+      <h2><span class="no">09</span>實地走過的作品</h2>
+      <ul>
+        {posts.map((p) => (
+          <li><a href={url(`/posts/${p.slug}/`)}>{p.data.title}</a>{p.data.location && `（${p.data.location}）`}</li>
+        ))}
+      </ul>
+
+      <h2><span class="no">10</span>常見問題</h2>
+      {faq.map((q) => (
+        <>
+          <h3>{q.question}</h3>
+          <p>{q.answer}</p>
+        </>
+      ))}
+
+      <p class="terms">本頁價格為日圓並標示年份。官方資訊以 <a href="https://www.echigo-tsumari.jp/" rel="noopener">echigo-tsumari.jp</a> 為準，越後飯會在官方公布後更新。</p>
+    </div>
+  </article>
+</Layout>

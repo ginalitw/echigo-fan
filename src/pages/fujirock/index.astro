@@ -11,7 +11,8 @@ import {
 } from '../../lib/frf';
 import { getCollection } from 'astro:content';
 import { imgAttrs } from '../../lib/img';
-import { collectionLd } from '../../lib/seo';
+import { collectionLd, breadcrumbLd } from '../../lib/seo';
+import { faqLd } from '../../lib/faq';
 
 const heroImg = await imgAttrs('/images/frf/stage-rain.jpg', '100vw');
 
@@ -33,13 +34,64 @@ const topics = await Promise.all(TOPICS.map(async (topic) => {
   return { ...topic, count: items.length, preview, thumb: await imgAttrs(topic.cover, '(min-width: 760px) 360px, 100vw') };
 }));
 const upgradeCount = upgradeFrom(list).length;
-const ld = collectionLd({
+const collection = collectionLd({
   name: '富士搖滾攻略',
   url: '/fujirock/',
   description: '台灣人看的富士搖滾音樂祭（Fuji Rock Festival）攻略',
   items: topics.map((t) => ({ name: t.seoTitle, url: `/fujirock/topic/${t.id}/` })),
 });
 
+// 2027 年度資訊。官方公布日期後，把 FRF_2027_CONFIRMED 改成 true，並更新數字與 UPDATED。
+const FRF_2027_CONFIRMED = true;
+const UPDATED = '2026-10-16';
+const glance2027 = [
+  `2027 日期：7/23（五）～7/25（日）${FRF_2027_CONFIRMED ? '，前夜祭 7/22（四）' : '預定，官方尚未公布'}`,
+  '地點：新潟縣湯澤町 苗場滑雪場（不在富士山）',
+  '1997 年創辦，2027 年是第 30 年',
+  '參考票價：三日券早鳥 ¥54,000、一般 ¥59,000（2026，不含手續費）',
+  '東京→苗場：上越新幹線到越後湯澤約 80 分，再轉接駁巴士約 40 分',
+];
+const faq = [
+  {
+    question: '富士搖滾 2027 是哪幾天？',
+    answer: '富士搖滾音樂祭（FUJI ROCK FESTIVAL）2027 在 7 月 23 日到 25 日（週五到週日）舉行，前一天 7 月 22 日（週四）有前夜祭，地點一樣是新潟苗場。',
+  },
+  {
+    question: '富士搖滾在富士山嗎？',
+    answer: '不在。富士搖滾從 1999 年起在新潟縣湯澤町的苗場滑雪場舉辦，跟富士山沒有關係。從東京搭上越新幹線到越後湯澤，再轉接駁巴士上山。',
+  },
+  {
+    question: '門票多少錢？',
+    answer: '以 2026 年為例，三日券早鳥 ¥54,000、一般 ¥59,000，不含手續費；海外購票另加約 10% 手續費。露營券另外購買，2026 年是每人 ¥6,000。2027 年票價待官方公布。',
+  },
+  {
+    question: '從東京怎麼去苗場？',
+    answer: '機場進上野，搭上越新幹線到越後湯澤約 80 分鐘，再從越後湯澤站東口搭接駁巴士上山約 40 分鐘。2026 年接駁巴士上山 ¥2,000、下山免費。',
+  },
+  {
+    question: '音樂祭前後可以順遊大地藝術祭嗎？',
+    answer: '可以。越後妻有大地藝術祭 2027 年辦第 10 屆三年展，會期 7 月 17 日到 11 月 7 日，跟富士搖滾一樣從越後湯澤進出。藝術祭週二、三休館，排行程時要避開。',
+  },
+];
+const ld = [
+  collection,
+  breadcrumbLd([{ name: '越後飯', url: '/' }, { name: '富士搖滾攻略', url: '/fujirock/' }]),
+  faqLd(faq),
+  {
+    '@type': 'Event',
+    name: 'FUJI ROCK FESTIVAL 2027（富士搖滾音樂祭）',
+    startDate: '2027-07-23',
+    endDate: '2027-07-25',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: '苗場スキー場（苗場滑雪場）',
+      address: { '@type': 'PostalAddress', addressLocality: '湯沢町', addressRegion: '新潟県', addressCountry: 'JP' },
+    },
+    url: 'https://www.fujirockfestival.com/',
+  },
+];
 const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
 const FRF_END = new Date('2027-07-26T00:00:00+09:00');
 const now = Date.now();
@@ -48,8 +100,8 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
 ---
 <Layout
   theme="frf"
-  title="富士搖滾攻略｜Fuji Rock Festival 苗場｜越後飯"
-  description="台灣人看的富士搖滾音樂祭（Fuji Rock Festival）攻略：東京到苗場交通、露營、預算、裝備。2027 年 7 月 23–25 日在新潟苗場，不是富士山。"
+  title="富士搖滾 2027 攻略｜Fuji Rock 苗場交通、住宿、門票、露營｜越後飯"
+  description="富士搖滾音樂祭（Fuji Rock Festival）2027 於 7/23–25 在新潟苗場，不在富士山。東京到苗場交通、門票預算、露營與裝備，去過的人寫的中文攻略，官方公布即更新。"
   canonical={canonical}
   ogImage="/images/frf/og.jpg"
   jsonLd={ld}
@@ -65,9 +117,22 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
   </section>
 
   {daysLeft > 0 && (
-    <p class="frf-count-line">還有 <strong>{daysLeft}</strong> 天開幕，2027/7/23–25（預定）苗場</p>
+    <p class="frf-count-line">還有 <strong>{daysLeft}</strong> 天開幕，2027/7/23–25 苗場</p>
   )}
   {isLive && <p class="frf-count-line">苗場開演中</p>}
+
+  <section class="frf-year" aria-labelledby="frf-2027">
+    <h2 id="frf-2027" class="frf-section">富士搖滾 2027</h2>
+    <aside class="frf-glance" aria-label="速覽">
+      <p class="frf-glance-label">速覽</p>
+      <ul>{glance2027.map((g) => <li>{g}</li>)}</ul>
+    </aside>
+    <p class="frf-note">{UPDATED} 更新。陣容、票價、接駁公布後，這一區會第一時間更新。</p>
+    <p class="frf-note">
+      同一個夏天，越後妻有大地藝術祭辦第 10 屆三年展（7/17–11/7）。
+      <a href={url('/art-field/')}>看大地藝術祭 2027 →</a>
+    </p>
+  </section>
 
   <p class="frf-kicker">第一次去？</p>
   <h2 class="frf-section">從這三篇開始</h2>
@@ -112,6 +177,18 @@ const isLive = now >= NEXT_FRF.getTime() && now < FRF_END.getTime();
     <a href={url('/fujirock/upgrade/')}>去過一次了？免搭帳、住宿、裝備輕量化 — {upgradeCount} 篇 →</a>
   </p>
 
+
+  <section class="frf-faq" aria-labelledby="frf-faq">
+    <p class="frf-kicker">常見問題</p>
+    <h2 id="frf-faq" class="frf-section">富士搖滾 2027 Q&amp;A</h2>
+    {faq.map((q) => (
+      <details>
+        <summary>{q.question}</summary>
+        <p>{q.answer}</p>
+      </details>
+    ))}
+    <p class="frf-note"><a href={url('/fujirock/beginner-faq/')}>更多新手問題 →</a></p>
+  </section>
 
   <div class="frf-community" id="community">
     <a href={FB} target="_blank" rel="noopener"><span class="mob">臉書社團</span><span class="desk">加入台灣民間總部臉書社團</span></a>

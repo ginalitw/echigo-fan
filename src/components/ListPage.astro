@@ -5,7 +5,7 @@ import RouteList from './RouteList.astro';
 import { url } from '../lib/url';
 import { phrase } from '../lib/phrase';
 
-const { title, eyebrow, intro, posts = [], canonicalPath, emptyText = '這一區正在寫。' } = Astro.props;
+const { title, eyebrow, intro, pillar, posts = [], canonicalPath, emptyText = '這一區正在寫。' } = Astro.props;
 const canonical = canonicalPath ? new URL(url(canonicalPath), Astro.site).href : undefined;
 ---
 <Layout
@@ -17,6 +17,7 @@ const canonical = canonicalPath ? new URL(url(canonicalPath), Astro.site).href :
     <p class="eyebrow"><a href={url('/')}>越後飯</a> ／ {eyebrow}</p>
     <h1 set:html={phrase(title)} />
     {intro && <p>{intro}</p>}
+    {pillar && <p><a class="text-link" href={url(pillar.href)}>{pillar.text} <span aria-hidden="true">→</span></a></p>}
     {posts.length > 0 && <p><span class="count">{posts.length}</span> 篇</p>}
   </header>
 

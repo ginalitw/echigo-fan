@@ -705,6 +705,15 @@ body.theme-frf h4 {
   width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
 }
 
+/* ── 入口頁：年度區塊與 Q&A ── */
+.frf-year { margin: 8px 0 40px; }
+.frf-year .frf-note a { color: var(--accent-ink); }
+.frf-faq { margin: 48px 0 32px; }
+.frf-faq details { border-top: 1px solid var(--line); padding: 12px 0; }
+.frf-faq details:last-of-type { border-bottom: 1px solid var(--line); }
+.frf-faq summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+.frf-faq details p { margin: 8px 0 0; color: var(--ink); line-height: 1.8; }
+
 /* ── 招牌：入場手環 ── */
 .frf-band { margin: 48px 0 8px; }
 .frf-band-strap {

@@ -27,6 +27,7 @@ export const GET: APIRoute = async ({ site }) => {
       priority: '0.8',
     })),
     { loc: abs('/about'), priority: '0.6' },
+    { loc: abs('/art-field'), priority: '0.9' },
     // 作品地圖在子網域，GSC 用 DNS 驗證整個 echigo.fans，跨子網域列在這裡是允許的
     { loc: MAP_URL, priority: '0.8' },
     { loc: abs('/archive'), priority: '0.7' },
