@@ -903,6 +903,37 @@ a { color: inherit; }
 }
 .post-lead { max-width: var(--measure); margin-left: auto; margin-right: auto; }
 .post.has-cover .post-lead { margin-top: clamp(40px, 6vw, 72px); }
+
+/* 速覽：散文前的實用重點。顏色跟著季節色走，但壓得很淡，不搶散文的開場。 */
+.post-glance {
+  max-width: var(--measure);
+  margin: var(--sp-6) auto 0;
+  padding: var(--sp-4) var(--sp-5);
+  background: color-mix(in srgb, var(--s) 6%, var(--paper));
+  border-top: 2px solid color-mix(in srgb, var(--s) 55%, transparent);
+  border-radius: var(--radius-s);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  line-height: 1.75;
+  color: var(--ink);
+}
+.post.has-cover .post-glance { margin-top: clamp(40px, 6vw, 72px); }
+.post-glance + .post-lead,
+.post.has-cover .post-glance + .post-lead { margin-top: var(--sp-6); }
+.glance-label {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.2em;
+  color: var(--s-ink);
+}
+.post-glance ul { margin: 0; padding: 0; list-style: none; }
+.post-glance li { position: relative; padding-left: 1em; }
+.post-glance li + li { margin-top: 2px; }
+.post-glance li::before {
+  content: ""; position: absolute; left: 0; top: 0.75em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--s);
+}
 @media (max-width: 900px) {
   .post.has-cover .post-hero { grid-template-columns: 1fr; gap: var(--sp-5); }
   .post.has-cover .post-head { max-width: var(--measure); margin: 0 auto; width: 100%; }

@@ -7,6 +7,8 @@ const posts = defineCollection({
     // 搜尋結果標題（<title>）與描述（meta description）。頁面上的 H1 與導言不變。
     seoTitle: z.string().optional(),
     meta: z.string().optional(),
+    // 速覽：文章最上方的重點框，每項一行。
+    glance: z.array(z.string()).optional(),
     category: z.array(z.string()),
     location: z.string().optional(),
     season: z.array(z.string()).optional(),

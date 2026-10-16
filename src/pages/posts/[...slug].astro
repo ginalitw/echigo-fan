@@ -127,6 +127,13 @@ const stationNo = (d.artworkNumber?.match(/[A-Z]\d{3}/) ?? [])[0] ?? '';
     )}
     </div>
 
+    {d.glance && d.glance.length > 0 && (
+      <aside class="post-glance" aria-label="速覽">
+        <p class="glance-label">速覽</p>
+        <ul>{d.glance.map((g) => <li>{g}</li>)}</ul>
+      </aside>
+    )}
+
     {d.lead && !leadDup && <p class="post-lead">{d.lead}</p>}
 
     <div class={`prose ${leadDup ? 'lead-dup' : ''}`}>
