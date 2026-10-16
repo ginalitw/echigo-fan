@@ -20,7 +20,9 @@ export const GET: APIRoute = async ({ site }) => {
     const facts = [d.artworkName && d.artworkName !== d.title ? d.artworkName : '', (d.artist ?? []).join('、'), d.location]
       .filter(Boolean)
       .join('，');
-    return `- [${d.title}](${abs(`/posts/${p.slug}`)})${facts || d.lead ? `: ${[facts, d.lead].filter(Boolean).join('。')}` : ''}`;
+    // 有 meta 就用 meta：它是寫給「想知道怎麼去、要不要預約」的人看的，散文導言 AI 讀不出重點。
+    const desc = d.meta?.trim() || [facts, d.lead].filter(Boolean).join('。');
+    return `- [${d.seoTitle?.trim() || d.title}](${abs(`/posts/${p.slug}`)})${desc ? `: ${desc}` : ''}`;
   });
 
   const body = `# 越後飯 ECHIGO FAN

@@ -4,6 +4,9 @@ const posts = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    // 搜尋結果標題（<title>）與描述（meta description）。頁面上的 H1 與導言不變。
+    seoTitle: z.string().optional(),
+    meta: z.string().optional(),
     category: z.array(z.string()),
     location: z.string().optional(),
     season: z.array(z.string()).optional(),

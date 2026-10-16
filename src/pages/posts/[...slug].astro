@@ -40,10 +40,13 @@ const season = d.season?.[0] ?? '';
 const artists = d.artist?.filter(Boolean) ?? [];
 const workBits = [d.artworkName && d.artworkName !== d.title ? d.artworkName : '', artists.join('、')].filter(Boolean);
 const subject = `${d.title}${workBits.length ? `（${workBits.join('，')}）` : ''}${d.location ? `｜${d.location}` : ''}`;
-const metaDesc = d.lead ? `${subject}。${d.lead}` : `${subject}：越後飯的實地紀錄。`;
+// Notion 有填 meta 就用它（第一句就給答案的寫法），沒填才用作品資訊＋導言組。
+const metaDesc = d.meta?.trim() || (d.lead ? `${subject}。${d.lead}` : `${subject}：越後飯的實地紀錄。`);
+// 搜尋結果標題：有 SEO標題就用，頁面上的 H1 仍是原標題。
+const pageTitle = d.seoTitle?.trim() ? `${d.seoTitle.trim()}｜越後飯` : `${d.title}｜越後飯 ECHIGO FAN`;
 
 const ld = articleLd({
-  headline: d.title,
+  headline: d.seoTitle?.trim() || d.title,
   canonical,
   description: metaDesc,
   image: d.cover,
@@ -66,7 +69,7 @@ const cover = d.cover ? await imgAttrs(d.cover, '(max-width: 900px) 100vw, 56vw'
 const stationNo = (d.artworkNumber?.match(/[A-Z]\d{3}/) ?? [])[0] ?? '';
 ---
 <Layout
-  title={`${d.title}｜越後飯 ECHIGO FAN`}
+  title={pageTitle}
   canonical={canonical}
   description={metaDesc}
   ogImage={d.cover}

@@ -40,7 +40,14 @@ const SKIP = /懶人重點|延伸閱讀|還有問題|加入我們/;
 const heads = (rendered?.headings ?? []).filter((h) => !SKIP.test(h.text));
 const h2s = heads.filter((h) => h.depth === 2);
 // 大標不到三個時，改用帶編號的小標（例如「第一段、第二段」）當目錄
-const tocSrc = h2s.length >= 3 ? h2s : heads.filter((h) => h.depth === 3 && /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text));
+// 1️⃣ 這類編號在渲染時已改成 CSS 徽章、不留在標題文字裡，所以從原始 markdown 找出哪些小標帶編號
+const plain = (t: string) => t.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim();
+const stepped = new Set(
+  [...(entry.body ?? '').matchAll(/^###\s+(?:\d\uFE0F\u20E3|🔟)\s*(.+)$/gmu)].map((m) => plain(m[1])),
+);
+const tocSrc = h2s.length >= 3
+  ? h2s
+  : heads.filter((h) => h.depth === 3 && (stepped.has(plain(h.text)) || /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text)));
 const toc = tocSrc
   .map((h) => ({ slug: h.slug, text: h.text.replace(/^[\p{Extended_Pictographic}\uFE0F\u20E3\d\s]+(?=\S)/u, '').trim() || h.text }));
 const hasTakeaway = /懶人重點/.test(entry.body ?? '');
@@ -86,6 +93,7 @@ const showBridge = !!topic && BRIDGE.topics.includes(topic.id);
   description={article.meta}
   canonical={canonical}
   ogImage={article.image}
+  ogType="article"
   jsonLd={ld}
   progress
 >

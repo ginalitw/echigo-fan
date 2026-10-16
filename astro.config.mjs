@@ -204,10 +204,12 @@ function frfStepHeading(node) {
   if (!m) return;
   const n = m[1] === '🔟' ? '10' : m[1];
   first.value = first.value.slice(m[0].length);
+  // 數字放在 data 屬性、用 CSS 畫出來，不放進文字裡。
+  // 否則搜尋引擎與 AI 讀到的標題會黏成「1第一段：機場 ➔ 上野」。
   node.children.unshift({
     type: 'element', tagName: 'span',
-    properties: { className: ['frf-step'], ariaHidden: 'true' },
-    children: [{ type: 'text', value: n }],
+    properties: { className: ['frf-step'], ariaHidden: 'true', dataStep: n },
+    children: [],
   });
   node.properties = node.properties || {};
   node.properties.className = [...(node.properties.className || []), 'frf-has-step'];

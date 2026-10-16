@@ -606,6 +606,7 @@ body.theme-frf h4 {
   font-variant-numeric: tabular-nums;
   transform: translateY(-1px);
 }
+.frf-step::before { content: attr(data-step); }
 
 /* ── 路線圖：機場 → 上野 → 越後湯澤 → 苗場 ── */
 .frf-prose .frf-route {
