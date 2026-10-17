@@ -45,7 +45,7 @@ updated: 2026-09-06
 
 想深入了解 GTX 的原理與保養？The North Face 這篇官方指南寫得非常詳細：
 
-- [🔗 ](https://www.thenorthface.com.tw/Article/Detail/82028?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExVjMyQklvVm9BclRrMHFIYXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7AbC3zCdb5VazzJWBvxLl5doDUUNHKVB3ZR7Bjl7bb3getkxZu0vVVdDEp-w_aem_eP1OUxf58CcDIipOcJpklg)[**Gore-Tex 知識庫：防水與透氣的秘密 (The North Face)**](https://www.thenorthface.com.tw/Article/Detail/82028?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExVjMyQklvVm9BclRrMHFIYXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7AbC3zCdb5VazzJWBvxLl5doDUUNHKVB3ZR7Bjl7bb3getkxZu0vVVdDEp-w_aem_eP1OUxf58CcDIipOcJpklg)
+- [🔗](https://www.thenorthface.com.tw/Article/Detail/82028?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExVjMyQklvVm9BclRrMHFIYXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7AbC3zCdb5VazzJWBvxLl5doDUUNHKVB3ZR7Bjl7bb3getkxZu0vVVdDEp-w_aem_eP1OUxf58CcDIipOcJpklg)[**Gore-Tex 知識庫：防水與透氣的秘密 (The North Face)**](https://www.thenorthface.com.tw/Article/Detail/82028?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExVjMyQklvVm9BclRrMHFIYXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7AbC3zCdb5VazzJWBvxLl5doDUUNHKVB3ZR7Bjl7bb3getkxZu0vVVdDEp-w_aem_eP1OUxf58CcDIipOcJpklg)
 
 ### 2️⃣ 日本國民神牌：Montbell（必買推薦）
 
@@ -55,7 +55,7 @@ updated: 2026-09-06
   - **Storm Cruiser Jacket (風雨衣)：** 使用 Gore-Tex 材質，重量極輕，剪裁適合亞洲人身形。
   - **Wickron 排汗衫：** 吸濕快乾、抗臭效果好，而且圖案選擇超多，很適合音樂祭穿。
   - **超輕量折疊傘 (U.L. Trekking Umbrella)：** 輕到你會忘記有帶，雖然音樂祭不能撐傘，但這把傘在前後行程的都市旅遊超好用。
-- **購買連結：**[🔗 ](https://www.montbell.jp/)[**Montbell 日本官網**](https://www.montbell.jp/)
+- **購買連結：**[🔗](https://www.montbell.jp/)[**Montbell 日本官網**](https://www.montbell.jp/)
 
 ### 3️⃣ 平價神話：WORKMAN（便宜也有好貨）
 
@@ -68,7 +68,7 @@ updated: 2026-09-06
 - **推薦系列：**
   - **AEGIS 系列：** 專為騎士設計，防水係數極高，非常適合長時間淋雨的音樂祭。
   - **INAREM 系列：** 主打高透氣性，解決便宜雨衣悶熱的痛點。
-- **購買連結：**[🔗 ](https://www.google.com/search?q=https%3A%2F%2Fworkman.jp%2Fshop%2Fe%2Ferainwear%2F%3Ffbclid%3DIwY2xjawPnw1ZleHRuA2FlbQIxMABicmlkETFWMzJCSW9Wb0FyVGswcUhhc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODgyMDA4OTIAABHtaLn1jZiPYGYOtvSIWSNisWJrveoJ90aJxFF24N2D-MzV_8btr_QmDejAQr_aem_V4QgjcugImdtx8pjQxGIoQ)[**WORKMAN 官方雨具專區**](https://workman.jp/shop/e/erainwear/?fbclid%3DIwY2xjawPnw1ZleHRuA2FlbQIxMABicmlkETFWMzJCSW9Wb0FyVGswcUhhc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODgyMDA4OTIAABHtaLn1jZiPYGYOtvSIWSNisWJrveoJ90aJxFF24N2D-MzV_8btr_QmDejAQr_aem_V4QgjcugImdtx8pjQxGIoQ=)
+- **購買連結：**[🔗](https://www.google.com/search?q=https%3A%2F%2Fworkman.jp%2Fshop%2Fe%2Ferainwear%2F%3Ffbclid%3DIwY2xjawPnw1ZleHRuA2FlbQIxMABicmlkETFWMzJCSW9Wb0FyVGswcUhhc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODgyMDA4OTIAABHtaLn1jZiPYGYOtvSIWSNisWJrveoJ90aJxFF24N2D-MzV_8btr_QmDejAQr_aem_V4QgjcugImdtx8pjQxGIoQ)[**WORKMAN 官方雨具專區**](https://workman.jp/shop/e/erainwear/?fbclid%3DIwY2xjawPnw1ZleHRuA2FlbQIxMABicmlkETFWMzJCSW9Wb0FyVGswcUhhc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODgyMDA4OTIAABHtaLn1jZiPYGYOtvSIWSNisWJrveoJ90aJxFF24N2D-MzV_8btr_QmDejAQr_aem_V4QgjcugImdtx8pjQxGIoQ=)
 
 ### 4️⃣ 底層衣的革命：美麗諾羊毛 (Merino Wool)
 
@@ -107,11 +107,11 @@ updated: 2026-09-06
 
 上野不只是交通樞紐，更是戶外用品的一級戰區。在上新幹線之前，建議預留時間來這裡補給。
 
-- [**Montbell 御徒町店**](https://store.montbell.jp/search/shopinfo/?shop_no=678541)** (Okachimachi Store)**
+- [**Montbell 御徒町店**](https://store.montbell.jp/search/shopinfo/?shop_no=678541) **(Okachimachi Store)**
   - **特色：** 就在上野隔壁一站（御徒町站），步行可達。這是一家**超大型旗艦店**，有好幾層樓，貨色極全，從服飾到露營裝備應有盡有，還可以退稅。
 - [**Art Sports ODBox 本店**](https://www.ishii-sports.com/art_sports/shop/odbox/)
   - **特色：** 位於御徒町站旁，這是專業的戶外用品選物店。想找 HOKA、Salomon、The North Face 等歐美品牌，或是比較特別的輕量化裝備 (UL Gear)，這裡比 Montbell 更適合挖寶。
-- [**London Sports**](https://www.instagram.com/londonsports_ueno/)** (倫敦體育)**
+- [**London Sports**](https://www.instagram.com/londonsports_ueno/) **(倫敦體育)**
   - **特色：** 上野阿美橫町內的傳奇店家。店內像倉庫一樣堆滿衣服鞋子，主打**「驚人的折扣」**。如果你想找便宜的運動排汗衫、運動短褲，來這裡翻翻看，常有 2-3 折的驚喜價。
 
 ---

@@ -48,7 +48,7 @@ updated: 2026-09-06
 - 2人快開黑黑帳 $3,499（圓餅收納，不推托運） → [#8801560](https://www.decathlon.tw/p/2-%E4%BA%BA%E9%9C%B2%E7%87%9F%E5%BF%AB%E9%96%8B%E5%B8%B3%E7%AF%B7-%E8%B6%85%E9%81%AE%E9%99%BD%E9%BB%91%E9%BB%91%E5%B8%B3-quechua-8801560.html)
 - 2人新式快開2秒黑黑帳 $4,499 → [#8553541](https://www.decathlon.tw/p/2-%E4%BA%BA%E9%9C%B2%E7%87%9F%E6%96%B0%E5%BC%8F%E5%BF%AB%E9%96%8B-2-%E7%A7%92%E5%B8%B3%E7%AF%B7-%E8%B6%85%E9%81%AE%E9%99%BD%E9%BB%91%E9%BB%91%E5%B8%B3-quechua-8553541.html)
 - 2人MH100 $1,499（最輕，無遮光） → [#8513471](https://www.decathlon.tw/p/2-%E4%BA%BA%E9%9C%B2%E7%87%9F%E5%B8%B3%E7%AF%B7-mh100-quechua-8513471.html)
-- **3人MH100 Fresh&Black $2,499（最推） → **[**#8576111**](https://www.decathlon.tw/p/3-%E4%BA%BA%E7%94%A8%E9%9C%B2%E7%87%9F%E5%B8%B3%E7%AF%B7-mh100-fresh-black-quechua-8576111.html)
+- **3人MH100 Fresh&Black $2,499（最推） →** [**#8576111**](https://www.decathlon.tw/p/3-%E4%BA%BA%E7%94%A8%E9%9C%B2%E7%87%9F%E5%B8%B3%E7%AF%B7-mh100-fresh-black-quechua-8576111.html)
 - 3人快開遮光透氣棕色 $2,999 → [#8979804](https://www.decathlon.tw/p/3-%E4%BA%BA%E5%BF%AB%E9%96%8B%E9%81%AE%E5%85%89%E9%80%8F%E6%B0%A3%E5%B8%B3%E7%AF%B7-%E6%A3%95%E8%89%B2-quechua-8979804.html)
 
 **🛡️ 配件｜帳篷防水地垄（2 × 2.5m）** → [購買連結](https://www.decathlon.tw/p/%E5%B8%B3%E7%AF%B7-%E9%9C%B2%E7%87%9F%E7%94%A8%E9%98%B2%E6%B0%B4%E5%9C%B0%E5%A2%8A-2-x-2-5-m-quechua-1163704.html)
