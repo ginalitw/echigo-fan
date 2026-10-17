@@ -1,13 +1,14 @@
 ---
 title: "# 08 露營場地：滑雪場露營的瘋狂"
 n: "08"
+seoTitle: "Fuji Rock 露營攻略：A～H 營區比較與搶地策略"
 meta: "苗場露營區 A 到 H 區地形詳解、女子營區位置，以及什麼時間到才搶得到平地。"
 audience: ["common"]
 stage: "go"
 topics: ["露營"]
 cover: "/images/frf-posts/campsite-map/image-01.webp"
 status: "公開"
-updated: 2026-10-17
+updated: 2026-10-18
 ---
 > 👤 **本篇適合：** 🌐 通用必修（凡是要露營的人，不管幾衝都要先知道各區地形）
 
@@ -15,9 +16,9 @@ updated: 2026-10-17
 
 ## 📍 在苗場，「平地」是留給早起的人的獎賞。
 
-![露營分區位置圖](/images/frf-posts/campsite-map/image-01.webp)
+![📍 露營分區位置圖](/images/frf-posts/campsite-map/image-01.webp)
 
-*露營分區位置圖*
+*📍 露營分區位置圖*
 
 Fuji Rock 的露營區位於一座巨大的滑雪場，這意味著：**「平地是稀缺資源，斜坡是常態」**。選對位置，每晚安穩入睡；選錯位置，每天早上滑到帳篷角落被熱醒。
 
