@@ -111,6 +111,48 @@ function rehypeFixBoldStars() {
   };
 }
 
+// 圖片說明以「📍」開頭的圖（例如營區示意圖），標成「固定參考圖」：
+// 文章頁會把它縮小固定在目錄下方（電腦），或給一顆「看地圖」按鈕（手機）。
+// 記號只是給網站看的，說明文字和替代文字裡的 📍 拿掉。
+const PIN_MARK = /^\s*📍\uFE0F?\s*/u;
+
+function rehypePinMap() {
+  return (tree) => {
+    const pinned = new Set();
+    const textOf = (n) => (n.type === 'text' ? n.value : (n.children || []).map(textOf).join(''));
+    const walk = (node) => {
+      if (node.type === 'element' && node.tagName === 'img') {
+        const p = node.properties || {};
+        const alt = String(p.alt ?? '');
+        if (PIN_MARK.test(alt)) {
+          p.alt = alt.replace(PIN_MARK, '');
+          p.dataPin = '1';
+          pinned.add(p.alt);
+        }
+      }
+      for (const c of node.children || []) walk(c);
+    };
+    walk(tree);
+    if (!pinned.size) return;
+    // 同步腳本會在圖下面印一行 *說明*，那行的 📍 也拿掉
+    const strip = (node) => {
+      if (node.type === 'element' && (node.tagName === 'em' || node.tagName === 'figcaption')) {
+        const t = textOf(node);
+        if (PIN_MARK.test(t) && pinned.has(t.replace(PIN_MARK, '').trim())) {
+          const first = (function find(n) {
+            if (n.type === 'text') return n;
+            for (const c of n.children || []) { const r = find(c); if (r) return r; }
+            return null;
+          })(node);
+          if (first) first.value = first.value.replace(PIN_MARK, '');
+        }
+      }
+      for (const c of node.children || []) strip(c);
+    };
+    strip(tree);
+  };
+}
+
 function isFaqDoc(tree, file) {
   const path = String(file?.path || file?.history?.join(' ') || '');
   if (path.includes('beginner-faq')) return true;
@@ -591,6 +633,6 @@ export default defineConfig({
   base: BASE,
   markdown: {
     shikiConfig: { theme: 'github-light' },
-    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypeFrfFaq, rehypeFrfArticle, rehypeFrfDesign, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
+    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypePinMap, rehypeFrfFaq, rehypeFrfArticle, rehypeFrfDesign, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
   },
 });
