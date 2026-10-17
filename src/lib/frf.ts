@@ -6,6 +6,8 @@ export type Article = {
   slug: string;
   n: string;
   title: string;
+  /** 搜尋結果標題，沒填是空字串 */
+  seoTitle: string;
   meta: string;
   audience: AudienceId[];
   stage: StageId | null;
@@ -167,6 +169,7 @@ export function articleFromEntry(entry: {
   data: {
     title: string;
     n?: string;
+    seoTitle?: string;
     meta?: string;
     audience?: string[];
     stage?: string;
@@ -179,6 +182,7 @@ export function articleFromEntry(entry: {
     slug: entry.slug,
     n: entry.data.n || "",
     title: entry.data.title,
+    seoTitle: entry.data.seoTitle?.trim() || "",
     meta: entry.data.meta || "",
     audience: (entry.data.audience || []) as AudienceId[],
     stage: (entry.data.stage as StageId) || null,

@@ -396,6 +396,8 @@ async function main() {
       page, props, title, slug,
       n: nFromTitle(title),
       meta: readText(props, 'meta'),
+      // SEO標題：只用在搜尋結果標題（<title>），頁面上的 H1 仍是文章標題。沒填就沿用文章標題。
+      seoTitle: readText(props, 'SEO標題'),
       // 速覽：每年會變的數字（票價、日期、班次），用「｜」分隔，網站排在文章最上方。
       glance: readText(props, '速覽').split(/[｜|\n]/).map((x) => x.trim()).filter(Boolean),
       audience: mapAudience(readMulti(props, '客群標籤')),
@@ -453,6 +455,7 @@ async function main() {
       '---',
       `title: ${yaml(title)}`,
       item.n ? `n: ${yaml(item.n)}` : null,
+      item.seoTitle ? `seoTitle: ${yaml(item.seoTitle)}` : null,
       item.meta ? `meta: ${yaml(item.meta)}` : null,
       item.glance.length ? `glance: ${yamlList(item.glance)}` : null,
       `audience: ${yamlList(item.audience)}`,

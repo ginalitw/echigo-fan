@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ site }) => {
     (a, b) => (a.data.code ?? a.slug).localeCompare(b.data.code ?? b.slug),
   );
 
-  const frfLines = frf.map((p) => `- [${clean(p.data.title)}](${abs(`/fujirock/${p.slug}`)})${p.data.meta ? `: ${p.data.meta}` : ''}`);
+  const frfLines = frf.map((p) => `- [${p.data.seoTitle?.trim() || clean(p.data.title)}](${abs(`/fujirock/${p.slug}`)})${p.data.meta ? `: ${p.data.meta}` : ''}`);
   const postLines = posts.map((p) => {
     const d = p.data;
     const facts = [d.artworkName && d.artworkName !== d.title ? d.artworkName : '', (d.artist ?? []).join('、'), d.location]
