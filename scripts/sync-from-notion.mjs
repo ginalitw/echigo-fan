@@ -16,7 +16,7 @@ import { Client } from '@notionhq/client';
 import fs from 'fs';
 import path from 'path';
 import 'dotenv/config';
-import { richText } from './rich-text.mjs';
+import { richText, richTextBold } from './rich-text.mjs';
 
 // sharp 是選用的：有裝就壓縮圖片，沒裝就原樣存檔並提醒一次。
 // 這樣就算哪天 sharp 在某個平台裝不起來，同步也不會整個掛掉。
@@ -316,7 +316,7 @@ async function blocksToMarkdown(blocks, slug, ctx, depth = 0) {
         md += `---\n\n`;
         break;
       case 'toggle': {
-        md += `${pad}**${richText(data.rich_text)}**\n\n`;
+        md += `${pad}${richTextBold(data.rich_text)}\n\n`;
         md += await childMd();
         break;
       }

@@ -1,7 +1,7 @@
 // npm test
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { richText } from './rich-text.mjs';
+import { richText, richTextBold } from './rich-text.mjs';
 
 const seg = (text, annotations = {}, href = null) => ({
   plain_text: text,
@@ -61,4 +61,14 @@ test('行內程式碼不轉 <br>', () => {
 test('空陣列回傳空字串', () => {
   assert.equal(richText([]), '');
   assert.equal(richText(undefined), '');
+});
+
+test('切換清單標題整句加粗，裡面原本的粗體不重複包（住宿那篇）', () => {
+  const md = richTextBold([seg('也可以聯絡私人計日停車方案('), seg('¥2,000-¥3,000/日)', { bold: true })]);
+  assert.equal(md, '**也可以聯絡私人計日停車方案(¥2,000-¥3,000/日)**');
+});
+
+test('切換清單標題裡的連結仍保留', () => {
+  const md = richTextBold([seg('看 '), seg('官網', {}, 'https://example.com/')]);
+  assert.equal(md, '**看** [**官網**](https://example.com/)');
 });
