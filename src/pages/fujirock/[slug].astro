@@ -38,16 +38,23 @@ const rendered = await entry.render();
 const minutes = readMinutes(entry.body);
 const SKIP = /懶人重點|延伸閱讀|還有問題|加入我們/;
 const heads = (rendered?.headings ?? []).filter((h) => !SKIP.test(h.text));
-const h2s = heads.filter((h) => h.depth === 2);
+// 文末的「常見問題」大標不算進「大標夠不夠三個」的判斷，避免攻略文加了 Q&A 之後，目錄從編號小標跳成大標；
+// 不管目錄用哪一層，常見問題都排在最後一項。
+const FAQ_HEAD = /常見問題/;
+const h2s = heads.filter((h) => h.depth === 2 && !FAQ_HEAD.test(h.text));
+const faqHead = heads.find((h) => h.depth === 2 && FAQ_HEAD.test(h.text));
 // 大標不到三個時，改用帶編號的小標（例如「第一段、第二段」）當目錄
 // 1️⃣ 這類編號在渲染時已改成 CSS 徽章、不留在標題文字裡，所以從原始 markdown 找出哪些小標帶編號
 const plain = (t: string) => t.replace(/[*_`]/g, '').replace(/\s+/g, ' ').trim();
 const stepped = new Set(
   [...(entry.body ?? '').matchAll(/^###\s+(?:\d\uFE0F\u20E3|🔟)\s*(.+)$/gmu)].map((m) => plain(m[1])),
 );
-const tocSrc = h2s.length >= 3
-  ? h2s
-  : heads.filter((h) => h.depth === 3 && (stepped.has(plain(h.text)) || /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text)));
+const tocSrc = [
+  ...(h2s.length >= 3
+    ? h2s
+    : heads.filter((h) => h.depth === 3 && (stepped.has(plain(h.text)) || /^\s*\d(?:\uFE0F?\u20E3)?(?![\d.．、])/u.test(h.text)))),
+  ...(faqHead ? [faqHead] : []),
+];
 // 只清掉開頭的 emoji、1️⃣ 與「1. 」這類編號（目錄本身會編號）；「2027」這種標題本身的數字要留著
 const toc = tocSrc
   .map((h) => ({ slug: h.slug, text: h.text.replace(/^(?:[\p{Extended_Pictographic}\uFE0F\s]|\d\uFE0F?\u20E3)*(?:\d{1,2}[.．、]\s*)?/u, '').trim() || h.text }));

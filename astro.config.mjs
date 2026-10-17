@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { rehypeFrfFaq } from './src/lib/rehype-frf-faq.mjs';
 
 const SITE = 'https://echigo.fans';
 const BASE = '/';
@@ -150,66 +151,6 @@ function rehypePinMap() {
       for (const c of node.children || []) strip(c);
     };
     strip(tree);
-  };
-}
-
-function isFaqDoc(tree, file) {
-  const path = String(file?.path || file?.history?.join(' ') || '');
-  if (path.includes('beginner-faq')) return true;
-  const headings = (tree.children || [])
-    .filter(isHeading)
-    .map((n) => stripDecor(textOf(n)));
-  return headings.some((t) => t.includes('目錄指引')) && headings.some((t) => t.includes('預算') && t.includes('交通'));
-}
-
-function isQuestion(node) {
-  if (node?.type !== 'element' || node.tagName !== 'p') return false;
-  return /^Q[:：]/.test(textOf(node).replace(/\s+/g, ' ').trim());
-}
-
-function rehypeFrfFaq() {
-  return (tree, file) => {
-    if (!isFaqDoc(tree, file)) return;
-    const children = tree.children || [];
-    const out = [];
-    for (let i = 0; i < children.length; i++) {
-      const node = children[i];
-      if (!isQuestion(node)) {
-        out.push(node);
-        continue;
-      }
-      const body = [];
-      let j = i + 1;
-      while (j < children.length) {
-        const n = children[j];
-        if (isQuestion(n) || isHeading(n)) break;
-        if (n?.type === 'element' && n.tagName === 'hr') break;
-        body.push(n);
-        j++;
-      }
-      out.push({
-        type: 'element',
-        tagName: 'details',
-        properties: { className: ['frf-faq'] },
-        children: [
-          {
-            type: 'element',
-            tagName: 'summary',
-            properties: {},
-            children: node.children || [],
-          },
-          {
-            type: 'element',
-            tagName: 'div',
-            properties: { className: ['frf-faq-body'] },
-            children: body,
-          },
-        ],
-      });
-      i = j - 1;
-    }
-    children.length = 0;
-    children.push(...out);
   };
 }
 
