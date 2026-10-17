@@ -9,7 +9,7 @@ import { Client } from '@notionhq/client';
 import fs from 'fs';
 import path from 'path';
 import 'dotenv/config';
-import { richText } from './rich-text.mjs';
+import { richText, richTextBold } from './rich-text.mjs';
 
 let sharp = null;
 try { sharp = (await import('sharp')).default; } catch { console.warn('⚠️  找不到 sharp，圖片將不壓縮。'); }
@@ -221,7 +221,7 @@ async function blocksToMarkdown(blocks, slug, ctx, depth = 0) {
         md += `---\n\n`;
         break;
       case 'toggle':
-        md += `${pad}**${richText(data.rich_text)}**\n\n`;
+        md += `${pad}${richTextBold(data.rich_text)}\n\n`;
         md += await childMd();
         break;
       case 'image': {

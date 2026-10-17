@@ -53,3 +53,12 @@ export function richText(arr) {
     return text;
   }).join('');
 }
+
+/**
+ * 整句要加粗的地方（例如切換清單的標題）。句子裡原本就有粗體的字不再另外包，
+ * 否則會變成粗體裡包粗體。
+ */
+export function richTextBold(arr) {
+  const bolded = (arr || []).map((rt) => ({ ...rt, annotations: { ...(rt.annotations || {}), bold: true } }));
+  return richText(bolded);
+}
