@@ -35,6 +35,8 @@ const frf = defineCollection({
   schema: z.object({
     title: z.string(),
     n: z.string().optional(),
+    // 搜尋結果標題（<title>）。頁面上的 H1 不變。
+    seoTitle: z.string().optional(),
     meta: z.string().optional(),
     // 速覽：每年會變的數字，每項一行。
     glance: z.array(z.string()).optional(),

@@ -62,6 +62,13 @@ const body = Content ? null : FRF_BODIES[article.slug];
 const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
 const canonical = new URL(`/fujirock/${article.slug}/`, Astro.site).href;
 const h1 = displayTitle(article.title);
+// 搜尋結果標題：有 SEO標題就用，頁面上的 H1 仍是原標題。
+// 台灣人多搜「Fuji rock 住宿／交通／門票」（PR #11 的依據），所以 SEO標題沒寫到 Fuji Rock／富士搖滾時，
+// 結尾自動補回「Fuji Rock 富士搖滾攻略」。
+const FRF_SUFFIX = '｜Fuji Rock 富士搖滾攻略｜越後飯';
+const pageTitle = article.seoTitle
+  ? (/fuji\s*rock|富士搖滾/i.test(article.seoTitle) ? `${article.seoTitle}｜越後飯` : `${article.seoTitle}${FRF_SUFFIX}`)
+  : `${h1}${FRF_SUFFIX}`;
 
 const updated = entry.data.updated;
 const updatedISO = updated ? toISODate(updated) : null;
@@ -71,7 +78,7 @@ const faq = faqLd(extractFaq(entry.body ?? ''));
 
 const ld = [
   articleLd({
-    headline: h1,
+    headline: article.seoTitle || h1,
     canonical,
     description: article.meta,
     image: article.image,
@@ -95,7 +102,7 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
 ---
 <Layout
   theme="frf"
-  title={`${h1}｜Fuji Rock 富士搖滾攻略｜越後飯`}
+  title={pageTitle}
   description={article.meta}
   canonical={canonical}
   ogImage={article.image}
