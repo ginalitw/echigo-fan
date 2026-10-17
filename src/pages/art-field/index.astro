@@ -73,9 +73,12 @@ const ld = [
       address: { '@type': 'PostalAddress', addressRegion: '新潟県', addressCountry: 'JP' },
     },
     url: 'https://www.echigo-tsumari.jp/',
+    description: '越後妻有大地藝術祭第 10 屆三年展，2027 年 7 月 17 日至 11 月 7 日在新潟縣十日町市、津南町舉辦，作品分布於約 760 平方公里的山村。週二三休館。',
+    image: [`${SITE}/images/cat-art.jpg`],
+    organizer: { '@type': 'Organization', name: '大地の芸術祭実行委員会', url: 'https://www.echigo-tsumari.jp/' },
     offers: [
-      { '@type': 'Offer', name: '作品鑑賞通行證 成人（預售）', price: 4000, priceCurrency: 'JPY', validFrom: '2027-02-28', url: OFFICIAL_NEWS },
-      { '@type': 'Offer', name: '作品鑑賞通行證 成人（當日）', price: 5000, priceCurrency: 'JPY', validFrom: '2027-07-17', url: OFFICIAL_NEWS },
+      { '@type': 'Offer', name: '作品鑑賞通行證 成人（預售）', price: 4000, priceCurrency: 'JPY', availability: 'https://schema.org/PreOrder', validFrom: '2027-02-28', url: OFFICIAL_NEWS },
+      { '@type': 'Offer', name: '作品鑑賞通行證 成人（當日）', price: 5000, priceCurrency: 'JPY', availability: 'https://schema.org/PreOrder', validFrom: '2027-07-17', url: OFFICIAL_NEWS },
     ],
   },
   {

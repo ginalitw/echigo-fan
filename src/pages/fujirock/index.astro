@@ -1,4 +1,5 @@
 ---
+import { SITE } from '../../lib/seo';
 import Layout from '../../layouts/Layout.astro';
 import { url } from '../../lib/url';
 import {
@@ -91,6 +92,9 @@ const ld = [
       address: { '@type': 'PostalAddress', addressLocality: '湯沢町', addressRegion: '新潟県', addressCountry: 'JP' },
     },
     url: 'https://www.fujirockfestival.com/',
+    description: 'FUJI ROCK FESTIVAL 2027，7 月 23 日至 25 日在新潟縣湯澤町苗場滑雪場舉辦，前夜祭 7 月 22 日。',
+    image: [`${SITE}/images/frf/og.jpg`],
+    organizer: { '@type': 'Organization', name: 'SMASH Corporation（株式会社スマッシュ）', url: 'https://www.smash-jpn.com/' },
   },
 ];
 const NEXT_FRF = new Date('2027-07-23T00:00:00+09:00');
