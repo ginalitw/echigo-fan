@@ -9,6 +9,7 @@ import { Client } from '@notionhq/client';
 import fs from 'fs';
 import path from 'path';
 import 'dotenv/config';
+import { richText } from './rich-text.mjs';
 
 let sharp = null;
 try { sharp = (await import('sharp')).default; } catch { console.warn('⚠️  找不到 sharp，圖片將不壓縮。'); }
@@ -133,20 +134,6 @@ async function downloadImage(url, dir, baseName, maxWidth = 1600) {
   return filename;
 }
 
-function richText(arr) {
-  if (!arr || arr.length === 0) return '';
-  return arr.map((rt) => {
-    let text = rt.plain_text ?? '';
-    const a = rt.annotations || {};
-    if (a.code) text = '`' + text + '`';
-    if (a.bold) text = `**${text}**`;
-    if (a.italic) text = `*${text}*`;
-    if (a.strikethrough) text = `~~${text}~~`;
-    const href = rt.href || rt.text?.link?.url;
-    if (href) text = `[${text.replace(/\[|\]/g, '')}](${href})`;
-    return text;
-  }).join('');
-}
 
 async function fetchBlocks(blockId) {
   const out = [];
