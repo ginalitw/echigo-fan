@@ -48,6 +48,7 @@ export function extractFaq(markdown: string, limit = 30): QA[] {
 function clean(s: string): string {
   return s
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/<br\s*\/?>/gi, ' ')
     .replace(/[*_`]/g, '')
     .replace(/\s+/g, ' ')
     .trim();

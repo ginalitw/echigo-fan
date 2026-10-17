@@ -16,6 +16,7 @@ import { Client } from '@notionhq/client';
 import fs from 'fs';
 import path from 'path';
 import 'dotenv/config';
+import { richText } from './rich-text.mjs';
 
 // sharp 是選用的：有裝就壓縮圖片，沒裝就原樣存檔並提醒一次。
 // 這樣就算哪天 sharp 在某個平台裝不起來，同步也不會整個掛掉。
@@ -209,22 +210,7 @@ const PRACTICAL_HEADINGS = [
   '實用資訊',
 ];
 
-// ---------- rich text → Markdown ----------
-
-function richText(arr) {
-  if (!arr || arr.length === 0) return '';
-  return arr.map((rt) => {
-    let text = rt.plain_text ?? '';
-    const a = rt.annotations || {};
-    if (a.code) text = '`' + text + '`';
-    if (a.bold) text = `**${text}**`;
-    if (a.italic) text = `*${text}*`;
-    if (a.strikethrough) text = `~~${text}~~`;
-    const href = rt.href || rt.text?.link?.url;
-    if (href) text = `[${text}](${href})`;
-    return text;
-  }).join('');
-}
+// rich text → Markdown 在 ./rich-text.mjs（與富士搖滾同步共用）
 
 // ---------- 抓 blocks（含分頁 + 巢狀子區塊）----------
 
