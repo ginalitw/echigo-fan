@@ -51,23 +51,61 @@ function rehypePrefixBase() {
   };
 }
 
+// Markdown 的粗體規則對中文不友善：「**位置：**A 區」這種粗體結尾是全形標點、後面直接接中文的寫法，
+// 解析器認不出來，會留下字面上的 **。以前在這裡把星號刪掉（粗體效果也跟著不見），
+// 現在改成把成對的 ** 轉成真正的 <strong>。後面的外掛（提醒框、FAQ、版面）會看到正常的粗體。
+const BOLD_PAIR = /\*\*([^\s*](?:[\s\S]*?[^\s*])??)\s*\*\*/g;
+
+function splitBold(value) {
+  const out = [];
+  let last = 0;
+  for (const m of value.matchAll(BOLD_PAIR)) {
+    if (m.index > last) out.push({ type: 'text', value: value.slice(last, m.index) });
+    out.push({ type: 'element', tagName: 'strong', properties: {}, children: [{ type: 'text', value: m[1] }] });
+    last = m.index + m[0].length;
+  }
+  if (!out.length) return null;
+  if (last < value.length) out.push({ type: 'text', value: value.slice(last) });
+  return out;
+}
+
+// 一段文字裡有好幾組粗體時，解析器可能把中間的「**與**」配成一對，前後的星號反而落單。
+// 遇到同一層有落單的 ** 時，把相鄰的文字與單純粗體還原回原本的寫法，整段重新配對。
+const isPlainStrong = (n) => n.type === 'element' && n.tagName === 'strong' && (n.children || []).every((c) => c.type === 'text');
+const isInline = (n) => n.type === 'text' || isPlainStrong(n);
+
+function repairRun(run) {
+  const src = run.map((n) => (n.type === 'text' ? n.value : `**${n.children.map((c) => c.value).join('')}**`)).join('');
+  const value = src.replace(/\*\*\*\*/g, '');
+  const parts = splitBold(value) || [{ type: 'text', value }];
+  // 配完還落單的 ** 不顯示
+  for (const p of parts) if (p.type === 'text') p.value = p.value.replace(/\*\*/g, '');
+  return parts;
+}
+
 function rehypeFixBoldStars() {
   return (tree) => {
     const walk = (node) => {
-      if (node.type === 'text' && node.value) {
-        node.value = node.value
-          .replace(/\*\*\*\*/g, '')
-          .replace(/\*\*(\S(?:[\s\S]*?\S)?)\s+\*\*/g, '$1')
-          .replace(/\*\*(\S(?:[\s\S]*?\S)?)\*\*/g, '$1');
+      if (node.type === 'element' && (node.tagName === 'code' || node.tagName === 'pre')) return;
+      if (isPlainStrong(node)) {
+        for (const child of node.children) child.value = child.value.replace(/\*+/g, '');
+        return;
       }
-      if (node.type === 'element' && node.tagName === 'strong') {
-        for (const child of node.children || []) {
-          if (child.type === 'text' && child.value) {
-            child.value = child.value.replace(/\*+/g, '');
-          }
-        }
+      if (!node.children) return;
+      const next = [];
+      let run = [];
+      const flush = () => {
+        const hasStars = (n) => (n.type === 'text' ? n.value : n.children.map((c) => c.value).join('')).includes('**');
+        if (run.some(hasStars)) next.push(...repairRun(run));
+        else for (const n of run) { walk(n); next.push(n); }
+        run = [];
+      };
+      for (const child of node.children) {
+        if (isInline(child)) run.push(child);
+        else { flush(); walk(child); next.push(child); }
       }
-      for (const child of node.children || []) walk(child);
+      flush();
+      node.children = next;
     };
     walk(tree);
   };
