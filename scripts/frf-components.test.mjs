@@ -123,3 +123,41 @@ test('同步腳本：表格第一列只印一次（當表頭）', () => {
   assert.match(block, /rows\.slice\(1\)/);
   assert.doesNotMatch(block, /has_column_header \? 1 : 0/);
 });
+
+test('決策卡：標準四欄（如果你｜怎麼做｜代價｜來源），代價在來源前面', async () => {
+  const { html } = await render(DEMO);
+  const sec = html.slice(html.indexOf('<section class="frf-choice"'), html.indexOf('</section>', html.indexOf('<section class="frf-choice"')));
+  assert.equal(count(sec, /<dt>代價<\/dt>/g), 3);
+  assert.equal(count(sec, /<dt>來源<\/dt>/g), 1, '來源空著的卡不顯示來源');
+  assert.ok(sec.lastIndexOf('<dt>代價</dt>') < sec.indexOf('<dt>來源</dt>'));
+  assert.match(sec, /<dt>代價<\/dt><dd>¥14,000；凌晨 1:00/);
+});
+
+test('決策卡：欄位照表頭名稱對應，順序寫錯也一樣；其他欄照樣顯示在代價和來源中間', async () => {
+  const md = [
+    '| 🧭 如果你 | 來源 | 代價 | 怎麼做 | 路線 |',
+    '| --- | --- | --- | --- | --- |',
+    '| 沒住宿 | 岩盤（2026） | ¥14,000 | 搭夜行巴士 | 會場 → 新宿 |',
+  ].join('\n');
+  const { html } = await render(md);
+  assert.match(html, /<p class="frf-choice-if">如果你：沒住宿<\/p><p class="frf-choice-do">搭夜行巴士<\/p>/);
+  assert.match(html, /<dl><dt>代價<\/dt><dd>¥14,000<\/dd><dt>路線<\/dt><dd>會場 → 新宿<\/dd><dt>來源<\/dt><dd>岩盤（2026）<\/dd><\/dl>/);
+});
+
+test('決策卡：怎麼做、代價都空著時，那一項不顯示', async () => {
+  const md = '| 🧭 如果你 | 怎麼做 | 代價 | 來源 |\n| --- | --- | --- | --- |\n| 還在猶豫 |  |  |  |';
+  const { html } = await render(md);
+  assert.match(html, /<li class="frf-choice-card"><p class="frf-choice-if">如果你：還在猶豫<\/p><\/li>/);
+});
+
+test('不轉卡片：naeba-food 的寬表格在手機上維持原本的表格，其他文章照轉', async () => {
+  const wide = '| 品項 | 攤位 | 價格 | 評分 |\n| --- | --- | --- | --- |\n| 和牛粥 | OKAME | ¥1,000 | 4 |';
+  assert.doesNotMatch((await render(wide, '/x/src/content/frf/naeba-food.md')).html, /frf-table--stack/);
+  assert.doesNotMatch((await render(wide, 'C:\\x\\src\\content\\frf\\naeba-food.md')).html, /frf-table--stack/);
+  assert.match((await render(wide, '/x/src/content/frf/hotels-and-inns.md')).html, /frf-table--stack/);
+});
+
+test('不轉卡片：naeba-food 裡有記號的元件表格照樣轉', async () => {
+  const md = '| 🧭 如果你 | 怎麼做 | 代價 | 來源 |\n| --- | --- | --- | --- |\n| 怕排隊 | 早上先吃 | 要早起 |  |';
+  assert.match((await render(md, '/x/src/content/frf/naeba-food.md')).html, /frf-choice-card/);
+});

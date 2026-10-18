@@ -114,10 +114,31 @@ export function costCard(table) {
 }
 
 // ── 決策卡 ───────────────────────────────────────────────
+// 標準是固定四欄，表頭：🧭 如果你 ｜ 怎麼做 ｜ 代價 ｜ 來源
+//   如果你：讀者的情況，印成卡片上方的小字（開頭 ⚠️ 這張卡變紅色）
+//   怎麼做：卡片標題
+//   代價：要多花的錢、時間，或會錯過什麼
+//   來源：連結＋年份
+// 空格那一項在這張卡上不顯示。欄位照表頭名稱對應，順序寫錯也認得；
+// 其他名稱的欄位照樣顯示（排在代價後面、來源前面），但標準是上面四欄。
+export const CHOICE_COLUMNS = ['如果你', '怎麼做', '代價', '來源'];
+
+export function choiceColumns(head) {
+  const labels = head.map(cellText);
+  const find = (name) => labels.findIndex((l, i) => i > 0 && l.replace(/[*\s]/g, '') === name);
+  let todo = find('怎麼做');
+  if (todo === -1) todo = 1; // 沒寫欄名時，第二欄當「怎麼做」
+  const cost = find('代價');
+  const source = find('來源');
+  const extra = labels.map((_, i) => i).filter((i) => i > 0 && i !== todo && i !== cost && i !== source);
+  return { labels, todo, cost, source, extra };
+}
+
 export function choiceCards(table) {
   const [head, ...rows] = tableRows(table);
   const question = cellText(head[0]).replace(MARKERS.choice, '').trim();
-  const labels = head.map(cellText);
+  const { labels, todo, cost, source, extra } = choiceColumns(head);
+  const fieldOrder = [cost, ...extra, source].filter((i) => i > 0);
   const cards = [];
   for (const r of rows) {
     const cond = cellKids(r[0]);
@@ -125,13 +146,13 @@ export function choiceCards(table) {
     if (!condText) continue;
     const warn = WARN.test(condText);
     const fields = [];
-    for (let i = 2; i < r.length; i++) {
+    for (const i of fieldOrder) {
       if (!cellText(r[i])) continue;
       fields.push(el('dt', null, [txt(labels[i] || '')]), el('dd', null, cellKids(r[i])));
     }
     cards.push(el('li', ['frf-choice-card', ...(warn ? ['is-warn'] : [])], [
       el('p', 'frf-choice-if', [txt('如果你：'), ...stripLead(cond, WARN)]),
-      ...(cellText(r[1]) ? [el('p', 'frf-choice-do', cellKids(r[1]))] : []),
+      ...(cellText(r[todo]) ? [el('p', 'frf-choice-do', cellKids(r[todo]))] : []),
       ...(fields.length ? [el('dl', null, fields)] : []),
     ]));
   }
@@ -180,6 +201,9 @@ export function timeline(table) {
 
 // ── 一般寬表格：手機上一列一張卡 ────────────────────────────────
 export const STACK_MIN_COLS = 4;
+// 不轉卡片的文章（slug）：手機上維持原本的表格。naeba-food 的品項表之後會換別的呈現方式（Gina，2026-10-18）。
+export const NO_STACK_SLUGS = ['naeba-food'];
+export const slugOfPath = (where) => (String(where).replace(/\\/g, '/').match(/\/content\/frf\/([^/]+)\.md$/) || [])[1] || '';
 export const STACK_MAX_ROWS = 12;
 export function stackTable(table) {
   const [head, ...rows] = tableRows(table);
@@ -227,6 +251,7 @@ export function rehypeFrfComponents() {
   return (tree, file) => {
     const where = String(file?.path || file?.history?.[0] || '').replace(/\\/g, '/');
     if (!where.includes('/content/frf/')) return;
+    const stack = !NO_STACK_SLUGS.includes(slugOfPath(where));
     const walk = (parent) => {
       const kids = parent.children || [];
       for (let i = 0; i < kids.length; i++) {
@@ -236,7 +261,7 @@ export function rehypeFrfComponents() {
           dropRepeatedHeader(n);
           const kind = componentKind(n);
           if (kind) kids[i] = BUILD[kind](n);
-          else stackTable(n);
+          else if (stack) stackTable(n);
           continue;
         }
         walk(n);
