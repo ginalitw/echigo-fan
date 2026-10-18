@@ -63,10 +63,11 @@ const ld = [
 
   <p class="frf-topic-count">{items.length} 篇・照順序讀</p>
   <ol class="frf-timetable">
-    {items.map((a) => (
+    {/* 左邊的數字是這個主題裡的閱讀順序，不是文章編號（文章編號只拿來排序，不顯示） */}
+    {items.map((a, i) => (
       <li>
         <a href={url(`/fujirock/${a.slug}/`)}>
-          <span class="tt-no">#{String(a.n ?? '').padStart(2, '0')}</span>
+          <span class="tt-no">{String(i + 1).padStart(2, '0')}</span>
           <span class="tt-body">
             <strong>{displayTitle(a.title)}</strong>
             {a.meta && <span class="tt-meta">{a.meta}</span>}

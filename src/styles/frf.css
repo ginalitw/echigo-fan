@@ -742,11 +742,12 @@ body.theme-frf.frf-bridge-page {
 .frf-summer a:hover { border-color: #C08A2E; }
 .frf-summer strong { display: block; font-size: 16px; color: #8F5F17; }
 .frf-summer span { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-soft); }
-.frf-faq { margin: 48px 0 32px; }
-.frf-faq details { border-top: 1px solid var(--line); padding: 12px 0; }
-.frf-faq details:last-of-type { border-bottom: 1px solid var(--line); }
-.frf-faq summary { cursor: pointer; font-weight: 700; color: var(--ink); }
-.frf-faq details p { margin: 8px 0 0; color: var(--ink); line-height: 1.8; }
+/* 首頁的 Q&A 區塊。限定 section，避免套到文章內的 <details class="frf-faq">（每題上面多出 48px 空白） */
+section.frf-faq { margin: 48px 0 32px; }
+section.frf-faq details { border-top: 1px solid var(--line); padding: 12px 0; }
+section.frf-faq details:last-of-type { border-bottom: 1px solid var(--line); }
+section.frf-faq summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+section.frf-faq details p { margin: 8px 0 0; color: var(--ink); line-height: 1.8; }
 
 /* ── 招牌：入場手環 ── */
 .frf-band { margin: 48px 0 8px; }
