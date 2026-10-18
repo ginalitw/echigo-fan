@@ -63,7 +63,8 @@ const order = readingOrder(list);
 const pos = order.findIndex((a) => a.slug === article.slug);
 const prevA = pos > 0 ? order[pos - 1] : null;
 const nextA = pos >= 0 && pos < order.length - 1 ? order[pos + 1] : null;
-const bandNo = String(article.n ?? '').padStart(2, '0');
+// 文章編號（Notion 標題前綴「# 02」）只拿來排序，網站上不顯示：新手、老手篇是同一號的兩欄，顯示出來會像重複。
+// 手環上的白色標籤改放閱讀階段。
 const Content = rendered?.Content;
 const body = Content ? null : FRF_BODIES[article.slug];
 const stageLabel = article.stage ? STAGE_LABEL[article.stage] : '';
@@ -187,7 +188,7 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
   <nav class="frf-band" aria-label="上一篇與下一篇">
     <div class="frf-band-strap" aria-hidden="true">
       <span class="frf-band-logo">FUJI ROCK</span>
-      <span class="frf-band-no">No.{bandNo}</span>
+      {stageLabel && <span class="frf-band-no">{stageLabel}</span>}
       <span class="frf-band-topic">{topic?.title ?? '富士搖滾攻略'}</span>
       <span class="frf-band-snap"></span>
     </div>
