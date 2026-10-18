@@ -4,6 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rehypeFrfFaq } from './src/lib/rehype-frf-faq.mjs';
+import { rehypeFrfLinks } from './src/lib/frf-links.mjs';
+import { rehypeFrfWho } from './src/lib/rehype-frf-who.mjs';
+import { rehypeFrfComponents } from './src/lib/rehype-frf-components.mjs';
 
 const SITE = 'https://echigo.fans';
 const BASE = '/';
@@ -574,6 +577,6 @@ export default defineConfig({
   base: BASE,
   markdown: {
     shikiConfig: { theme: 'github-light' },
-    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypePinMap, rehypeFrfFaq, rehypeFrfArticle, rehypeFrfDesign, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
+    rehypePlugins: [rehypePrefixBase, rehypeFixBoldStars, rehypeFrfLinks, rehypeFrfWho, rehypePinMap, rehypeFrfFaq, rehypeFrfArticle, rehypeFrfDesign, rehypeFrfComponents, rehypeLiftCover, rehypePracticalSpec, rehypeImages, rehypeGallery, rehypeNumCells],
   },
 });

@@ -816,3 +816,137 @@ section.frf-faq details p { margin: 8px 0 0; color: var(--ink); line-height: 1.8
 .frf-index-thumb img { width: 100%; height: 100%; object-fit: cover; margin: 0; transition: transform var(--dur-2) var(--ease-out); }
 .frf-index section:hover .frf-index-thumb img { transform: scale(1.04); }
 @media (prefers-reduced-motion: reduce) { .frf-index-thumb img { transition: none; } }
+
+/* ═════════════════════════════════════════════════════════════
+   富士搖滾 版面大改（2026-10）
+   文章頂：本篇適合標籤、新手篇／老手篇切換、目錄收合
+   Notion 元件：預算總覽卡、決策卡、時間軸、寬表格手機卡片
+   寫法見 docs/frf-rewrite/components.md
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── 文章頂 ── */
+.frf-chip--who { color: var(--ink); background: #fff; }
+.frf-who-note { margin: 8px 0 0; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.frf-byline { margin-bottom: 1rem; }
+.frf-toc-count { margin-left: .5em; font-weight: 400; font-size: 12px; color: var(--ink-soft); }
+@media (min-width: 1240px) { .frf-toc-count { display: none; } }
+.frf-tocbox:not([open]) { padding-top: 10px; padding-bottom: 10px; }
+
+.frf-pair {
+  display: grid; grid-template-columns: 1fr 1fr;
+  margin: 0 0 4px;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--paper); overflow: hidden;
+}
+.frf-pair-item {
+  display: block; min-width: 0; padding: 8px 12px;
+  color: var(--ink); text-decoration: none; line-height: 1.4;
+}
+.frf-pair-item + .frf-pair-item { border-left: 1px solid var(--line); }
+.frf-pair-item b { display: block; font-size: 14px; }
+.frf-pair-item small { display: block; font-size: 12px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a.frf-pair-item:hover { background: #fff; }
+a.frf-pair-item:hover b { color: var(--accent-ink); text-decoration: underline; }
+.frf-pair-item.is-current { background: #fff; color: var(--accent-ink); box-shadow: inset 0 -3px 0 var(--accent-ink); }
+
+/* ── 文末：沒有延伸閱讀時只留「回主題」一行 ── */
+.frf-more--back { padding-top: 0; }
+
+/* ── 💰 預算總覽卡 ── */
+.frf-prose .frf-cost {
+  margin: 24px 0; padding: 16px 16px 12px;
+  background: var(--paper);
+  border: 1px solid var(--line); border-top: 3px solid var(--accent-ink);
+  border-radius: var(--radius-s);
+}
+.frf-cost-label { margin: 0 !important; font-size: 12px; letter-spacing: .2em; color: var(--accent-ink); }
+.frf-cost-total {
+  margin: 4px 0 2px !important;
+  font-family: "Noto Serif TC", "Noto Serif CJK TC", serif;
+  font-size: 28px; font-weight: 700; line-height: 1.25; color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.frf-cost-sub { margin: 0 0 10px !important; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.frf-prose .frf-cost-lines { list-style: none; margin: 0; padding: 0; font-size: 14px; }
+.frf-cost-lines li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  margin: 0; padding: 7px 0; border-top: 1px dashed var(--line);
+}
+.frf-cost-k small { display: block; font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
+.frf-cost-v { flex: none; text-align: right; font-weight: 700; white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.frf-cost-lines li.frf-cost-sum { border-top: 1px solid var(--ink); font-weight: 700; }
+.frf-cost-out {
+  margin: 10px 0 0 !important; padding: 8px 10px;
+  background: #fff7f3; border-left: 3px solid var(--punch);
+  font-size: 13px; line-height: 1.6;
+}
+.frf-cost-src { margin: 10px 0 0 !important; font-size: 12px; line-height: 1.6; color: var(--ink-soft); }
+
+/* ── 🧭 決策卡 ── */
+.frf-prose .frf-choice { margin: 20px 0 24px; }
+.frf-choice-q { margin: 0 0 10px !important; font-size: 16px; font-weight: 700; }
+.frf-prose .frf-choice-list { list-style: none; margin: 0; padding: 0; font-size: 14px; }
+.frf-choice-card {
+  margin: 0 0 10px !important; padding: 12px 14px;
+  background: var(--paper);
+  border: 1px solid var(--line); border-left: 4px solid var(--accent-ink);
+  border-radius: var(--radius-s);
+}
+.frf-choice-card.is-warn { border-left-color: var(--punch); }
+.frf-choice-if { margin: 0 !important; font-size: 12px; letter-spacing: .06em; color: var(--ink-soft); }
+.frf-choice-do { margin: 2px 0 8px !important; font-size: 17px; font-weight: 700; line-height: 1.45; color: var(--ink); }
+.frf-choice-card dl { display: grid; grid-template-columns: 4.5em 1fr; gap: 4px 8px; margin: 0; line-height: 1.6; }
+.frf-choice-card dt { color: var(--ink-soft); }
+.frf-choice-card dd { margin: 0; }
+
+/* ── 🕒 時間軸（跟路線圖同一套綠色膠囊） ── */
+.frf-prose .frf-timeline {
+  margin: 24px 0; padding: 16px 16px 4px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-m);
+}
+.frf-timeline-title { margin: 0 0 12px !important; font-size: 12px; letter-spacing: .2em; color: var(--accent-ink); }
+.frf-prose .frf-tl { list-style: none; margin: 0; padding: 0; font-size: 14px; }
+.frf-tl-step { position: relative; margin: 0 !important; padding: 0 0 16px 22px; }
+.frf-tl-step::before {
+  content: ""; position: absolute; left: 6px; top: 14px; bottom: -2px; width: 2px; background: var(--accent-ink);
+}
+.frf-tl-step:last-child::before { content: none; }
+.frf-tl-step::after {
+  content: ""; position: absolute; left: 1px; top: 8px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #fff; border: 2px solid var(--accent-ink); box-sizing: border-box;
+}
+.frf-tl-stop {
+  display: inline-block; margin: 0 !important; padding: 4px 12px;
+  background: var(--accent-ink); color: #fff;
+  border-radius: 999px; font-weight: 700; line-height: 1.5;
+}
+.frf-tl-stop a { color: #fff; }
+.frf-tl-body { margin-top: 6px; }
+.frf-tl-do { margin: 0 0 4px !important; font-weight: 700; line-height: 1.55; }
+.frf-prose .frf-tl-meta { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 0 0 4px; padding: 0; font-size: 13px; }
+.frf-tl-meta li { margin: 0; padding: 1px 8px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+.frf-tl-k { color: var(--ink-soft); }
+.frf-tl-note { margin: 0 0 2px !important; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+.frf-tl-note.is-warn { color: var(--punch); font-weight: 700; }
+
+/* ── 一般寬表格（四欄以上）：手機一列一張卡 ── */
+@media (max-width: 640px) {
+  .frf-prose table.frf-table--stack, .frf-prose table.frf-table--stack tbody,
+  .frf-prose table.frf-table--stack tr, .frf-prose table.frf-table--stack td { display: block; width: 100%; }
+  .frf-prose table.frf-table--stack thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .frf-prose table.frf-table--stack tr {
+    margin: 0 0 8px; padding: 6px 12px 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-s);
+  }
+  .frf-prose table.frf-table--stack td {
+    display: grid; grid-template-columns: 5em 1fr; gap: 8px;
+    padding: 1px 0; border: 0; font-size: 14px; line-height: 1.55; text-align: left !important; white-space: normal !important;
+  }
+  .frf-prose table.frf-table--stack td::before { content: attr(data-label); color: var(--ink-soft); font-size: 12px; line-height: 1.8; }
+  .frf-prose table.frf-table--stack td:first-child { display: block; padding: 0 0 4px; font-size: 15px; font-weight: 700; border-bottom: 1px dashed var(--line); margin-bottom: 4px; }
+  .frf-prose table.frf-table--stack td:first-child::before { content: none; }
+  .frf-prose table.frf-table--stack td:empty, .frf-prose table.frf-table--stack td.is-empty { display: none; }
+}

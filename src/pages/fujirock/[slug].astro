@@ -17,6 +17,8 @@ import { getCollection, getEntry } from 'astro:content';
 import { articleLd, breadcrumbLd, toISODate } from '../../lib/seo';
 import { extractFaq, faqLd } from '../../lib/faq';
 import { phrase } from '../../lib/phrase';
+import { pairOf } from '../../lib/frf-pairs.mjs';
+import { rewriteFrfLinksMd } from '../../lib/frf-links.mjs';
 
 export async function getStaticPaths() {
   const synced = await getCollection('frf');
@@ -30,11 +32,14 @@ const article = articleFromEntry(entry);
 
 const synced = await getCollection('frf');
 const list = synced.map(articleFromEntry);
-const related = relatedFrom(list, article.slug);
+const related = relatedFrom(list, article.slug, 6);
 const topic = TOPICS.find((t) => t.id === article.topic);
 const showUpgrade = isReturnerOnly(article);
 
 const rendered = await entry.render();
+// 「本篇適合」「閱讀時間」由 src/lib/rehype-frf-who.mjs 從內文開頭拿出來，這裡印成標題下方的小標籤
+const pluginFm = (rendered?.remarkPluginFrontmatter ?? {}) as { frfWho?: { tags: string[]; note: string }; frfRead?: string };
+const who = pluginFm.frfWho ?? null;
 const minutes = readMinutes(entry.body);
 const SKIP = /懶人重點|延伸閱讀|還有問題|加入我們/;
 const heads = (rendered?.headings ?? []).filter((h) => !SKIP.test(h.text));
@@ -59,10 +64,25 @@ const tocSrc = [
 const toc = tocSrc
   .map((h) => ({ slug: h.slug, text: h.text.replace(/^(?:[\p{Extended_Pictographic}\uFE0F\s]|\d\uFE0F?\u20E3)*(?:\d{1,2}[.．、]\s*)?/u, '').trim() || h.text }));
 const hasTakeaway = /懶人重點/.test(entry.body ?? '');
+// 目錄在內文上方（手機、平板，寬度 1240px 以下）時預設收起來，第一屏留給正文；
+// 電腦版目錄在右側欄，照舊展開。沒有 JavaScript 時維持展開。緊接在目錄後面執行，畫面不會先開再關。
+const TOC_COLLAPSE = "(function(){var d=document.getElementById('frf-toc');if(d&&!matchMedia('(min-width: 1240px)').matches)d.open=false;})();";
+const readLabel = pluginFm.frfRead || `約 ${minutes} 分鐘`;
+// 新手篇／老手篇切換：同編號、一篇新手一篇老手（src/lib/frf-pairs.mjs）
+const pair = pairOf(list, article.slug);
+const pairItems = pair
+  ? [
+      { kind: 'beginner', label: '🔰 新手篇', a: pair.beginner },
+      { kind: 'returner', label: '👑 老手篇', a: pair.returner },
+    ]
+  : [];
 const order = readingOrder(list);
 const pos = order.findIndex((a) => a.slug === article.slug);
 const prevA = pos > 0 ? order[pos - 1] : null;
 const nextA = pos >= 0 && pos < order.length - 1 ? order[pos + 1] : null;
+// 文末延伸閱讀：上一篇、下一篇、新手／老手配對已經有連結了，不再重複列
+const shown = new Set([prevA?.slug, nextA?.slug, pair?.beginner.slug, pair?.returner.slug].filter(Boolean));
+const moreList = related.filter((a) => !shown.has(a.slug)).slice(0, 3);
 // 文章編號（Notion 標題前綴「# 02」）只拿來排序，網站上不顯示：新手、老手篇是同一號的兩欄，顯示出來會像重複。
 // 手環上的白色標籤改放閱讀階段。
 const Content = rendered?.Content;
@@ -82,7 +102,9 @@ const updated = entry.data.updated;
 const updatedISO = updated ? toISODate(updated) : null;
 
 // 這篇如果是 Q&A 體，就順便輸出 FAQPage。抓不到配對會回 null，不硬湊。
-const faq = faqLd(extractFaq(entry.body ?? ''));
+// 連結文字先換成目前的標題（跟頁面上看到的一致，見 src/lib/frf-links.mjs）
+const titleMap = new Map(list.map((a) => [a.slug, displayTitle(a.title)]));
+const faq = faqLd(extractFaq(rewriteFrfLinksMd(entry.body ?? '', titleMap)));
 
 const ld = [
   articleLd({
@@ -154,10 +176,24 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
     </p>
   )}
 
+  {pair && (
+    <nav class="frf-pair" aria-label="新手篇與老手篇">
+      {pairItems.map((p) => (
+        p.a.slug === article.slug ? (
+          <span class={`frf-pair-item is-current frf-pair-item--${p.kind}`} aria-current="page"><b>{p.label}</b><small>你正在看這篇</small></span>
+        ) : (
+          <a class={`frf-pair-item frf-pair-item--${p.kind}`} href={url(`/fujirock/${p.a.slug}/`)}><b>{p.label}</b><small>{displayTitle(p.a.title)}</small></a>
+        )
+      ))}
+    </nav>
+  )}
+
   <p class="frf-chips">
-    {!/閱讀時間/.test(entry.body ?? '') && <span class="frf-chip">約 {minutes} 分鐘</span>}
+    {who?.tags.map((t) => <span class="frf-chip frf-chip--who">{t}</span>)}
+    <span class="frf-chip">{readLabel}</span>
     {hasTakeaway && <a class="frf-chip frf-chip--go" href="#takeaway">先看懶人重點 ↓</a>}
   </p>
+  {who?.note && <p class="frf-who-note">本篇適合：{who.note}</p>}
 
   {entry.data.glance && entry.data.glance.length > 0 && (
     <aside class="frf-glance" aria-label="速覽">
@@ -167,13 +203,14 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
   )}
 
   {toc.length >= 3 && (
-    <details class="frf-tocbox" open>
-      <summary>本篇目錄</summary>
+    <details class="frf-tocbox" id="frf-toc" open>
+      <summary>本篇目錄<span class="frf-toc-count">{toc.length} 段</span></summary>
       <ol>
         {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
       </ol>
     </details>
   )}
+  {toc.length >= 3 && <script is:inline set:html={TOC_COLLAPSE} />}
 
   {Content ? (
     <article class="frf-prose">
@@ -211,16 +248,20 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
     </aside>
   )}
 
-  {(related.length > 0 || showUpgrade) && (
-    <nav class="frf-more">
-      <p class="frf-more-label">延伸閱讀</p>
-      <ol>
-        {related.map((a) => (
-          <li>
-            <a href={url(`/fujirock/${a.slug}/`)}>{displayTitle(a.title)}</a>
-          </li>
-        ))}
-      </ol>
+  {(moreList.length > 0 || showUpgrade || topic) && (
+    <nav class={`frf-more${moreList.length ? '' : ' frf-more--back'}`} aria-label="延伸閱讀">
+      {moreList.length > 0 && (
+        <>
+          <p class="frf-more-label">延伸閱讀</p>
+          <ol>
+            {moreList.map((a) => (
+              <li>
+                <a href={url(`/fujirock/${a.slug}/`)}>{displayTitle(a.title)}</a>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
       {topic && (
         <p class="frf-more-back">
           <a href={url(`/fujirock/topic/${topic.id}/`)}>回{topic.title}</a>
