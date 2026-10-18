@@ -677,12 +677,17 @@ body.theme-frf h4 {
 .frf-tocbox a { color: var(--ink); text-decoration: none; }
 .frf-tocbox a:hover { color: var(--accent-ink); text-decoration: underline; }
 @media (min-width: 1240px) {
+  /* 目錄放在內文右側空白：寬度跟著視窗算，右緣永遠留在畫面內。
+     右側空白 = (100vw − 760px) ÷ 2；扣掉與內文的間距 40px，再留 32px 給捲軸與邊界。 */
   .frf-tocbox {
+    --toc-gap: 40px;
+    --toc-w: min(220px, calc((100vw - 760px) / 2 - var(--toc-gap) - 32px));
     position: sticky; top: 88px;
-    float: right; width: 220px; margin: 28px -268px 0 0;
+    float: right; width: var(--toc-w); margin: 28px calc(-1 * (var(--toc-w) + var(--toc-gap))) 0 0;
     background: transparent; border: 0; border-left: 2px solid var(--line);
     border-radius: 0; padding: 0 0 0 14px;
   }
+  .frf-tocbox li, .frf-tocbox a { overflow-wrap: anywhere; }
   .frf-tocbox summary { list-style: none; font-size: 12px; letter-spacing: .08em; color: var(--ink-soft); }
   .frf-tocbox summary::-webkit-details-marker { display: none; }
 }
