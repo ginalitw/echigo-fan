@@ -266,8 +266,9 @@ async function blocksToMarkdown(blocks, slug, ctx, depth = 0) {
         const header = cellText(rows[0]);
         md += `| ${header.join(' | ')} |\n`;
         md += `| ${header.map(() => '---').join(' | ')} |\n`;
-        for (const r of rows.slice(data.has_column_header ? 1 : 0)) {
-          if (r === rows[0] && data.has_column_header) continue;
+        // markdown 表格一定要有表頭，所以第一列固定當表頭印出來；
+        // 不管 Notion 有沒有開「標題列」，內容都從第二列開始，第一列不會再印一次。
+        for (const r of rows.slice(1)) {
           md += `| ${cellText(r).join(' | ')} |\n`;
         }
         md += '\n';
