@@ -133,7 +133,6 @@ updated: 2026-09-06
 
 | **部位** | **推薦單品** | **預算** |
 | --- | --- | --- |
-| **部位** | **推薦單品** | **預算** |
 | **帽子** | **大盤帽 (推薦直上 Gore-Tex)** | $2,000 |
 | **雨衣** | [**Forclaz 登山斗篷**](https://www.decathlon.tw/p/%E7%99%BB%E5%B1%B1%E5%81%A5%E8%A1%8C2000mm%E9%98%B2%E6%B0%B4%E6%96%97%E7%AF%B7%E9%9B%A8%E8%A1%A3-%E8%83%8C%E5%8C%85%E6%9C%80%E5%A4%A730l-%E8%97%8D%E8%89%B2-forclaz-8544274.html?indexName=prod_pim_v1_index&queryID=4f128ecd1c6b1248ae08bf2426671849) | $500 |
 | **雨衣** | [KiU斗篷雨衣](https://kiu-online.jp/collections/rain-poncho) | ￥5,490 |
