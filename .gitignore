@@ -12,3 +12,4 @@ dist/
 notion-debug.json
 .backup/
 scripts/*.bak
+graphify-out/

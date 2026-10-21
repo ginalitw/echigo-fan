@@ -66,3 +66,11 @@ NOTION_DATABASE_ID=<Notion 資料庫 ID>
 - 內容集合 schema 定義在 `src/content/config.ts`
 - 同步腳本 `scripts/sync-from-notion.mjs`
 - 部署：Cloudflare Pages（build: `npm run build`，output: `dist`）
+
+## 程式結構報告（graphify）
+
+`docs/graphify/GRAPH_REPORT.md` 是用 [graphify](https://pypi.org/project/graphifyy/)（PyPI 套件名稱是 `graphifyy`，兩個 y）產生的程式結構報告，列出核心節點、模組分群和意外的關聯，方便快速掌握整個專案的架構。
+
+產生方式：`pip install graphifyy` 之後，在 repo 根目錄執行 `graphify update .`，只做純程式碼分析，不使用任何 AI 模型或 API 金鑰。執行時在 repo 根目錄暫時放一個 `.graphifyignore`，內容為 `docs/`，把文章草稿排除在外，這個檔案沒有加入 repo，重跑時請照做一次。產出會放在 `graphify-out/`（已列入 .gitignore），只把其中的 `GRAPH_REPORT.md` 複製到 `docs/graphify/`。
+
+之後如果有較大的結構調整，例如新增或拆分模組、搬移檔案，請重跑 `graphify update .`，再把新的報告複製過來更新。
