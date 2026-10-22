@@ -10,7 +10,7 @@ import { faqLd } from '../../lib/faq';
 import { MAP_URL, SITE, breadcrumbLd, toISODateTime } from '../../lib/seo';
 import { byNewest } from '../../lib/posts';
 
-const UPDATED = new Date('2026-10-16');
+const UPDATED = new Date('2026-10-22');
 const canonical = new URL(url('/art-field/'), Astro.site).href;
 const OFFICIAL_NEWS = 'https://www.echigo-tsumari.jp/zh-tw/news/20261008/';
 const OFFICIAL_VISIT = 'https://www.echigo-tsumari.jp/visit/?anchor=visit1';
@@ -35,6 +35,14 @@ const faq = [
   {
     question: '2027 大地藝術祭是哪幾天？',
     answer: '第 10 屆越後妻有大地藝術祭三年展從 2027 年 7 月 17 日（週六）到 11 月 7 日（週日）。每週二、三固定休館，但 8 月 10 日、8 月 11 日與 11 月 3 日照常開放。',
+  },
+  {
+    question: '越後妻有大地藝術祭幾年一次？',
+    answer: '三年一次。大地藝術祭從 2000 年開始，每三年舉辦一次大型三年展，2027 年是第 10 屆。三年展之間的年份是通年展，平日也有常設作品可看，但展期與開館日比三年展少。',
+  },
+  {
+    question: '冬天有大地藝術祭的活動嗎？',
+    answer: '有。第 10 屆紀念活動「越後妻有 雪花火」在 2027 年 2 月 27 日（週六）於十日町市中子綠地公園舉辦，雪地光之花田加上煙火。門票成人 ¥8,000、高中生 ¥6,000、中小學生 ¥3,000，已含 2027 三年展作品鑑賞通行證的兌換券（日文官網寫「引換券」，可換成通行證本身，不用另外買），以及冬季活動「越後妻有之冬 2027」（1/30–3/7）的通用券；販售到 2027 年 2 月 26 日或售完為止。當天會場禁止自駕與步行前往，須搭接駁巴士或參加官方行程。',
   },
   {
     question: '週二、週三去得了嗎？',
