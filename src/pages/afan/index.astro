@@ -1,0 +1,264 @@
+---
+// 阿飯小頁：點插畫餵阿飯飯糰，棚田跟著季節換顏色。
+// 第一版刻意不接任何外部資料（天氣、定位、作品地圖、LINE 都只是連結），
+// 季節用瀏覽器的今天日期判斷，所以不會因為外部服務壞掉而壞掉。
+import Layout from '../../layouts/Layout.astro';
+import { url } from '../../lib/url';
+import { MAP_URL } from '../../lib/seo';
+
+const canonical = new URL(url('/afan/'), Astro.site).href;
+const mapLink = `${MAP_URL}?utm_source=echigofans&utm_medium=afan&utm_campaign=afan-page`;
+const lineLink = 'https://lin.ee/R12Vd62';
+---
+<Layout
+  title="餵阿飯一顆飯糰｜越後飯"
+  canonical={canonical}
+  description="點畫面，丟一顆越後米飯糰給阿飯。畫面裡的棚田會跟著季節換顏色：春天灌水、夏天綠、秋天金黃、冬天被雪蓋住。"
+  ogImage="/images/about/afan-tanada.webp"
+>
+  <section class="afan" data-afan>
+    <p class="afan-kicker">越後飯・阿飯小頁</p>
+    <h1 class="afan-title">餵阿飯一顆飯糰</h1>
+    <p class="afan-lead">點畫面任何地方，飯糰會掉在那裡。棚田跟著季節換顏色，今天是<span data-season-name>秋</span>天。</p>
+
+    <button class="afan-stage" type="button" aria-label="在畫面上丟一顆飯糰給阿飯" data-stage>
+      <svg class="afan-svg" viewBox="0 0 342 250" aria-hidden="true" data-svg>
+        <rect class="sky" x="0" y="0" width="342" height="250" data-sky></rect>
+
+        <g data-only="spring summer autumn">
+          <circle cx="58" cy="50" r="18" fill="#F2C86B" stroke="#3A3733" stroke-width="2.5"></circle>
+        </g>
+        <g data-only="spring summer">
+          <path d="M94 70 Q106 58 120 66 Q132 56 146 66 Q158 66 156 78 L92 78 Q86 72 94 70 Z" fill="#FFFFFF" stroke="#3A3733" stroke-width="2.2" stroke-linejoin="round"></path>
+        </g>
+        <g data-only="winter">
+          <path d="M40 58 Q52 44 70 52 Q84 38 104 50 Q122 48 122 62 L38 62 Q30 60 40 58 Z" fill="#FFFFFF" stroke="#3A3733" stroke-width="2.2" stroke-linejoin="round"></path>
+          <path d="M214 44 Q228 30 246 40 Q262 28 282 40 Q300 40 298 54 L212 54 Q204 50 214 44 Z" fill="#FFFFFF" stroke="#3A3733" stroke-width="2.2" stroke-linejoin="round"></path>
+        </g>
+
+        <path class="hill-far" d="M0 146 Q90 104 182 130 T342 114 L342 250 L0 250 Z" stroke="#3A3733" stroke-width="2.5" stroke-linejoin="round" data-far></path>
+        <path d="M18 164 Q100 136 186 152" fill="none" stroke="#3A3733" stroke-width="1.8" stroke-linecap="round" opacity="0.45"></path>
+        <path d="M200 146 Q268 128 336 136" fill="none" stroke="#3A3733" stroke-width="1.8" stroke-linecap="round" opacity="0.45"></path>
+        <path class="hill-near" d="M0 192 Q120 164 240 184 T342 176 L342 250 L0 250 Z" stroke="#3A3733" stroke-width="2.5" stroke-linejoin="round" data-near></path>
+        <path d="M8 214 Q120 192 232 206" fill="none" stroke="#3A3733" stroke-width="1.8" stroke-linecap="round" opacity="0.45"></path>
+        <path d="M26 236 Q140 216 268 228" fill="none" stroke="#3A3733" stroke-width="1.8" stroke-linecap="round" opacity="0.45"></path>
+
+        <g data-only="spring" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.9">
+          <path d="M40 158 L70 152 M120 146 L150 143 M232 140 L262 136"></path>
+          <path d="M30 206 L66 199 M170 192 L206 194 M280 186 L312 184"></path>
+        </g>
+        <g data-only="autumn" stroke="#3A3733" stroke-width="1.6" stroke-linecap="round" opacity="0.5">
+          <path d="M30 222 l3 -8 M44 219 l3 -8 M58 216 l3 -8 M220 214 l3 -8 M234 216 l3 -8 M248 218 l3 -8 M290 212 l3 -8 M304 212 l3 -8"></path>
+        </g>
+        <g class="snowfall" data-only="winter" fill="#FFFFFF" stroke="#3A3733" stroke-width="1.4">
+          <circle cx="40" cy="80" r="4"></circle><circle cx="96" cy="96" r="3.5"></circle><circle cx="150" cy="70" r="4"></circle>
+          <circle cx="214" cy="88" r="3.5"></circle><circle cx="270" cy="96" r="4"></circle><circle cx="318" cy="76" r="3.5"></circle>
+        </g>
+
+        <!-- 阿飯：背影，不露臉。帽子蓋住整顆頭。 -->
+        <g>
+          <rect x="138" y="190" width="10" height="14" rx="4" fill="#F1D9C2" stroke="#3A3733" stroke-width="2"></rect>
+          <rect x="154" y="190" width="10" height="14" rx="4" fill="#F1D9C2" stroke="#3A3733" stroke-width="2"></rect>
+          <ellipse cx="124" cy="176" rx="6.5" ry="13" fill="#D9A03C" stroke="#3A3733" stroke-width="2.2" transform="rotate(14 124 176)"></ellipse>
+          <ellipse cx="177" cy="176" rx="6.5" ry="13" fill="#D9A03C" stroke="#3A3733" stroke-width="2.2" transform="rotate(-14 177 176)"></ellipse>
+          <path d="M127 196 Q123 154 151 150 Q179 154 175 196 Z" fill="#D9A03C" stroke="#3A3733" stroke-width="2.5" stroke-linejoin="round"></path>
+          <rect x="135" y="158" width="32" height="30" rx="8" fill="#6E6A64" stroke="#3A3733" stroke-width="2.2"></rect>
+          <rect x="140" y="166" width="22" height="9" rx="3" fill="none" stroke="#3A3733" stroke-width="1.6" opacity="0.6"></rect>
+          <g transform="rotate(14 168 156)">
+            <rect x="163" y="140" width="9" height="28" rx="4.5" fill="#FAF6EC" stroke="#3A3733" stroke-width="2"></rect>
+            <path d="M165 147 L170 147 M165 153 L170 153" stroke="#6B665E" stroke-width="1.4" stroke-linecap="round"></path>
+          </g>
+          <ellipse cx="151" cy="136" rx="34" ry="9" fill="#D2693A" stroke="#3A3733" stroke-width="2.5"></ellipse>
+          <path d="M124 135 Q124 100 151 98 Q178 100 178 135 Z" fill="#D2693A" stroke="#3A3733" stroke-width="2.5" stroke-linejoin="round"></path>
+          <path d="M126 126 Q151 132 176 126" fill="none" stroke="#3A3733" stroke-width="1.6" opacity="0.45"></path>
+        </g>
+
+        <g data-drops></g>
+      </svg>
+      <span class="afan-bubble" data-bubble>Harvest time.</span>
+    </button>
+
+    <div class="afan-seasons" role="group" aria-label="預覽其他季節">
+      <button type="button" data-pick="spring">春</button>
+      <button type="button" data-pick="summer">夏</button>
+      <button type="button" data-pick="autumn">秋</button>
+      <button type="button" data-pick="winter">冬</button>
+    </div>
+    <p class="afan-note" data-note>依今天的日期顯示。點其他季節可以預覽，再點一次回到今天。</p>
+
+    <div class="afan-card">
+      <div class="afan-row">
+        <strong>今天餵了 <span data-count>0</span> 顆</strong>
+        <button type="button" class="afan-reset" data-reset>撿乾淨</button>
+      </div>
+      <p class="afan-status" data-status>阿飯肚子餓了，走不動。</p>
+      <div class="afan-links" data-links hidden>
+        <a class="afan-cta" href={mapLink}>吃飽了，看今天開什麼</a>
+        <a class="afan-sub" href={lineLink}>加入富搖小幫手</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .afan {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+      color: #3A3733;
+    }
+    .afan-kicker { margin: 0 0 4px; font-size: 13px; color: #6B665E; letter-spacing: .04em; }
+    .afan-title { margin: 0 0 8px; font-size: 28px; line-height: 1.3; }
+    .afan-lead { margin: 0 0 18px; font-size: 15px; line-height: 1.7; color: #6B665E; }
+    .afan-stage {
+      position: relative; display: block; width: 100%; padding: 0; margin: 0;
+      border: 2.5px solid #3A3733; border-radius: 22px; overflow: hidden;
+      background: #FAF6EC; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .afan-stage:focus-visible, .afan-seasons button:focus-visible, .afan-reset:focus-visible { outline: 3px solid #D2693A; outline-offset: 3px; }
+    .afan-svg { display: block; width: 100%; height: auto; }
+    .sky { transition: fill .5s; }
+    .hill-far, .hill-near { transition: fill .5s; }
+    .afan-bubble {
+      position: absolute; left: 54%; top: 18%;
+      padding: 2px 12px 4px; background: #FFFFFF; border: 2px solid #3A3733; border-radius: 14px;
+      font-size: 15px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
+      pointer-events: none; animation: afan-pop .3s ease-out both;
+    }
+    .afan-seasons { display: flex; gap: 8px; margin-top: 14px; }
+    .afan-seasons button {
+      flex: 1 1 0; min-height: 44px; border-radius: 999px; border: 2px solid #3A3733;
+      background: #FAF6EC; color: #3A3733; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+    }
+    .afan-seasons button[aria-pressed="true"] { background: #D9A03C; }
+    .afan-note { margin: 8px 0 18px; font-size: 13px; line-height: 1.6; color: #6B665E; }
+    .afan-card { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border: 2px solid #3A3733; border-radius: 18px; background: #FFFFFF; }
+    .afan-row { display: flex; justify-content: space-between; align-items: center; }
+    .afan-reset { min-height: 44px; padding: 0 6px; border: none; background: transparent; color: #6B665E; font: inherit; font-size: 14px; text-decoration: underline; cursor: pointer; }
+    .afan-status { margin: 0; font-size: 15px; line-height: 1.6; color: #6B665E; }
+    .afan-links { display: flex; flex-direction: column; gap: 8px; }
+    .afan-links[hidden] { display: none; }
+    .afan-cta {
+      display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px;
+      background: #D9A03C; border: 2px solid #3A3733; color: #3A3733; font-weight: 700; text-decoration: none;
+    }
+    .afan-sub { text-align: center; font-size: 14px; color: #3A3733; }
+    :global(.afan-drop) { animation: afan-drop .7s cubic-bezier(.3,.7,.4,1) both; }
+    :global(.snowfall) { animation: afan-snow 3.2s ease-in-out infinite; }
+    @keyframes afan-pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes afan-drop {
+      0% { transform: translateY(-170px) rotate(-25deg); opacity: 0; }
+      12% { opacity: 1; }
+      68% { transform: translateY(5px) rotate(8deg); }
+      84% { transform: translateY(-6px) rotate(-3deg); }
+      100% { transform: translateY(0) rotate(0); opacity: 1; }
+    }
+    @keyframes afan-snow { 0% { transform: translate(0, -40px); } 50% { transform: translate(6px, 0); } 100% { transform: translate(0, 40px); } }
+    @media (prefers-reduced-motion: reduce) {
+      :global(.afan-drop), :global(.snowfall), .afan-bubble { animation: none; }
+    }
+  </style>
+
+  <script>
+    const root = document.querySelector('[data-afan]');
+    if (root) {
+      const SVG = 'http://www.w3.org/2000/svg';
+      const stage = root.querySelector('[data-stage]');
+      const svg = root.querySelector('[data-svg]');
+      const dropsLayer = root.querySelector('[data-drops]');
+      const bubble = root.querySelector('[data-bubble]');
+      const countEl = root.querySelector('[data-count]');
+      const statusEl = root.querySelector('[data-status]');
+      const linksEl = root.querySelector('[data-links]');
+      const seasonName = root.querySelector('[data-season-name]');
+      const note = root.querySelector('[data-note]');
+      const picks = [...root.querySelectorAll('[data-pick]')];
+
+      const NAMES = { spring: '春', summer: '夏', autumn: '秋', winter: '冬' };
+      const SKY = { spring: '#E8F0EA', summer: '#DCEBEF', autumn: '#F3E6CC', winter: '#E9EEF2' };
+      const FAR = { spring: '#B9D2C9', summer: '#BFCD95', autumn: '#E9C66A', winter: '#F7F7F4' };
+      const NEAR = { spring: '#A8CBD3', summer: '#93AB69', autumn: '#D9A03C', winter: '#FFFFFF' };
+      const IDLE = { spring: 'Mirror fields.', summer: 'So green.', autumn: 'Harvest time.', winter: 'So quiet.' };
+
+      // 越後的季節：雪季長，3 月還在冬天；4、5 月棚田灌水。
+      const m = new Date().getMonth() + 1;
+      const today = m >= 12 || m <= 3 ? 'winter' : m <= 5 ? 'spring' : m <= 8 ? 'summer' : 'autumn';
+      let season = today;
+      let count = 0;
+
+      const paint = () => {
+        svg.querySelector('[data-sky]').setAttribute('fill', SKY[season]);
+        svg.querySelector('[data-far]').setAttribute('fill', FAR[season]);
+        svg.querySelector('[data-near]').setAttribute('fill', NEAR[season]);
+        svg.querySelectorAll('[data-only]').forEach((g) => {
+          g.style.display = g.dataset.only.split(' ').includes(season) ? '' : 'none';
+        });
+        seasonName.textContent = NAMES[today];
+        picks.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pick === season)));
+        note.textContent = season === today
+          ? '依今天的日期顯示。點其他季節可以預覽，再點一次回到今天。'
+          : `預覽${NAMES[season]}天中，再點一次回到今天。`;
+        say();
+      };
+
+      const say = () => {
+        let text;
+        if (count === 0) text = IDLE[season];
+        else if (count < 3) text = 'One more?';
+        else if (count < 8) text = "Okay, let's go.";
+        else text = 'Too much rice.';
+        bubble.textContent = text;
+        bubble.style.animation = 'none';
+        void bubble.offsetWidth;
+        bubble.style.animation = '';
+        countEl.textContent = String(count);
+        statusEl.textContent =
+          count === 0 ? '阿飯肚子餓了，走不動。'
+          : count === 1 ? '還想再一顆。'
+          : count === 2 ? '再一顆就出發。'
+          : count < 8 ? '吃飽了，出發去看作品！'
+          : '地上都是飯糰了。阿飯說：夠了夠了，真的要出發了。';
+        linksEl.hidden = count < 3;
+      };
+
+      const groundY = (x) => 196 + Math.round(18 * (x / 342)) + Math.round(Math.random() * 22);
+
+      const drop = (x) => {
+        const outer = document.createElementNS(SVG, 'g');
+        outer.setAttribute('transform', `translate(${x} ${groundY(x)})`);
+        const inner = document.createElementNS(SVG, 'g');
+        inner.setAttribute('class', 'afan-drop');
+        inner.innerHTML =
+          '<path d="M12 1.5 Q17.5 1.5 21.5 11 Q24 19 12 19 Q0 19 2.5 11 Q6.5 1.5 12 1.5 Z" fill="#FFFFFF" stroke="#3A3733" stroke-width="1.8" stroke-linejoin="round"></path>' +
+          '<rect x="7" y="12" width="10" height="7" rx="1.2" fill="#3A3733"></rect>';
+        outer.appendChild(inner);
+        dropsLayer.appendChild(outer);
+        while (dropsLayer.childNodes.length > 14) dropsLayer.removeChild(dropsLayer.firstChild);
+        count += 1;
+        say();
+      };
+
+      stage.addEventListener('click', (e) => {
+        const r = svg.getBoundingClientRect();
+        // 鍵盤按 Enter 沒有座標，就掉在阿飯旁邊隨機一點
+        const x = e.detail === 0 || !r.width
+          ? 190 + Math.random() * 110
+          : ((e.clientX - r.left) / r.width) * 342;
+        drop(Math.max(6, Math.min(312, x - 12)));
+      });
+
+      picks.forEach((b) => b.addEventListener('click', () => {
+        const k = b.dataset.pick;
+        season = (season === k && k !== today) ? today : k;
+        paint();
+      }));
+
+      root.querySelector('[data-reset]').addEventListener('click', () => {
+        dropsLayer.replaceChildren();
+        count = 0;
+        say();
+      });
+
+      paint();
+    }
+  </script>
+</Layout>
