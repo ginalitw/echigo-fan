@@ -955,3 +955,24 @@ a.frf-pair-item:hover b { color: var(--accent-ink); text-decoration: underline; 
   .frf-prose table.frf-table--stack td:first-child::before { content: none; }
   .frf-prose table.frf-table--stack td:empty, .frf-prose table.frf-table--stack td.is-empty { display: none; }
 }
+
+/* ── 聯盟連結推薦框：跟速覽同一套語彙，淡底、細線，不搶內文 ── */
+.frf-aff {
+  margin: 40px 0 8px; padding: 16px 18px 14px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--paper));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+.frf-aff-label { margin: 0; font-size: 12px; letter-spacing: .2em; color: var(--accent-ink); }
+.frf-aff-title { margin: 4px 0 12px; font-size: 16px; font-weight: 600; color: var(--ink); }
+.frf-aff ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.frf-aff a {
+  display: block; padding: 10px 14px; text-decoration: none; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: var(--radius-s);
+}
+.frf-aff a:hover { border-color: var(--accent); }
+.frf-aff-vendor { display: block; font-size: 11px; letter-spacing: .08em; color: var(--ink-soft); }
+.frf-aff strong { display: block; font-size: 15px; color: var(--accent-ink); }
+.frf-aff-note { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-soft); }
+.frf-aff-disc { margin: 12px 0 0; font-size: 12px; line-height: 1.6; color: var(--ink-soft); }

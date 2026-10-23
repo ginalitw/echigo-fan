@@ -13,6 +13,7 @@ import {
   isReturnerOnly,
 } from '../../lib/frf';
 import { FRF_BODIES } from '../../lib/frf-bodies';
+import { AFFILIATE_BY_SLUG, AFFILIATE_DISCLOSURE } from '../../lib/affiliates';
 import { getCollection, getEntry } from 'astro:content';
 import { articleLd, breadcrumbLd, toISODate } from '../../lib/seo';
 import { extractFaq, faqLd } from '../../lib/faq';
@@ -27,6 +28,7 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const entry = await getEntry('frf', slug);
+const affiliate = AFFILIATE_BY_SLUG[slug as string];
 if (!entry) throw new Error('not found');
 const article = articleFromEntry(entry);
 
@@ -220,6 +222,25 @@ const bridgeLinkText = bridgeTarget ? '富士搖滾＋大地藝術祭 2027 怎�
     <article class="frf-prose" set:html={body} />
   ) : (
     <p class="frf-note">這篇摘要已上線。全文會在下次 Notion 同步時進來。</p>
+  )}
+
+  {affiliate && (
+    <aside class="frf-aff" aria-label="推薦連結">
+      <p class="frf-aff-label">實用工具</p>
+      <p class="frf-aff-title">{affiliate.title}</p>
+      <ul>
+        {affiliate.links.map((l) => (
+          <li>
+            <a href={l.href} rel="sponsored noopener" target="_blank">
+              <span class="frf-aff-vendor">{l.vendor}</span>
+              <strong>{l.label} →</strong>
+              <span class="frf-aff-note">{l.note}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="frf-aff-disc">{AFFILIATE_DISCLOSURE}</p>
+    </aside>
   )}
 
   <nav class="frf-band" aria-label="上一篇與下一篇">
