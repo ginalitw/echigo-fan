@@ -1,0 +1,24 @@
+{
+  "patterns": [
+    {
+      "rule_name": "notion_token_secret_prefix",
+      "regex": "secret_[A-Za-z0-9]{30,}",
+      "reminder": "這裡看起來寫進了 Notion API token（secret_ 開頭）。token 只能從環境變數或 GitHub Secrets 讀取，不能寫死在檔案裡，也不能印進記錄。"
+    },
+    {
+      "rule_name": "notion_token_ntn_prefix",
+      "regex": "ntn_[A-Za-z0-9]{30,}",
+      "reminder": "這裡看起來寫進了 Notion API token（ntn_ 開頭）。token 只能從環境變數或 GitHub Secrets 讀取，不能寫死在檔案裡，也不能印進記錄。"
+    },
+    {
+      "rule_name": "private_key_block",
+      "substrings": ["-----BEGIN PRIVATE KEY-----"],
+      "reminder": "這裡出現私密金鑰內容。私密金鑰絕對不能進 repo，請改放到 GitHub Secrets 或本機不進版控的地方。"
+    },
+    {
+      "rule_name": "service_account_key_file",
+      "substrings": ["private_key_id"],
+      "reminder": "這裡看起來是服務帳號金鑰檔（含 private_key_id）。服務帳號金鑰絕對不能進 repo，請改用 GitHub Secrets 提供。"
+    }
+  ]
+}
