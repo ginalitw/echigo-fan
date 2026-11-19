@@ -1,12 +1,13 @@
 ---
 title: "# 18 演出排程策略：三天如何不後悔"
 n: "18"
+seoTitle: "Fuji Rock 時間表怎麼排：換舞台要走多久"
 meta: "富士搖滾三天怎麼排：舞台之間要走多久、哪些場次一定會撞、體力該怎麼分配。"
 audience: ["common"]
 stage: "go"
 topics: ["快樂遊"]
 status: "公開"
-updated: 2026-09-06
+updated: 2026-11-19
 ---
 > 🎵 **本篇適合：** 🔰 新手首衝 ＋ 👑 老手升級
 

@@ -1,8 +1,9 @@
 ---
 title: "# 14 苗場舞台：從入口走到森林深處"
 n: "14"
-meta: "富士搖滾各舞台介紹與步行時間：綠、白、紅、田園、日出，從入口到森林深處的完整動線。"
-glance: ["龍纜車來回 ¥2,500，最後上山 16:30、回程末班 17:00（2026）"]
+seoTitle: "Fuji Rock 舞台介紹：苗場各舞台位置與步行時間"
+meta: "富士搖滾苗場會場從入口走到最深處約 46 分鐘：GREEN、WHITE、RED MARQUEE、FIELD OF HEAVEN 等舞台位置、容量與換場時間。"
+glance: ["龍纜車來回 ¥2,500，最後上山 16:30、回程末班 17:00（2026）", "入口到 GREEN STAGE 約 14 分、到 ORANGE ECHO 約 46 分（無人潮）"]
 audience: ["common"]
 stage: "go"
 topics: ["快樂遊"]

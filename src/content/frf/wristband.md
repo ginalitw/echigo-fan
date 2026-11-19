@@ -1,6 +1,7 @@
 ---
 title: "# 19 入場手環：換票、配戴與注意事項"
 n: "19"
+seoTitle: "Fuji Rock 手環：海外票在哪換、怎麼戴"
 meta: "富士搖滾入場手環：什麼時候換、怎麼戴、鬆了或斷了怎麼辦。"
 audience: ["common"]
 stage: "go"

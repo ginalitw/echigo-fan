@@ -1,6 +1,7 @@
 ---
 title: "# 04 富士搖滾露營：斜坡、下雨、洗澡真相"
 n: "04"
+seoTitle: "Fuji Rock 露營真相：斜坡、下雨、洗澡要排多久"
 meta: "富士搖滾露營的真相：90% 是斜坡、午後必下雨、洗澡要排一小時。決定露營前先看這篇。"
 audience: ["beginner"]
 stage: "hesitate"
