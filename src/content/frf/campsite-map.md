@@ -8,7 +8,7 @@ stage: "go"
 topics: ["露營"]
 cover: "/images/frf-posts/campsite-map/image-01.webp"
 status: "公開"
-updated: 2026-10-18
+updated: 2026-11-19
 ---
 > 👤 **本篇適合：** 🌐 通用必修（凡是要露營的人，不管幾衝都要先知道各區地形）
 
@@ -60,7 +60,7 @@ Fuji Rock 的露營區位於一座巨大的滑雪場，這意味著：**「平�
 |  | 💎 Pyramid Garden（金字塔花園） | 🚗 Moon Caravan（月亮露營區） |
 | --- | --- | --- |
 | 位置 | 王子飯店對面的高爾夫球場 | 專屬區域 |
-| 資格 | 必須購買[**官方直達巴士套票 (Bus Tour)**](https://www3.collaborationtours.com/fujirock/pickup/pyramidgarden.html)（日文，需要日本手機及地址登記） | 必須購買 **Moon Caravan 專用停車券 + 露營券** |
+| 資格 | 必須購買[**官方直達巴士套票 (Bus Tour)**](https://www3.collaborationtours.com/fujirock/pickup/pyramidgarden.html)（日文，要有日本國內地址、只能在日本匯款）；海外旅客改走岩盤（Ganban），直達巴士和 PG 租帳篷一起訂，露營券另外買（2026） | 必須購買 **Moon Caravan 專用停車券 + 露營券** |
 | 特色 | 從新宿搭接駁車晚到專屬，全平地草皮、氣氛佳（燭光舞台、瑜珈）；還有免搭帳服務（租借帳篷，數量有限） | 車子可直接停在帳篷旁（Auto Camp） |
 | 適合 | 帶小孩的家庭、追求優雅露營的老手 | 開露營車或帶很多裝備的團體 |
 
