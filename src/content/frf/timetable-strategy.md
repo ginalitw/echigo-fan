@@ -136,7 +136,7 @@ Fuji Rock 老手幾乎都有同一個記憶：「那年最難忘的那場，是�
 
 ## 🔗 延伸閱讀
 
-- 📖 #14 [苗場舞台：從入口走到森林深處](https://app.notion.com/p/37a14f28e45681cdb33ac6bcae30606b)
+- 📖 #14 [苗場舞台：從入口走到森林深處](/fujirock/naeba-stages/)
 - 📖 #12 [熱身活動：前夜祭打開的方法](/fujirock/eve-festival/)
 - 📖 #08 [露營場地：滑雪場露營的瘋狂](/fujirock/campsite-map/)
 
