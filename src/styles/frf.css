@@ -956,23 +956,74 @@ a.frf-pair-item:hover b { color: var(--accent-ink); text-decoration: underline; 
   .frf-prose table.frf-table--stack td:empty, .frf-prose table.frf-table--stack td.is-empty { display: none; }
 }
 
-/* ── 聯盟連結推薦框：跟速覽同一套語彙，淡底、細線，不搶內文 ── */
-.frf-aff {
-  margin: 40px 0 8px; padding: 16px 18px 14px;
-  background: color-mix(in srgb, var(--accent) 5%, var(--paper));
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
+/* ── 合作連結格（AffSlot）：a 速覽延伸／b 票根／c 阿飯說。定案後刪掉沒用的兩種 ── */
+.aff {
+  --aff: var(--accent); --aff-ink: var(--accent-ink);
+  position: relative; display: flex; gap: 14px; align-items: flex-start;
+  margin: 20px 0 0; font-size: 14px; line-height: 1.65; color: var(--ink);
 }
-.frf-aff-label { margin: 0; font-size: 12px; letter-spacing: .2em; color: var(--accent-ink); }
-.frf-aff-title { margin: 4px 0 12px; font-size: 16px; font-weight: 600; color: var(--ink); }
-.frf-aff ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.frf-aff a {
-  display: block; padding: 10px 14px; text-decoration: none; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+.aff--end { margin: 40px 0 8px; }
+.aff--own { --aff: #C08A2E; --aff-ink: #8F5F17; }
+.aff-stub { flex: none; }
+.aff-avatar { display: block; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.aff-body { min-width: 0; flex: 1; }
+.aff-label { margin: 0; font-size: 12px; letter-spacing: .16em; color: var(--aff-ink); }
+.aff-vendor { margin-left: .8em; padding-left: .8em; border-left: 1px solid var(--line); letter-spacing: .04em; color: var(--ink-soft); }
+.aff-title { margin: 2px 0 0; font-size: 16px; font-weight: 600; line-height: 1.5; }
+.aff-note { margin: 2px 0 0; font-size: 13px; color: var(--ink-soft); }
+.aff-cta { display: inline-block; margin-top: 8px; font-weight: 600; color: var(--aff-ink); text-decoration: none; }
+.aff-cta::after { content: ""; position: absolute; inset: 0; }          /* 整格可點 */
+.aff:hover .aff-cta { text-decoration: underline; text-underline-offset: 3px; }
+.aff-cta:focus-visible { outline: none; }
+.aff:has(.aff-cta:focus-visible) { outline: 2px solid var(--aff); outline-offset: 3px; }
+.aff-disc { margin: 8px 0 0; font-size: 11.5px; line-height: 1.6; color: var(--ink-soft); }
+
+/* a：速覽延伸，跟速覽框同一家族，最安靜 */
+.aff--a {
+  padding: 14px 18px;
+  background: color-mix(in srgb, var(--aff) 6%, var(--paper));
+  border-top: 2px dashed color-mix(in srgb, var(--aff) 55%, transparent);
   border-radius: var(--radius-s);
 }
-.frf-aff a:hover { border-color: var(--accent); }
-.frf-aff-vendor { display: block; font-size: 11px; letter-spacing: .08em; color: var(--ink-soft); }
-.frf-aff strong { display: block; font-size: 15px; color: var(--accent-ink); }
-.frf-aff-note { display: block; margin-top: 2px; font-size: 13px; color: var(--ink-soft); }
-.frf-aff-disc { margin: 12px 0 0; font-size: 12px; line-height: 1.6; color: var(--ink-soft); }
+
+/* b：票根，左邊撕線，呼應手環與門票 */
+.aff--b {
+  gap: 0; align-items: stretch; background: #fff;
+  border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden;
+}
+.aff--b .aff-stub {
+  position: relative; display: grid; place-items: center; width: 84px;
+  background: color-mix(in srgb, var(--aff) 12%, var(--paper));
+  border-right: 2px dashed color-mix(in srgb, var(--aff) 45%, transparent);
+}
+.aff--b .aff-stub::before, .aff--b .aff-stub::after {
+  content: ""; position: absolute; right: -9px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--aff-page, var(--snow)); border: 1px solid var(--line);
+}
+.aff--b .aff-stub::before { top: -9px; }
+.aff--b .aff-stub::after { bottom: -9px; }
+.aff--b .aff-avatar { width: 52px; height: 52px; box-shadow: 0 0 0 3px #fff; }
+.aff--b .aff-body { padding: 12px 18px 12px 20px; }
+.aff--b .aff-cta { margin-top: 6px; }
+.aff--b .aff-cta {
+  padding: 6px 14px; border-radius: 999px; background: var(--aff-ink); color: #fff; font-size: 14px;
+}
+.aff--b:hover .aff-cta { text-decoration: none; background: color-mix(in srgb, var(--aff-ink) 85%, #000); }
+
+/* c：阿飯說，對話泡泡，個性最強 */
+.aff--c .aff-avatar { width: 56px; height: 56px; box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--aff); }
+.aff--c .aff-body {
+  position: relative; padding: 12px 16px;
+  background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--aff);
+  border-radius: 4px var(--radius-m) var(--radius-m) var(--radius-m);
+}
+.aff--c .aff-body::before {
+  content: ""; position: absolute; left: -10px; top: 18px; width: 0; height: 0;
+  border: 7px solid transparent; border-right-color: var(--aff); border-left: 0;
+}
+
+@media (max-width: 520px) {
+  .aff--b .aff-stub { width: 64px; }
+  .aff--b .aff-avatar { width: 42px; height: 42px; }
+  .aff--c .aff-avatar { width: 44px; height: 44px; }
+}

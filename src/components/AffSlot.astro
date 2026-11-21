@@ -1,0 +1,23 @@
+---
+// 合作連結格。樣式由 AFF_STYLE 決定（a 速覽延伸／b 票根／c 阿飯說），定案後只留一種。
+import { url } from '../lib/url';
+import { AFF_LABEL, AFF_DISCLOSURE, type AffSlot } from '../lib/affiliates';
+
+export const AFF_STYLE = 'b';
+
+interface Props { item: AffSlot; pos: 'top' | 'end'; }
+const { item: slot, pos } = Astro.props;
+const rel = slot.kind === 'affiliate' ? 'sponsored noopener' : 'noopener';
+---
+<aside class={`aff aff--${AFF_STYLE} aff--${slot.kind} aff--${pos}`} aria-label={AFF_LABEL[slot.kind]}>
+  <span class="aff-stub" aria-hidden="true">
+    <img class="aff-avatar" src={url('/images/about/afan-avatar.webp')} alt="" width="96" height="96" loading="lazy" decoding="async" />
+  </span>
+  <div class="aff-body">
+    <p class="aff-label">{AFF_LABEL[slot.kind]}<span class="aff-vendor">{slot.vendor}</span></p>
+    <p class="aff-title">{slot.title}</p>
+    <p class="aff-note">{slot.note}</p>
+    <a class="aff-cta" href={slot.href} rel={rel} target="_blank">{slot.cta} →</a>
+    {slot.kind === 'affiliate' && <p class="aff-disc">{AFF_DISCLOSURE}</p>}
+  </div>
+</aside>
